@@ -4,7 +4,8 @@
   "description": "Backend application for ikc-deal app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,8 @@
     "express-session": "^1.16.1",
     "mongoose": "^5.5.14",
     "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }
