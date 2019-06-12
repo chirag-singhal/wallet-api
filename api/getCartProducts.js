@@ -19,7 +19,7 @@ const getCartProducts = (req, res) => {
                 if(!product) {
                     return res.status(404).send("Invalid product ID!");
                 }
-                res.write(product);
+                res.json(product);
             }).catch((e) => {
                 console.log(e);
                 return res.status(404).send("Invalid category ID!");
@@ -29,7 +29,6 @@ const getCartProducts = (req, res) => {
         console.log(e);
         return res.send(e);
     });
-    res.end();
 }
 
 module.exports = getCartProducts;
