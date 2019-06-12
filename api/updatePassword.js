@@ -10,13 +10,18 @@ updatePassword.use(bodyParser.json());
 
 updatePassword.route('/')
 .post((req, res, next) => {
-    if(req.body.userId && req.body.oldPassword && req.body.newPassword){
-        Users.findById(req.body.userId)
+    if(req.body.username && req.body.oldPassword && req.body.newPassword){
+        Users.findOne({ "username": req.body.username}).exec()
         .then((user) =>{
             bcrypt.compare(req.body.oldPassword, user.password)
                 .then((result) => {
                     if(result == true){
-                        user.password = req.body.newPassword;
+                        bcrypt.hash(req.body.newPassword, 10)
+                        .then((hashedPassword) => {
+                            user.password = hashedPassword;
+                        })
+                        .catch((err) => next(err))
+                        
                         user.save()
                         .then((userSaved) => {
                             res.statusCode = 200;

@@ -27,6 +27,13 @@ var UserSchema = new mongoose.Schema({
       type: String,
       required: true
   },
+  verified:{
+    type: Boolean,
+    default: false
+  },
+  address: {
+    type: String,
+  },
   amount: {
     type: Number,
     default: 0
@@ -36,6 +43,7 @@ var UserSchema = new mongoose.Schema({
 
 //hashing a password before saving it to the database
 UserSchema.pre('save', function (next) {
+  if(this.isNew){
     var user = this;
     bcrypt.hash(user.password, 10, function (err, hash){
       if (err) {
@@ -44,7 +52,8 @@ UserSchema.pre('save', function (next) {
       user.password = hash;
       next();
     })
-  });
+  } 
+});
   
 
 var User = mongoose.model('User', UserSchema);

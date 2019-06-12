@@ -76,7 +76,7 @@ auth.route('/signup')
                                 console.log(user);
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'application/json');
-                                res.end("User created");
+                                res.json(user);
                             })
                             .catch((err) => next(err));
                         }

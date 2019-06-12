@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const auth = require('./api/login')
-const userUpdate = require('./api/updatePassword')
+const updatePassword = require('./api/updatePassword')
+const updateProfile = require('./api/updateProfile')
+
 
 
 const getCategories = require('./api/getCategories');
@@ -23,9 +25,10 @@ const port = 3000
 
 app.use(express.json());
 app.use(morgan('dev'))
+
+// ------------------------------------------------Login & Sign Up----------------------------------------------------------------
+
 app.use('/auth', auth);
-
-
 
 // ----------------------------------------------------Connect to Database--------------------------------------------------------------------
 mongoose.set('useFindAndModify', false);
@@ -44,7 +47,12 @@ app.get('/categories', (req, res) => {
     getCategories(req, res);
 });
 
-app.use('/updatePassword', userUpdate);
+// ------------------------------------------------Update Password----------------------------------------------------------------
+app.use('/updatePassword', updatePassword);
+
+
+// ------------------------------------------------Update Profile----------------------------------------------------------------
+app.use('/updateProfile', updateProfile);
 
 
 
