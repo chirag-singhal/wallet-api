@@ -1,7 +1,7 @@
-const Category = require('../model/category');
+const ShopingCategory = require('../model/shopingCategory');
 
 const getCategories = (req, res) => {
-    Category.find({}).then((categories) => {
+    ShopingCategory.find({}).then((categories) => {
         res.send(categories)
     }).catch((e) => {
         res.status(500).send(e);

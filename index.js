@@ -3,12 +3,13 @@ const express = require('express')
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
+
 const user = require('./users')
 const auth = require('./login')
 
-
-const Category = require('./model/category');
 const getCategories = require('./api/getCategories');
+
+const addToCart = require('./api/addToCart');
 
 
 const app = express()
@@ -19,30 +20,36 @@ const hostname = 'localhost'
 const port = 3000
 
 
+app.use(express.json());
+app.use(morgan('dev'))
+app.use('/auth', auth);
+
+
+
+// ----------------------------------------------------Connect to Database--------------------------------------------------------------------
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
 const connect = mongoose.connect(url,{useNewUrlParser : true});
-
-app.use(morgan('dev'))
-
-app.use(express.json());
 
 connect.then((db) => {
     console.log("connected to database");
 }, (err) => {console.log(err);})
 
 
-// const server = http.createServer(app);
 
-
-app.get('/getCategories', (req, res) => {
+// ------------------------------------------------Shopping categories request----------------------------------------------------------------
+app.get('/categories', (req, res) => {
     getCategories(req, res);
 });
 
 
 
-app.use('/auth', auth);
+// ----------------------------------------------------Cart request---------------------------------------------------------------------------
+app.post('/cart', (req, res) => {
+    addToCart(req, res);
+});
+
 
 
 app.listen(port, hostname, () => console.log('Server ready'))
