@@ -8,8 +8,8 @@ const userUpdate = require('./api/updatePassword')
 
 
 const getCategories = require('./api/getCategories');
-
 const addToCart = require('./api/addToCart');
+const removeFromCart = require('./api/removeFromCart');
 
 
 const app = express()
@@ -45,10 +45,16 @@ app.get('/categories', (req, res) => {
 
 app.use('/updatePassword', userUpdate);
 
+
+
 // ----------------------------------------------------Cart request---------------------------------------------------------------------------
 app.post('/cart', (req, res) => {
     addToCart(req, res);
 });
+
+app.delete('/cart', (req, res) => {
+    removeFromCart(req, res);
+})
 
 
 
