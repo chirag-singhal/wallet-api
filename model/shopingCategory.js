@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 
-const product = new mongoose.Schema({
-    title: String,
-    price: Number,
-    discount: Number,
-    description: String 
+const Product = new mongoose.Schema({
+    title: {
+        type: String
+    },
+    price: {
+        type: Number
+    },
+    discount: {
+        type: Number
+    },
+    description: {
+        type: String
+    }
 });
 
 const SubCategory = new mongoose.Schema({
@@ -12,11 +20,11 @@ const SubCategory = new mongoose.Schema({
         type: String,
     },
     products: {
-        type: [product]
+        type: [Product]
     }
 });
 
-const Category = mongoose.model('Categories', {
+const Category = mongoose.model('categories', {
     title: {
         type: String,
         required: true
