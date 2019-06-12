@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 const CartProduct = require('../model/cartProduct');
 
 const removeFromCart = (req, res) => {
@@ -11,6 +9,7 @@ const removeFromCart = (req, res) => {
         res.send("Item removed from cart!");
     }).catch((e) => {
         res.status(500).send(e);
+        console.log(e);
     })
 }
 

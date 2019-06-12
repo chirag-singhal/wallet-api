@@ -10,6 +10,7 @@ const userUpdate = require('./api/updatePassword')
 const getCategories = require('./api/getCategories');
 const addToCart = require('./api/addToCart');
 const removeFromCart = require('./api/removeFromCart');
+const getCartProducts = require('./api/getCartProducts');
 
 
 const app = express()
@@ -54,7 +55,11 @@ app.post('/cart', (req, res) => {
 
 app.delete('/cart', (req, res) => {
     removeFromCart(req, res);
-})
+});
+
+app.get('/cart', (req, res) => {
+    getCartProducts(req, res);
+});
 
 
 
