@@ -1,9 +1,8 @@
-const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
 
-const Users = require('./users')
+const Users = require('../model/users')
 
 const auth = express.Router();
 
@@ -41,6 +40,11 @@ auth.route('/login')
             res.statusCode = 403;
             res.setHeader('Content-Type', 'application/json');
             res.end(err);})
+    }
+    else{
+        res.statusCode = 403;
+        res.setHeader('Content-Type', 'application/json');
+        res.end("Missing Fields");
     }
 })
 
@@ -87,6 +91,11 @@ auth.route('/signup')
             res.end(err);
         })
       }
+      else{
+            res.statusCode = 403;
+            res.setHeader('Content-Type', 'application/json');
+            res.end("Missing Fields");
+        }
     })
 
     module.exports = auth;
