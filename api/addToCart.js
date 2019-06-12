@@ -22,13 +22,23 @@ const addToCart = (req, res) => {
         if(!productIdToBeAdded) {
             return res.status(404).send("Invalid product ID!");
         }
-            
-        const cartProduct = new CartProduct( {productId: productIdToBeAdded} );
-        cartProduct.save().then(() => {
-            console.log(cartProduct);
-            res.status(201).send("Item added to cart!")
+
+        CartProduct.findOne( {productId: productIdToBeAdded} ).then((cartProducts) => {
+            if(cartProducts) {
+                return res.status(400).send("Item already exists in cart!");
+            }
+
+            const cartProduct = new CartProduct( {productId: productIdToBeAdded} );
+            cartProduct.save().then(() => {
+                console.log(cartProduct);
+                res.status(201).send("Item added to cart!")
+            }).catch((e) => {
+                console.log(e)
+                return res.send(e);
+            });
         }).catch((e) => {
-            console.log(e);
+            console.log(e)
+            return res.send(e);
         });
     }).catch(() => {
         res.status(404).send("Invalid category ID!");
