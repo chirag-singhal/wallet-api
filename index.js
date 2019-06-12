@@ -3,11 +3,10 @@ const express = require('express')
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
-const user = require('./users')
-const auth = require('./login')
+const auth = require('./api/login')
+const userUpdate = require('./api/updatePassword')
 
 
-const Category = require('./model/category');
 const getCategories = require('./api/getCategories');
 
 
@@ -40,7 +39,7 @@ app.get('/getCategories', (req, res) => {
     getCategories(req, res);
 });
 
-
+app.use('/updatePassword', userUpdate);
 
 app.use('/auth', auth);
 
