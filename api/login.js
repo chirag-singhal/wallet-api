@@ -1,8 +1,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const Users = require('../model/users')
+
+const config = require('../config')
 
 const auth = express.Router();
 
@@ -22,9 +25,19 @@ auth.route('/login')
                 bcrypt.compare(req.body.password, user.password)
                 .then((result) => {
                     if(result == true){
+                        const token = jwt.sign({email: req.body.email},
+                            config.secret,
+                          );
+
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
-                        res.json(user);
+
+                          res.json({
+                            success: true,
+                            message: 'Authentication successful!',
+                            token: token,
+                            user: user
+                          });
                     }
                     else{
                         res.statusCode = 403;

@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const auth = require('./api/login')
 const updatePassword = require('./api/updatePassword')
 const updateProfile = require('./api/updateProfile')
+const jwtVerify = require('./jwtverify')
 
 
 
@@ -25,6 +26,8 @@ const port = 3000
 
 app.use(express.json());
 app.use(morgan('dev'))
+
+app.all('*', jwtVerify)
 
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 
