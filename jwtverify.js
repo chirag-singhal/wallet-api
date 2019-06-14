@@ -4,30 +4,31 @@ const config = require('./config.js');
 const checkToken = (req, res, next) => {
     if(req.path != '/auth/signup' && req.path != '/auth/login'){
         const token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
-    if (token.startsWith('Bearer ')) {
-        // Remove Bearer from string
-        token = token.slice(7, token.length);
-    }
+        if (token.startsWith('Bearer ')) {
+            // Remove Bearer from string
+            token = token.slice(7, token.length);
+        }
 
-    if (token) {
-        jwt.verify(token, config.secret, (err, decoded) => {
-        if (err) {
-            return res.json({
-            success: false,
-            message: 'Token is not valid'
+        if (token) {
+            jwt.verify(token, config.secret, (err, decoded) => {
+            if (err) {
+                return res.json({
+                success: false,
+                message: 'Token is not valid'
+                });
+            } else {
+                req.decoded = decoded;
+                next();
+            }
             });
         } else {
-            req.decoded = decoded;
-            next();
+            return res.json({
+            success: false,
+            message: 'Auth token is not supplied'
+            });
         }
-        });
-    } else {
-        return res.json({
-        success: false,
-        message: 'Auth token is not supplied'
-        });
     }
-    }
+    else next();
 };
 
 module.exports = checkToken
