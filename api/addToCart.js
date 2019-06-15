@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ShopingCategory = require('../model/shopingCategory');
 const CartProduct = require('../model/cartProduct');
 
@@ -18,20 +19,22 @@ const addToCart = (req, res) => {
             return res.status(404).send("Invalid sub-category ID!");
         }
 
-        productIdToBeAdded = subCategory.products.id(productId).id;
+        productIdToBeAdded = subCategory.products.id(productId);
         if(!productIdToBeAdded) {
             return res.status(404).send("Invalid product ID!");
         }
 
-        CartProduct.findOne( {productId: productIdToBeAdded} ).then((cartProducts) => {
+        CartProduct.findOne( {productId} ).then((cartProducts) => {
             if(cartProducts) {
                 return res.status(400).send("Item already exists in cart!");
             }
 
             const cartProduct = new CartProduct({
-                productId: productIdToBeAdded,
-                subCategoryId,
-                categoryId
+                title: productIdToBeAdded.title,
+                price: productIdToBeAdded.price,
+                discount: productIdToBeAdded.discount,
+                description: productIdToBeAdded.description,
+                productId
             });
             cartProduct.save().then(() => {
                 console.log(cartProduct);

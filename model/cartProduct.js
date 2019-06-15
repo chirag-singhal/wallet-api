@@ -2,12 +2,18 @@ const mongoose = require('mongoose');
 
 const CartProduct = mongoose.model('CartProduct', {
     productId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    title: {
         type: String
     },
-    subCategoryId: {
-        type: String
+    price: {
+        type: Number
     },
-    categoryId: {
+    discount: {
+        type: Number
+    },
+    description: {
         type: String
     }
 });
