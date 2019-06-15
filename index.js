@@ -14,6 +14,7 @@ const getCategories = require('./api/getCategories');
 const addToCart = require('./api/addToCart');
 const removeFromCart = require('./api/removeFromCart');
 const getCartProducts = require('./api/getCartProducts');
+const getAuctionProducts = require('./api/getAuctionProducts');
 
 
 const app = express()
@@ -45,7 +46,7 @@ connect.then((db) => {
 
 
 
-// ------------------------------------------------Shopping categories request----------------------------------------------------------------
+// ------------------------------------------------Shopping Categories Request----------------------------------------------------------------
 app.get('/categories', (req, res) => {
     getCategories(req, res);
 });
@@ -59,7 +60,7 @@ app.use('/updateProfile', updateProfile);
 
 
 
-// ----------------------------------------------------Cart request---------------------------------------------------------------------------
+// ----------------------------------------------------Cart Request---------------------------------------------------------------------------
 app.post('/cart', (req, res) => {
     addToCart(req, res);
 });
@@ -71,6 +72,13 @@ app.delete('/cart', (req, res) => {
 app.get('/cart', (req, res) => {
     getCartProducts(req, res);
 });
+
+
+
+// ----------------------------------------------------Auction Request-------------------------------------------------------------------------
+app.get('/auction', (req, res) => {
+    getAuctionProducts(req, res);
+})
 
 
 

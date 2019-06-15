@@ -21,6 +21,20 @@ const Product = new mongoose.Schema({
     }
 });
 
-const auctionProduct = mongoose.model('AuctionProduct', Product);
+const AuctionProduct = mongoose.model('AuctionProduct', Product);
 
-module.exports = auctionProduct;
+// const auctionProduct = new AuctionProduct({
+//     title: "Sunil Chhetri's Soccer Cleat",
+//     price: 15000,
+//     quantity: 1,
+//     numberOfBids: 2,
+//     description: "This is an auction product.",
+//     duration: "13-Apr-2019 To 13-Jun-2019"
+// });
+// auctionProduct.save().then(() => {
+//     console.log(auctionProduct);
+// }).catch((e) => {
+//     console.log(e);
+// });
+
+module.exports = AuctionProduct;
