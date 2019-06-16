@@ -12,6 +12,9 @@ const Product = new mongoose.Schema({
     },
     description: {
         type: String
+    },
+    ikc: {
+        type: Number
     }
 });
 
@@ -21,6 +24,9 @@ const SubCategory = new mongoose.Schema({
     },
     products: {
         type: [Product]
+    },
+    ikcPercent: {
+        type: Number
     }
 });
 

@@ -15,6 +15,8 @@ const getCategories = require('./api/getCategories');
 const addToCart = require('./api/addToCart');
 const removeFromCart = require('./api/removeFromCart');
 const getCartProducts = require('./api/getCartProducts');
+const getAuctionProducts = require('./api/getAuctionProducts');
+const placeBid = require('./api/placeBid');
 
 
 const app = express()
@@ -28,7 +30,7 @@ const port = 3000
 app.use(express.json());
 app.use(morgan('dev'))
 
-app.all('*', jwtVerify)
+// app.all('*', jwtVerify)
 
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 
@@ -47,7 +49,7 @@ connect.then((db) => {
 
 
 
-// ------------------------------------------------Shopping categories request----------------------------------------------------------------
+// ------------------------------------------------Shopping Categories Request----------------------------------------------------------------
 app.get('/categories', (req, res) => {
     getCategories(req, res);
 });
@@ -61,7 +63,7 @@ app.use('/updateProfile', updateProfile);
 
 
 
-// ----------------------------------------------------Cart request---------------------------------------------------------------------------
+// ----------------------------------------------------Cart Request---------------------------------------------------------------------------
 app.post('/cart', (req, res) => {
     addToCart(req, res);
 });
@@ -74,6 +76,16 @@ app.get('/cart', (req, res) => {
     getCartProducts(req, res);
 });
 
+
+
+// ----------------------------------------------------Auction Request-------------------------------------------------------------------------
+app.get('/auction', (req, res) => {
+    getAuctionProducts(req, res);
+})
+
+app.post('/auction', (req, res) => {
+    placeBid(req, res);
+})
 
 
 app.listen(port, hostname, () => console.log('Server ready'))

@@ -3,33 +3,10 @@ const ShopingCategory = require('../model/shopingCategory');
 
 const getCartProducts = (req, res) => {
     CartProduct.find( {} ).then((cartProducts) => {
-        cartProducts.forEach(cartProduct => {
-            const productId = cartProduct.productId;
-            const subCategoryId = cartProduct.subCategoryId;
-            const categoryId = cartProduct.categoryId;
-        
-
-            ShopingCategory.findById(categoryId).then((category) => {
-                const subCategory = category.subCategories.id(subCategoryId);
-                if(!subCategory) {
-                    return res.status(404).send("Invalid sub-category ID!");
-                }
-
-                const product = subCategory.products.id(productId);
-                if(!product) {
-                    return res.status(404).send("Invalid product ID!");
-                }
-                res.write(product);
-            }).catch((e) => {
-                console.log(e);
-                return res.status(404).send("Invalid category ID!");
-            })
-        });
+        res.send(cartProducts);
     }).catch((e) => {
-        console.log(e);
-        return res.send(e);
+        res.status(500).send(e);
     });
-    res.end();
 }
 
 module.exports = getCartProducts;
