@@ -28,7 +28,7 @@ const port = 3000
 app.use(express.json());
 app.use(morgan('dev'))
 
-app.all('*', jwtVerify)
+// app.all('*', jwtVerify)
 
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 
