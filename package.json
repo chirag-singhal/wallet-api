@@ -24,7 +24,8 @@
     "express-session": "^1.16.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.14",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "twilio": "^3.32.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"

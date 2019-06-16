@@ -1,9 +1,11 @@
 const express = require('express')
+const https = require('https')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
 const Users = require('../model/users')
+const Otp = require('../model/otp')
 
 const config = require('../config')
 
@@ -11,10 +13,11 @@ const auth = express.Router();
 
 auth.use(bodyParser.json());
 
+
 auth.route('/login')
 .get((req, res, next) => {
-    if(req.body.email && req.body.password){
-        Users.findOne({email: req.body.email}).exec()
+    if(req.body.contact && req.body.password){
+        Users.findOne({contact: req.body.contact}).exec()
         .then((user) => {
             if(user == null){
                 res.statusCode = 404;
@@ -25,7 +28,7 @@ auth.route('/login')
                 bcrypt.compare(req.body.password, user.password)
                 .then((result) => {
                     if(result == true){
-                        const token = jwt.sign({email: req.body.email},
+                        const token = jwt.sign({contact: req.body.contact},
                             config.secret,
                           );
 
@@ -65,7 +68,7 @@ auth.route('/signup')
 .post((req, res, next) => {
     console.log(req.body);
     if (req.body.email && req.body.username &&
-        req.body.password && req.body.country && req.body.contact) {
+        req.body.password && req.body.countrycode && req.body.contact) {
 
         Users.findOne({email: req.body.email}).exec()
         .then((user) => {
@@ -84,14 +87,41 @@ auth.route('/signup')
                             res.end("User already exits");
                         }
                         else{
-                            Users.create(req.body)
-                            .then((user) =>{
-                                console.log(user);
-                                res.statusCode = 200;
-                                res.setHeader('Content-Type', 'application/json');
-                                res.json(user);
+                            const otp = Math.floor(100000 + Math.random() * 900000)
+                            const sender = 'ikcdel'
+                            const authkey = '10703APwDdCpscSPz5c43753d'
+                            const body = `Your otp to register in IKC is :  ${otp}`
+                            const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${req.body.contact},${req.body.countrycode}${req.body.contact}&message=${body}&sender=${sender}&route=4&response=json`
+                            
+                            https.get(url,{rejectUnauthorized:false}, (resp) => {
+                                let data = '';
+                                resp.on('data', (chunk) => {
+                                    data += chunk;
+                                    Users.create(req.body)
+                                    .then((user) =>{
+                                        Otp.create({
+                                            "contact": req.body.contact,
+                                            "otp": otp
+                                        })
+                                        .then(() => {
+                                            console.log(user);
+                                            res.statusCode = 200;
+                                            res.setHeader('Content-Type', 'application/json');
+                                            res.json(user);
+                                        })
+                                        .catch((err) => next(err))
+                                    })
+                                    .catch((err) => next(err));
+                                  });
+                                
+                                resp.on('end', () => {
+                                    console.log(JSON.parse(data));
+                                });
                             })
-                            .catch((err) => next(err));
+                            .on("error", (err) => {
+                                console.log("Error: " + err.message);
+                                next(err);
+                            });
                         }
                     })
                     .catch((err) => next(err));

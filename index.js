@@ -7,6 +7,7 @@ const auth = require('./api/login')
 const updatePassword = require('./api/updatePassword')
 const updateProfile = require('./api/updateProfile')
 const jwtVerify = require('./jwtverify')
+const verifyUser = require('./api/verifyUser')
 
 
 
@@ -32,6 +33,7 @@ app.all('*', jwtVerify)
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 
 app.use('/auth', auth);
+app.use('/verifyUser', verifyUser)
 
 // ----------------------------------------------------Connect to Database--------------------------------------------------------------------
 mongoose.set('useFindAndModify', false);

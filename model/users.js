@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+
 var UserSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -23,8 +24,8 @@ var UserSchema = new mongoose.Schema({
       required: true,
       unique: true
   },
-  country: {
-      type: String,
+  countrycode: {
+      type: Number,
       required: true
   },
   verified:{
