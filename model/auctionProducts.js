@@ -1,6 +1,19 @@
 const mongoose = require('mongoose');
 
-const Product = new mongoose.Schema({
+
+const BidSchema = new mongoose.Schema({
+    bidAmount: {
+        type: Number
+    },
+    bidRemark: {
+        type: String
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId
+    }
+});
+
+const AuctionProductSchema = new mongoose.Schema({
     title: {
         type: String
     },
@@ -18,10 +31,13 @@ const Product = new mongoose.Schema({
     },
     duration: {
         type: String
+    },
+    bid: {
+        type: [BidSchema]
     }
 });
 
-const AuctionProduct = mongoose.model('AuctionProduct', Product);
+const AuctionProduct = mongoose.model('AuctionProduct', AuctionProductSchema);
 
 // const auctionProduct = new AuctionProduct({
 //     title: "Sunil Chhetri's Soccer Cleat",

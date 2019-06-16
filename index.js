@@ -15,6 +15,7 @@ const addToCart = require('./api/addToCart');
 const removeFromCart = require('./api/removeFromCart');
 const getCartProducts = require('./api/getCartProducts');
 const getAuctionProducts = require('./api/getAuctionProducts');
+const placeBid = require('./api/placeBid');
 
 
 const app = express()
@@ -80,6 +81,9 @@ app.get('/auction', (req, res) => {
     getAuctionProducts(req, res);
 })
 
+app.post('/auction', (req, res) => {
+    placeBid(req, res);
+})
 
 
 app.listen(port, hostname, () => console.log('Server ready'))
