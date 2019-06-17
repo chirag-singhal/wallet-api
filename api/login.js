@@ -101,41 +101,53 @@ auth.route('/signup')
                             res.end("User already exits");
                         }
                         else{
-                            const otp = Math.floor(100000 + Math.random() * 900000)
-                            const sender = 'ikcdel'
-                            const authkey = '10703APwDdCpscSPz5c43753d'
-                            const body = `Your otp to register in IKC is :  ${otp}`
-                            const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${req.body.contact},${req.body.countrycode}${req.body.contact}&message=${body}&sender=${sender}&route=4&response=json`
-                            
-                            https.get(url,{rejectUnauthorized:false}, (resp) => {
-                                let data = '';
-                                resp.on('data', (chunk) => {
-                                    data += chunk;
-                                    Users.create(req.body)
-                                    .then((user) =>{
-                                        Otp.create({
-                                            "contact": req.body.contact,
-                                            "otp": otp
-                                        })
-                                        .then(() => {
-                                            console.log(user);
-                                            res.statusCode = 200;
-                                            res.setHeader('Content-Type', 'application/json');
-                                            res.json(user);
-                                        })
-                                        .catch((err) => next(err))
+                            Users.findOne({contact: req.body.contact}).exec()
+                            .then((user) => {
+                                if(user != null){
+                                    console.log(user);
+                                    res.statusCode = 403;
+                                    res.setHeader('Content-Type', 'application/json');
+                                    res.end("User already exits");
+                                }
+                                else{
+                                    const otp = Math.floor(100000 + Math.random() * 900000)
+                                    const sender = 'ikcdel'
+                                    const authkey = '10703APwDdCpscSPz5c43753d'
+                                    const body = `Your otp to register in IKC is :  ${otp}`
+                                    const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${req.body.contact},${req.body.countrycode}${req.body.contact}&message=${body}&sender=${sender}&route=4&response=json`
+                                    
+                                    https.get(url,{rejectUnauthorized:false}, (resp) => {
+                                        let data = '';
+                                        resp.on('data', (chunk) => {
+                                            data += chunk;
+                                            Users.create(req.body)
+                                            .then((user) =>{
+                                                Otp.create({
+                                                    "contact": req.body.contact,
+                                                    "otp": otp
+                                                })
+                                                .then(() => {
+                                                    console.log(user);
+                                                    res.statusCode = 200;
+                                                    res.setHeader('Content-Type', 'application/json');
+                                                    res.json(user);
+                                                })
+                                                .catch((err) => next(err))
+                                            })
+                                            .catch((err) => next(err));
+                                        });
+                                        
+                                        resp.on('end', () => {
+                                            console.log(JSON.parse(data));
+                                        });
                                     })
-                                    .catch((err) => next(err));
-                                  });
-                                
-                                resp.on('end', () => {
-                                    console.log(JSON.parse(data));
-                                });
+                                    .on("error", (err) => {
+                                        console.log("Error: " + err.message);
+                                        next(err);
+                                    });
+                                }
                             })
-                            .on("error", (err) => {
-                                console.log("Error: " + err.message);
-                                next(err);
-                            });
+                                    
                         }
                     })
                     .catch((err) => next(err));

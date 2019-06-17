@@ -8,18 +8,18 @@ const Users = require('../model/users')
 const Otp = require('../model/otp')
 
 const verifyUser = express.Router();
-verifyOtp.use(bodyParser.json())
+verifyUser.use(bodyParser.json())
 
 verifyUser.route('/')
 .get((req, res, next) => {
     if(req.body.contact && req.body.otp){
-        Otp.findOne({contact: req.body.contact}).exec()
+        Otp.findOne({"contact": req.body.contact}).exec()
         .then((otp) => {
             const time = new Date()
             time.setSeconds(time.getSeconds() - 300)
             if(otp.updatedAt > time ){
                 if(otp.otp == req.body.otp){
-                    Users.findOne({contact: req.body.contact}).exec()
+                    Users.findOne({"contact": req.body.contact}).exec()
                     .then((user) => {
                         user.verified = true
                         user.save()

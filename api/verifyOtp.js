@@ -10,7 +10,7 @@ verifyOtp.use(bodyParser.json())
 verifyOtp.route('/')
 .get((req, res) => {
     if(req.body.contact && req.body.otp){
-        Otp.findOne({contact: req.body.contact}).exec()
+        Otp.findOne({"contact": req.body.contact}).exec()
         .then((otp) => {
             const time = new Date()
             time.setSeconds(time.getSeconds() - 300)

@@ -9,6 +9,8 @@ const updateProfile = require('./api/updateProfile')
 const jwtVerify = require('./jwtverify')
 const verifyUser = require('./api/verifyUser')
 const verifyOtp = require('./api/verifyOtp')
+const changePassword = require('./api/changePassword')
+const forgotPassword = require('./api/forgotPassword')
 
 
 
@@ -38,6 +40,8 @@ app.all('*', jwtVerify)
 app.use('/auth', auth);
 app.use('/verifyUser', verifyUser)
 app.use('/verifyOtp', verifyOtp)
+app.use('/changePassword', changePassword)
+app.use('/forgotPassword', forgotPassword)
 
 // ----------------------------------------------------Connect to Database--------------------------------------------------------------------
 mongoose.set('useFindAndModify', false);
