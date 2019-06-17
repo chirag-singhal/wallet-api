@@ -1,17 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const config = require('../config')
-const jwt = require('jsonwebtoken')
 
-const Users = require('../model/users')
 const Otp = require('../model/otp')
 
-const verifyUser = express.Router();
+const verifyOtp = express.Router();
 verifyOtp.use(bodyParser.json())
 
-verifyUser.route('/')
-.get((req, res, next) => {
+verifyOtp.route('/')
+.get((req, res) => {
     if(req.body.contact && req.body.otp){
         Otp.findOne({contact: req.body.contact}).exec()
         .then((otp) => {
@@ -19,25 +16,13 @@ verifyUser.route('/')
             time.setSeconds(time.getSeconds() - 300)
             if(otp.updatedAt > time ){
                 if(otp.otp == req.body.otp){
-                    Users.findOne({contact: req.body.contact}).exec()
-                    .then((user) => {
-                        user.verified = true
-                        user.save()
-                        const token = jwt.sign({contact: req.body.contact},
-                            config.secret,
-                        );
-    
-                        res.statusCodeCode = 200;
-                        res.setHeader('Content-Type', 'application/json');
-    
-                          res.json({
-                            success: true,
-                            message: 'Authentication successful!',
-                            token: token,
-                            user: user
-                          });
-                    })
-                    .catch((err) => next(err))
+
+                    res.statusCodeCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json({
+                        success: true,
+                        message: "OTP verified"
+                      });
                 }
                 else{
                     res.statusCode = 403
@@ -66,4 +51,4 @@ verifyUser.route('/')
     }
 })
 
-module.exports = verifyUser
+module.exports = verifyOtp

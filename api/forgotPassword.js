@@ -1,0 +1,52 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+
+const User = require('../model/users')
+const sendOtp = require('./sendOtp')
+
+const forgotPassword = express.Router()
+
+forgotPassword.use(bodyParser.json())
+
+forgotPassword.route('/')
+.get((req, res, next) => {
+    if(req.body.contact && req.body.countrycode){
+        User.findOne({contact: req.contact}).exec()
+        .then((user) => {
+            if(user != null){
+                console.log(user)
+                if(sendOtp(req.contact, req.countrycode)){
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json({
+                        success: true,
+                        messgae: "OTP has been send"
+                    });
+                }
+                else{
+                    res.statusCode = 403;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end("Something went wrong");
+                }
+            }
+            else{
+                res.statusCode = 404;
+                res.setHeader('Content-Type', 'application/json');
+                res.end("User Not Found");
+            }
+        })
+        .catch((err) => {
+            console,log(err);
+            res.statusCode = 403;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(err);
+        })
+    }
+    else{
+        res.statusCode = 403;
+        res.setHeader('Content-Type', 'application/json');
+        res.end("Missing Fields");
+    }
+})
+
+module.exports = forgotPassword

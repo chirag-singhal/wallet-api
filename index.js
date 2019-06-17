@@ -8,6 +8,7 @@ const updatePassword = require('./api/updatePassword')
 const updateProfile = require('./api/updateProfile')
 const jwtVerify = require('./jwtverify')
 const verifyUser = require('./api/verifyUser')
+const verifyOtp = require('./api/verifyOtp')
 
 
 
@@ -30,12 +31,13 @@ const port = 3000
 app.use(express.json());
 app.use(morgan('dev'))
 
-// app.all('*', jwtVerify)
+app.all('*', jwtVerify)
 
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 
 app.use('/auth', auth);
 app.use('/verifyUser', verifyUser)
+app.use('/verifyOtp', verifyOtp)
 
 // ----------------------------------------------------Connect to Database--------------------------------------------------------------------
 mongoose.set('useFindAndModify', false);

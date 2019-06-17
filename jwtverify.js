@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('./config.js');
 
 const checkToken = (req, res, next) => {
-    if(req.path != '/auth/signup' && req.path != '/auth/login' && req.path != '/verifyUser'){
+    if(req.path != '/auth/signup' && req.path != '/auth/login' && req.path != '/verifyUser' && req.path != '/verifyOtp'){
         const token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
     if (token.startsWith('Bearer ')) {
         // Remove Bearer from string

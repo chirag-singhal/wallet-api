@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
+const sendOtp = require('./sendOtp')
+
 const Users = require('../model/users')
 const Otp = require('../model/otp')
 
@@ -23,6 +25,18 @@ auth.route('/login')
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
                 res.end("User not exits");
+            }
+            else if(!user.verified){
+                if(sendOtp(user.contact, user.countrycode)){
+                    res.statusCode = 402;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end("OTP has been send!! User is not verified")
+                }
+                else{
+                    res.statusCode = 403;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end("Something went wrong")
+                }
             }
             else{
                 bcrypt.compare(req.body.password, user.password)
