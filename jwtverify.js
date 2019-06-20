@@ -4,11 +4,8 @@ const User = require('./model/users');
 
 const checkToken = async (req, res, next) => {
     try {
-        const token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
-        if (token.startsWith('Bearer ')) {
-            // Remove Bearer from string
-            token = token.slice(7, token.length);
-        }
+        const token = req.headers['x-access-token'] || req.headers['authorization'].replace("Bearer ", ""); // Express headers are auto converted to lowercase
+
         const  decoded = jwt.verify(token, config.secret);
 
         const user = await User.findOne({ email: decoded.email, 'tokens.token': token });
@@ -19,7 +16,7 @@ const checkToken = async (req, res, next) => {
 
         req.user = user;
         req.token = token;
-
+        next();
     } catch(e) {
         res.status(401).send({ error: "Please authenticate!" });
     }

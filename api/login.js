@@ -36,12 +36,19 @@ auth.route('/login').get((req, res, next) => {
                 }
             } else {
                 bcrypt.compare(req.body.password, user.password)
-                .then((result) => {
+                .then(async (result) => {
                     if(result == true){
-                        const token = jwt.sign({email: req.body.email}, config.secret);
+                        const token = jwt.sign({email: user.email}, config.secret);
 
                         user.tokens = user.tokens.concat({ token });
-                        user.save();
+                        await Users.findByIdAndUpdate(user._id, {
+                            $push: {
+                                'tokens': {
+                                    token
+                                }
+                            }
+                        });
+                        console.log(user);
 
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');

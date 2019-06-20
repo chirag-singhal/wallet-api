@@ -4,7 +4,8 @@ const removeFromCart = (req, res) => {
     const productId = req.body.productId;
 
     CartProduct.deleteOne( {
-        productId
+        productId,
+        userId: req.user._id
     } ).then(() => {
         res.send("Item removed from cart!");
     }).catch((e) => {

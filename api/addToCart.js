@@ -24,7 +24,7 @@ const addToCart = (req, res) => {
             return res.status(404).send("Invalid product ID!");
         }
 
-        CartProduct.findOne( {productId} ).then((cartProducts) => {
+        CartProduct.findOne({ productId, userId: req.user._id }).then((cartProducts) => {
             if(cartProducts) {
                 return res.status(400).send("Item already exists in cart!");
             }
@@ -35,7 +35,8 @@ const addToCart = (req, res) => {
                 discount: productIdToBeAdded.discount,
                 description: productIdToBeAdded.description,
                 imageUrl: productIdToBeAdded.imageUrl,
-                productId
+                productId,
+                userId: req.user._id
             });
             cartProduct.save().then(() => {
                 console.log(cartProduct);

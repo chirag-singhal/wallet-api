@@ -47,6 +47,16 @@ var UserSchema = new mongoose.Schema({
   }]
 });
 
+UserSchema.methods.toJSON = function() {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+  delete userObject.tokens;
+
+  return userObject;
+}
+
 //hashing a password before saving it to the database
 UserSchema.pre('save', function (next) {
   if(this.isNew){
@@ -60,7 +70,12 @@ UserSchema.pre('save', function (next) {
     })
   } 
 });
-  
+
+UserSchema.virtual('cartProducts', {
+  ref: 'CartProduct',
+  localField: '_id',
+  foreignField: 'userId'
+})
 
 var User = mongoose.model('User', UserSchema);
 module.exports = User;
