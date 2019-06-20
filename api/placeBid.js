@@ -25,6 +25,9 @@ const placeBid = (req, res) => {
                     bidRemark,
                     userId
                 }
+            },
+            $inc: {
+                "numberOfBids": 1
             }
         })
         .then(() => {

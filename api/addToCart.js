@@ -34,6 +34,7 @@ const addToCart = (req, res) => {
                 price: productIdToBeAdded.price,
                 discount: productIdToBeAdded.discount,
                 description: productIdToBeAdded.description,
+                imageUrl: productIdToBeAdded.imageUrl,
                 productId
             });
             cartProduct.save().then(() => {

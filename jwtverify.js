@@ -1,32 +1,27 @@
 const jwt = require('jsonwebtoken');
 const config = require('./config.js');
+const User = require('./model/users');
 
-const checkToken = (req, res, next) => {
-    if(req.path != '/auth/signup' && req.path != '/auth/login' && req.path != '/verifyUser' && req.path != '/verifyOtp' && req.path != '/forgotPassword' && req.path != '/changePassword'){
+const checkToken = async (req, res, next) => {
+    try {
         const token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
-    if (token.startsWith('Bearer ')) {
-        // Remove Bearer from string
-        token = token.slice(7, token.length);
-    }
-
-    if (token) {
-        jwt.verify(token, config.secret, (err, decoded) => {
-        if (err) {
-            return res.json({
-            success: false,
-            message: 'Token is not valid'
-            });
-        } else {
-            req.decoded = decoded;
-            next();
+        if (token.startsWith('Bearer ')) {
+            // Remove Bearer from string
+            token = token.slice(7, token.length);
         }
-        });
-    } else {
-        return res.json({
-        success: false,
-        message: 'Auth token is not supplied'
-        });
-    }
+        const  decoded = jwt.verify(token, config.secret);
+
+        const user = await User.findOne({ email: decoded.email, 'tokens.token': token });
+
+        if(!user) {
+            throw new Error();
+        }
+
+        req.user = user;
+        req.token = token;
+
+    } catch(e) {
+        res.status(401).send({ error: "Please authenticate!" });
     }
 };
 

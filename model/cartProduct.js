@@ -15,6 +15,9 @@ const CartProduct = mongoose.model('CartProduct', {
     },
     description: {
         type: String
+    },
+    imageUrl: {
+        type: String
     }
 });
 

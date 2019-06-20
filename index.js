@@ -20,6 +20,7 @@ const removeFromCart = require('./api/removeFromCart');
 const getCartProducts = require('./api/getCartProducts');
 const getAuctionProducts = require('./api/getAuctionProducts');
 const placeBid = require('./api/placeBid');
+const getAffiliateProduct = require('./api/getAffiliateProduct');
 
 
 const app = express()
@@ -33,7 +34,6 @@ const port = 3000
 app.use(express.json());
 app.use(morgan('dev'))
 
-app.all('*', jwtVerify)
 
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 
@@ -55,30 +55,33 @@ connect.then((db) => {
 
 
 
+// ------------------------------------------------Update Password----------------------------------------------------------------
+app.use('/updatePassword', jwtVerify, updatePassword);
+
+
+
+// ------------------------------------------------Update Profile----------------------------------------------------------------
+app.use('/updateProfile', jwtVerify, updateProfile);
+
+
+
 // ------------------------------------------------Shopping Categories Request----------------------------------------------------------------
 app.get('/categories', (req, res) => {
     getCategories(req, res);
 });
 
-// ------------------------------------------------Update Password----------------------------------------------------------------
-app.use('/updatePassword', updatePassword);
-
-
-// ------------------------------------------------Update Profile----------------------------------------------------------------
-app.use('/updateProfile', updateProfile);
-
 
 
 // ----------------------------------------------------Cart Request---------------------------------------------------------------------------
-app.post('/cart', (req, res) => {
+app.post('/cart', jwtVerify, (req, res) => {
     addToCart(req, res);
 });
 
-app.delete('/cart', (req, res) => {
+app.delete('/cart', jwtVerify, (req, res) => {
     removeFromCart(req, res);
 });
 
-app.get('/cart', (req, res) => {
+app.get('/cart', jwtVerify, (req, res) => {
     getCartProducts(req, res);
 });
 
@@ -87,11 +90,18 @@ app.get('/cart', (req, res) => {
 // ----------------------------------------------------Auction Request-------------------------------------------------------------------------
 app.get('/auction', (req, res) => {
     getAuctionProducts(req, res);
-})
+});
 
-app.post('/auction', (req, res) => {
+app.post('/auction', jwtVerify, (req, res) => {
     placeBid(req, res);
-})
+});
+
+
+
+// --------------------------------------------Affiliate Product(Shop & earn)-------------------------------------------------------------------
+app.get('/getAffiliateProducts', (req, res) => {
+    getAffiliateProduct(req, res);
+});
 
 
 app.listen(port, hostname, () => console.log('Server ready'))

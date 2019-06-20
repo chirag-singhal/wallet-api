@@ -39,7 +39,12 @@ var UserSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  transactions : []
+  transactions : [],
+  tokens: [{
+    token: {
+      type: String
+    }
+  }]
 });
 
 //hashing a password before saving it to the database

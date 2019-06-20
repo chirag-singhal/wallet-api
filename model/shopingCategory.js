@@ -13,8 +13,8 @@ const Product = new mongoose.Schema({
     description: {
         type: String
     },
-    ikc: {
-        type: Number
+    imageUrl: {
+        type: String
     }
 });
 
@@ -24,9 +24,6 @@ const SubCategory = new mongoose.Schema({
     },
     products: {
         type: [Product]
-    },
-    ikcPercent: {
-        type: Number
     }
 });
 
@@ -51,13 +48,15 @@ const Category = mongoose.model('categories', {
 //                     title: "Dupatta-1",
 //                     price: 699,
 //                     discount: 0,
-//                     description: "This  is some random shit for Dupatta-1."
+//                     description: "This  is some random shit for Dupatta-1.",
+//                     imageUrl: "../images/RBF-SNC-25D-600x600.gif"
 //                 },
 //                 {
 //                     title: "Dupatta-2",
 //                     price: 549,
 //                     discount: 0,
-//                     description: "This  is some random shit for Dupatta-2."
+//                     description: "This  is some random shit for Dupatta-2.",
+//                     imageUrl: "../images/RBF-BAL-03A-600x600.jpg"
 //                 }
 //             ]
 //         },
@@ -68,13 +67,15 @@ const Category = mongoose.model('categories', {
 //                     title: "Suit-1",
 //                     price: 520,
 //                     discount: 0,
-//                     description: "This  is some random shit for Suit-1."
+//                     description: "This  is some random shit for Suit-1.",
+//                     imageUrl: "../images/RBF-SUT-05-600x600.jpg"
 //                 },
 //                 {
 //                     title: "Suit-2",
 //                     price: 449,
 //                     discount: 0,
-//                     description: "This  is some random shit for Suit-2."
+//                     description: "This  is some random shit for Suit-2.",
+//                     imageUrl: "../images/RBF-SUT-04-600x600.jpg"
 //                 }
 //             ]
 //         },
@@ -85,13 +86,15 @@ const Category = mongoose.model('categories', {
 //                     title: "Kurti-1",
 //                     price: 360,
 //                     discount: 0,
-//                     description: "This  is some random shit for Kurti-1."
+//                     description: "This  is some random shit for Kurti-1.",
+//                     imageUrl: "../images/RBF-SUT-03A-600x600.jpg"
 //                 },
 //                 {
 //                     title: "Kurti-2",
 //                     price: 749,
 //                     discount: 0,
-//                     description: "This  is some random shit for Kurti-2."
+//                     description: "This  is some random shit for Kurti-2.",
+//                     imageUrl: "../images/RBF-KUR-04a-600x600.jpg"
 //                 }
 //             ]
 //         },
@@ -102,19 +105,20 @@ const Category = mongoose.model('categories', {
 //                     title: "Saree-1",
 //                     price: 0,
 //                     discount: 0,
-//                     description: "This  is some random shit for Saree-1."
+//                     description: "This  is some random shit for Saree-1.",
+//                     imageUrl: "../images/RBF-SAR-PINK-01-600x600.gif"
 //                 },
 //                 {
 //                     title: "Saree-2",
 //                     price: 1450,
 //                     discount: 0,
-//                     description: "This  is some random shit for Saree-2."
+//                     description: "This  is some random shit for Saree-2.",
+//                     imageUrl: "../images/Saree-Red-600x600.gif"
 //                 }
 //             ]
 //         }
 //     ]
-// })
-
+// });
 // category.save().then(() => {
 //     console.log(category);
 // }).catch((e) => {
