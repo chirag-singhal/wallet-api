@@ -21,6 +21,8 @@ const getCartProducts = require('./api/getCartProducts');
 const getAuctionProducts = require('./api/getAuctionProducts');
 const placeBid = require('./api/placeBid');
 const getAffiliateProduct = require('./api/getAffiliateProduct');
+const incrementCartProductQty = require('./api/incrementCartProductQty');
+const decrementCartProductQty = require('./api/decrementCartProductQty');
 
 
 const app = express()
@@ -83,6 +85,14 @@ app.delete('/cart', jwtVerify, (req, res) => {
 
 app.get('/cart', jwtVerify, (req, res) => {
     getCartProducts(req, res);
+});
+
+app.patch('/incrementCartProductQty', jwtVerify, (req, res) => {
+    incrementCartProductQty(req, res);
+});
+
+app.patch('/decrementCartProductQty', jwtVerify, (req, res) => {
+    decrementCartProductQty(req, res);
 });
 
 

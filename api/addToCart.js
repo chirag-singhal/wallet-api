@@ -28,14 +28,16 @@ const addToCart = (req, res) => {
             if(cartProducts) {
                 return res.status(400).send("Item already exists in cart!");
             }
+            
+            productIdToBeAdded = productIdToBeAdded.toObject();
+            delete productIdToBeAdded._id
 
             const cartProduct = new CartProduct({
-                title: productIdToBeAdded.title,
-                price: productIdToBeAdded.price,
-                discount: productIdToBeAdded.discount,
-                description: productIdToBeAdded.description,
-                imageUrl: productIdToBeAdded.imageUrl,
+                ...productIdToBeAdded,
+                quantity: 1,
                 productId,
+                subCategoryId,
+                categoryId,
                 userId: req.user._id
             });
             cartProduct.save().then(() => {

@@ -4,6 +4,12 @@ const CartProductSchema = new mongoose.Schema({
     productId: {
         type: mongoose.Schema.Types.ObjectId
     },
+    subCategoryId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
     title: {
         type: String
     },
@@ -18,6 +24,9 @@ const CartProductSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String
+    },
+    quantity: {
+        type: Number
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
