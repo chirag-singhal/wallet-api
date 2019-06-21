@@ -1,7 +1,3 @@
-const CartProduct = require('../model/cartProduct');
-const User = require('../model/users');
-const ShopingCategory = require('../model/shopingCategory');
-
 const getCartProducts = async (req, res) => {
     try {
         await req.user.populate('cartProducts').execPopulate();

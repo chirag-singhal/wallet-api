@@ -23,6 +23,10 @@ const placeBid = require('./api/placeBid');
 const getAffiliateProduct = require('./api/getAffiliateProduct');
 const incrementCartProductQty = require('./api/incrementCartProductQty');
 const decrementCartProductQty = require('./api/decrementCartProductQty');
+const addShopingDiliveryAddress = require('./api/addShopingDiliveryAddress');
+const checkoutShopingCart = require('./api/checkoutShopingCart');
+const getShopingDiliveryAddress = require('./api/getShopingDiliveryAddresses');
+
 
 
 const app = express()
@@ -97,6 +101,21 @@ app.patch('/decrementCartProductQty', jwtVerify, (req, res) => {
 
 
 
+// ---------------------------------------------------Cart Checkout Requests------------------------------------------------------------------
+app.post('/shopingDiliveryAddress', jwtVerify, (req, res) => {
+    addShopingDiliveryAddress(req, res); 
+});
+
+app.get('/shopingDiliveryAddress', jwtVerify, (req, res) => {
+    getShopingDiliveryAddress(req, res);
+});
+
+app.post('/checkoutShopingCart', jwtVerify, (req, res) => {
+    checkoutShopingCart(req, res);
+});
+
+
+
 // ----------------------------------------------------Auction Request-------------------------------------------------------------------------
 app.get('/auction', (req, res) => {
     getAuctionProducts(req, res);
@@ -109,7 +128,7 @@ app.post('/auction', jwtVerify, (req, res) => {
 
 
 // --------------------------------------------Affiliate Product(Shop & earn)-------------------------------------------------------------------
-app.get('/getAffiliateProducts', (req, res) => {
+app.get('/getAffiliateProducts',  (req, res) => {
     getAffiliateProduct(req, res);
 });
 

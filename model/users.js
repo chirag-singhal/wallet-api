@@ -47,6 +47,25 @@ var UserSchema = new mongoose.Schema({
   }]
 });
 
+UserSchema.virtual('cartProducts', {
+  ref: 'CartProduct',
+  localField: '_id',
+  foreignField: 'userId'
+});
+
+UserSchema.virtual('shopingDiliveryAddress', {
+  ref: 'ShopingDiliveryAddress',
+  localField: '_id',
+  foreignField: 'userId'
+});
+
+UserSchema.virtual('shopingOrder', {
+  ref: 'ShopingOrder',
+  localField: '_id',
+  foreignField: 'userId'
+});
+
+
 UserSchema.methods.toJSON = function() {
   const user = this;
   const userObject = user.toObject();
@@ -71,11 +90,6 @@ UserSchema.pre('save', function (next) {
   } 
 });
 
-UserSchema.virtual('cartProducts', {
-  ref: 'CartProduct',
-  localField: '_id',
-  foreignField: 'userId'
-})
 
 var User = mongoose.model('User', UserSchema);
 module.exports = User;

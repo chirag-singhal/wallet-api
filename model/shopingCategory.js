@@ -18,6 +18,12 @@ const Product = new mongoose.Schema({
     },
     stock: {
         type: Number
+    },
+    isReplaceable: {
+        type: Boolean
+    },
+    isRefundable: {
+        type: Boolean
     }
 });
 
