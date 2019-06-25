@@ -88,7 +88,7 @@ auth.route('/signup').post((req, res, next) => {
     if (req.body.email && req.body.username && req.body.password && req.body.countrycode && req.body.contact) {
 
         Users.findOne({email: req.body.email}).exec().then((user) => {
-            if(!user.verified && user != null){
+            if(user != null && !user.verified){
                 user.username = req.body.username
                 user.contact = req.body.contact
                 user.countrycode = req.body.countrycode
