@@ -39,12 +39,7 @@ var UserSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  transactions : [],
-  tokens: [{
-    token: {
-      type: String
-    }
-  }]
+  transactions : []
 });
 
 UserSchema.virtual('cartProducts', {
