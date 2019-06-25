@@ -112,7 +112,6 @@ auth.route('/signup').post((req, res, next) => {
                                     let data = '';
                                     resp.on('data', (chunk) => {
                                         data += chunk;
-                                        Users.create(req.body).then((user) =>{
                                             Otp.create({
                                                 "contact": req.body.contact,
                                                 "otp": otp
@@ -130,7 +129,6 @@ auth.route('/signup').post((req, res, next) => {
                                                     res.json(user);
                                                 })
                                             }).catch((err) => next(err))
-                                        }).catch((err) => next(err));
                                     });
 
                                     resp.on('end', () => {
