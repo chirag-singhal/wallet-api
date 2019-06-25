@@ -5,7 +5,7 @@ const https = require('https')
 const sender = 'ikcdel'
 const authkey = '10703APwDdCpscSPz5c43753d'
 
-const sendOTP = (contact, countrycode) => {
+const sendOTP = (contact, countrycode, callback) => {
     const otp = Math.floor(100000 + Math.random() * 900000)
     const body = `Your otp to register in IKC is :  ${otp}`
     const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${contact},${countrycode}${contact}&message=${body}&sender=${sender}&route=4&response=json`
@@ -20,12 +20,13 @@ const sendOTP = (contact, countrycode) => {
                 OTP.otp = otp
                 OTP.save()
                 .then(() => {
-                    return true
+                    console.log("OTP SEND")
+                    callback(true)
                 })
             })
             .catch((err) => {
                 console.log(err)
-                return false
+                callback(false)
             })
             
           });
@@ -35,8 +36,9 @@ const sendOTP = (contact, countrycode) => {
         });
     })
     .on("error", (err) => {
+        console.log("OTP SEND 2")
         console.log("Error: " + err.message);
-        return false
+        callback(false)
     });
 }
 
