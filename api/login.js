@@ -39,6 +39,15 @@ auth.route('/login').get((req, res, next) => {
                 .then(async (result) => {
                     if(result == true){
                         const token = jwt.sign({email: user.email}, config.secret);
+
+                        user.tokens = user.tokens.concat({ token });
+                        await Users.findByIdAndUpdate(user._id, {
+                            $push: {
+                                'tokens': {
+                                    token
+                                }
+                            }
+                        });
                         console.log(user);
 
                         res.statusCode = 200;
@@ -75,8 +84,7 @@ auth.route('/login').get((req, res, next) => {
 auth.route('/signup').post((req, res, next) => {
     if (req.body.email && req.body.username && req.body.password && req.body.countrycode && req.body.contact) {
 
-        Users.findOne({email: req.body.email}).exec()
-        .then((user) => {
+        Users.findOne({email: req.body.email}).exec().then((user) => {
             if(user != null) {
                 res.statusCode = 403;
                 res.setHeader('Content-Type', 'application/json');
@@ -109,10 +117,18 @@ auth.route('/signup').post((req, res, next) => {
                                                 "contact": req.body.contact,
                                                 "otp": otp
                                             }).then(() => {
+                                                const token = jwt.sign({email: req.body.email}, config.secret);
+                                                Users.create({
+                                                    ...req.body,
+                                                    tokens: [
+                                                        { token }
+                                                    ]
+                                                }).then((user) => {
                                                     console.log(user);
                                                     res.statusCode = 200;
                                                     res.setHeader('Content-Type', 'application/json');
                                                     res.json(user);
+                                                })
                                             }).catch((err) => next(err))
                                         }).catch((err) => next(err));
                                     });
