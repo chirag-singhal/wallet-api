@@ -33,7 +33,7 @@ const app = express()
 const url = 'mongodb://localhost:27017/ikc';
 
 
-const hostname = 'localhost'
+// const hostname = 'localhost'
 const port = 3000
 
 
@@ -133,4 +133,4 @@ app.get('/getAffiliateProducts',  (req, res) => {
 });
 
 
-app.listen(port, hostname, () => console.log('Server ready'))
+app.listen(port, () => console.log('Server ready'))
