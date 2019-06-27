@@ -89,29 +89,33 @@ auth.route('/signup').post((req, res, next) => {
 
         Users.findOne({email: req.body.email}).exec().then((user) => {
             if(user != null && !user.verified){
+                console.log(user, "Not verified")
                 user.username = req.body.username
                 user.contact = req.body.contact
                 user.countrycode = req.body.countrycode
                 user.email = req.body.username
                 bcrypt.hash(req.body.password, 10)
                     .then((hashedPassword) => {
+                        console.log(hashedPassword)
                         user.password = hashedPassword;
                     })
                     .catch((err) => next(err))
-                user.save((userSaved) => {
-                    console.log(userSaved)
-                    sendOtp(user.contact, user.countrycode, (result) =>{
-                        if(result){
-                            res.statusCode = 200;
-                            res.setHeader('Content-Type', 'application/json');
-                            res.end("OTP has been send!! User is not verified")
-                        } else {
-                            res.statusCode = 403;
-                            res.setHeader('Content-Type', 'application/json');
-                            res.end("Something went wrong")
-                        }
+                    user.save()
+                    .then(() => {
+                        console.log("saved")
+                        sendOtp(user.contact, user.countrycode, (result) =>{
+                            if(result){
+                                res.statusCode = 200;
+                                res.setHeader('Content-Type', 'application/json');
+                                res.end("OTP has been send!! User is not verified")
+                            } else {
+                                res.statusCode = 403;
+                                res.setHeader('Content-Type', 'application/json');
+                                res.end("Something went wrong")
+                            }
+                        })
                     })
-                })
+                    .catch((err) => next(err))
             }
             else if(user != null) {
                 res.statusCode = 403;
@@ -129,8 +133,8 @@ auth.route('/signup').post((req, res, next) => {
                                 user.password = hashedPassword;
                             })
                             .catch((err) => next(err))
-                        user.save((userSaved) => {
-                            console.log(userSaved)
+                        user.save()
+                        .then(() => {
                             sendOtp(user.contact, user.countrycode, (result) =>{
                                 if(result){
                                     res.statusCode = 200;
@@ -143,6 +147,7 @@ auth.route('/signup').post((req, res, next) => {
                                 }
                             })
                         })
+                        .catch((err) => next(err))
                     }
                     else if(user != null) {
                         res.statusCode = 403;
@@ -160,20 +165,21 @@ auth.route('/signup').post((req, res, next) => {
                                         user.password = hashedPassword;
                                     })
                                     .catch((err) => next(err))
-                                user.save((userSaved) => {
-                                    console.log(userSaved)
-                                    sendOtp(user.contact, user.countrycode, (result) =>{
-                                        if(result){
-                                            res.statusCode = 200;
-                                            res.setHeader('Content-Type', 'application/json');
-                                            res.end("OTP has been send!! User is not verified")
-                                        } else {
-                                            res.statusCode = 403;
-                                            res.setHeader('Content-Type', 'application/json');
-                                            res.end("Something went wrong")
-                                        }
+                                    user.save()
+                                    .then(() => {
+                                        sendOtp(user.contact, user.countrycode, (result) =>{
+                                            if(result){
+                                                res.statusCode = 200;
+                                                res.setHeader('Content-Type', 'application/json');
+                                                res.end("OTP has been send!! User is not verified")
+                                            } else {
+                                                res.statusCode = 403;
+                                                res.setHeader('Content-Type', 'application/json');
+                                                res.end("Something went wrong")
+                                            }
+                                        })
                                     })
-                                })
+                                    .catch((err) => next(err))
                             }
                             else if(user != null){
                                 console.log(user);
