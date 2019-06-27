@@ -107,7 +107,7 @@ auth.route('/signup').post((req, res, next) => {
                             if(result){
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'application/json');
-                                res.end("OTP has been send!! User is not verified")
+                                res.json(user)
                             } else {
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
@@ -139,7 +139,7 @@ auth.route('/signup').post((req, res, next) => {
                                 if(result){
                                     res.statusCode = 200;
                                     res.setHeader('Content-Type', 'application/json');
-                                    res.end("OTP has been send!! User is not verified")
+                                    res.json(user)                                    
                                 } else {
                                     res.statusCode = 403;
                                     res.setHeader('Content-Type', 'application/json');
@@ -171,7 +171,7 @@ auth.route('/signup').post((req, res, next) => {
                                             if(result){
                                                 res.statusCode = 200;
                                                 res.setHeader('Content-Type', 'application/json');
-                                                res.end("OTP has been send!! User is not verified")
+                                                res.json(user)                                                
                                             } else {
                                                 res.statusCode = 403;
                                                 res.setHeader('Content-Type', 'application/json');
