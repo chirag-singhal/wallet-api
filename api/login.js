@@ -113,19 +113,69 @@ auth.route('/signup').post((req, res, next) => {
                     })
                 })
             }
-            if(user != null) {
+            else if(user != null) {
                 res.statusCode = 403;
                 res.setHeader('Content-Type', 'application/json');
                 res.end("User already exits");
             } else {
                 Users.findOne({username: req.body.username}).exec().then((user) => {
-                    if(user != null) {
+                    if(user != null && !user.verified){
+                        user.username = req.body.username
+                        user.contact = req.body.contact
+                        user.countrycode = req.body.countrycode
+                        user.email = req.body.username
+                        bcrypt.hash(req.body.password, 10)
+                            .then((hashedPassword) => {
+                                user.password = hashedPassword;
+                            })
+                            .catch((err) => next(err))
+                        user.save((userSaved) => {
+                            console.log(userSaved)
+                            sendOtp(user.contact, user.countrycode, (result) =>{
+                                if(result){
+                                    res.statusCode = 200;
+                                    res.setHeader('Content-Type', 'application/json');
+                                    res.end("OTP has been send!! User is not verified")
+                                } else {
+                                    res.statusCode = 403;
+                                    res.setHeader('Content-Type', 'application/json');
+                                    res.end("Something went wrong")
+                                }
+                            })
+                        })
+                    }
+                    else if(user != null) {
                         res.statusCode = 403;
                         res.setHeader('Content-Type', 'application/json');
                         res.end("User already exits");
                     } else {
                         Users.findOne({contact: req.body.contact}).exec().then((user) => {
-                            if(user != null){
+                            if(user != null && !user.verified){
+                                user.username = req.body.username
+                                user.contact = req.body.contact
+                                user.countrycode = req.body.countrycode
+                                user.email = req.body.username
+                                bcrypt.hash(req.body.password, 10)
+                                    .then((hashedPassword) => {
+                                        user.password = hashedPassword;
+                                    })
+                                    .catch((err) => next(err))
+                                user.save((userSaved) => {
+                                    console.log(userSaved)
+                                    sendOtp(user.contact, user.countrycode, (result) =>{
+                                        if(result){
+                                            res.statusCode = 200;
+                                            res.setHeader('Content-Type', 'application/json');
+                                            res.end("OTP has been send!! User is not verified")
+                                        } else {
+                                            res.statusCode = 403;
+                                            res.setHeader('Content-Type', 'application/json');
+                                            res.end("Something went wrong")
+                                        }
+                                    })
+                                })
+                            }
+                            else if(user != null){
                                 console.log(user);
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
