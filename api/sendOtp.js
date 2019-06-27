@@ -17,12 +17,32 @@ const sendOTP = (contact, countrycode, callback) => {
 
             Otp.findOne({contact: contact}).exec()
             .then((OTP) => {
-                OTP.otp = otp
-                OTP.save()
-                .then(() => {
-                    console.log("OTP SEND")
-                    callback(true)
-                })
+                if(OTP != null){
+                    OTP.otp = otp
+                    OTP.save()
+                    .then(() => {
+                        console.log("OTP SEND")
+                        callback(true)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        callback(false)
+                    })
+                }
+                else{
+                    Otp.create({
+                        "contact": contact,
+                        "otp": otp
+                    })
+                    .then(() => {
+                        console.log("OTP SEND create")
+                        callback(true)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        callback(false)
+                    })
+                }
             })
             .catch((err) => {
                 console.log(err)
@@ -36,7 +56,6 @@ const sendOTP = (contact, countrycode, callback) => {
         });
     })
     .on("error", (err) => {
-        console.log("OTP SEND 2")
         console.log("Error: " + err.message);
         callback(false)
     });
