@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken')
 
 const sendOtp = require('./sendOtp')
 
-const Users = require('../model/users')
-const Otp = require('../model/otp')
+const Users = require('../models/users')
+const Otp = require('../models/otp')
 
 const config = require('../config')
 

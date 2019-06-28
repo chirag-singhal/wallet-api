@@ -1,4 +1,4 @@
-const AuctionProduct = require('../model/auctionProducts');
+const AuctionProduct = require('../models/auctionProducts');
 
 const placeBid = (req, res) => {
     const productId = req.body.productId;

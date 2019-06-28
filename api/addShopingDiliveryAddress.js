@@ -1,4 +1,4 @@
-const DiliveryAddress = require('../model/shopingDiliveryAddress');
+const DiliveryAddress = require('../models/shopingDiliveryAddress');
 
 const addShopingDiliveryAddress = (req, res) => {
     const diliveryAddress = new DiliveryAddress({

@@ -1,6 +1,6 @@
-const ShopingOrder = require('../model/shopingOrder');
-const ShopingCategory = require('../model/shopingCategory');
-const User = require('../model/users');
+const ShopingOrder = require('../models/shopingOrder');
+const ShopingCategory = require('../models/shopingCategory');
+const User = require('../models/users');
 
 const refundShopingOrder = async (req, res) => {
     orderId = req.body.orderId;

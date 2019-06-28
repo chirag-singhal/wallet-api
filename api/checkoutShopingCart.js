@@ -1,8 +1,8 @@
-const CartProduct = require('../model/cartProduct');
-const ShopingCategory = require('../model/shopingCategory');
-const ShopingDiliveryAddress = require('../model/shopingDiliveryAddress');
-const ShopingOrder = require('../model/shopingOrder');
-const User = require('../model/users');
+const CartProduct = require('../models/cartProduct');
+const ShopingCategory = require('../models/shopingCategory');
+const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
+const ShopingOrder = require('../models/shopingOrder');
+const User = require('../models/users');
 
 
 const checkoutShopingCart = async (req, res) => {

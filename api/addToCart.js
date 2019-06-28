@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const ShopingCategory = require('../model/shopingCategory');
-const CartProduct = require('../model/cartProduct');
+const ShopingCategory = require('../models/shopingCategory');
+const CartProduct = require('../models/cartProduct');
 
 
 const addToCart = (req, res) => {

@@ -1,5 +1,5 @@
-const ShopingOrder = require('../model/shopingOrder');
-const User = require('../model/users');
+const ShopingOrder = require('../models/shopingOrder');
+const User = require('../models/users');
 
 const replaceShopingOrder = async (req, res) => {
     orderId = req.body.orderId;

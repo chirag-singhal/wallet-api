@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 
-const Otp = require('../model/otp')
+const Otp = require('../models/otp')
 
 const verifyOtp = express.Router();
 verifyOtp.use(bodyParser.json())

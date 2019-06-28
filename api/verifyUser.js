@@ -4,8 +4,8 @@ const bodyParser = require('body-parser')
 const config = require('../config')
 const jwt = require('jsonwebtoken')
 
-const Users = require('../model/users')
-const Otp = require('../model/otp')
+const Users = require('../models/users')
+const Otp = require('../models/otp')
 
 const verifyUser = express.Router();
 verifyUser.use(bodyParser.json())

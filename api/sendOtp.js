@@ -1,4 +1,4 @@
-const Otp = require('../model/otp')
+const Otp = require('../models/otp')
 const https = require('https')
 
 

@@ -1,4 +1,4 @@
-const AffiliateProduct = require('../model/affiliateProduct');
+const AffiliateProduct = require('../models/affiliateProduct');
 
 const getAffiliateProduct = (req, res) => {
     AffiliateProduct.find( {} ).then((products) => {

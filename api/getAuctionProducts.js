@@ -1,4 +1,4 @@
-const AuctionProduct = require('../model/auctionProducts');
+const AuctionProduct = require('../models/auctionProducts');
 
 const getAuctionProducts = (req, res) => {
     AuctionProduct.find( {} ).then((AuctionProducts) => {

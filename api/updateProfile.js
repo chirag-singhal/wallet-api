@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const Users = require('../model/users')
+const Users = require('../models/users')
 
 const updateProfile = express.Router();
 

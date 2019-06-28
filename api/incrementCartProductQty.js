@@ -1,5 +1,5 @@
-const CartProduct = require('../model/cartProduct');
-const ShopingCategory = require('../model/shopingCategory');
+const CartProduct = require('../models/cartProduct');
+const ShopingCategory = require('../models/shopingCategory');
 
 const incrementCartProductQty = async (req, res) => {
     const productId = req.body.productId;

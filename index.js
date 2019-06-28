@@ -2,6 +2,13 @@ const http = require('http')
 const express = require('express')
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const AdminBro = require('admin-bro');
+const AdminBroExpress = require('admin-bro-expressjs');
+const AdminBroMongoose = require('admin-bro-mongoose');
+
+
+
+
 
 const auth = require('./api/login')
 const updatePassword = require('./api/updatePassword')
@@ -37,21 +44,25 @@ const app = express()
 const url = 'mongodb://localhost:27017/ikc';
 
 
+
 // const hostname = 'localhost'
 const port = 3000
+
 
 
 app.use(express.json());
 app.use(morgan('dev'))
 
 
-// ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 
+// ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 app.use('/auth', auth);
 app.use('/verifyUser', verifyUser)
 app.use('/verifyOtp', verifyOtp)
 app.use('/changePassword', changePassword)
 app.use('/forgotPassword', forgotPassword)
+
+
 
 // ----------------------------------------------------Connect to Database--------------------------------------------------------------------
 mongoose.set('useFindAndModify', false);
@@ -151,6 +162,40 @@ app.post('/auction', jwtVerify, (req, res) => {
 app.get('/getAffiliateProducts',  (req, res) => {
     getAffiliateProduct(req, res);
 });
+
+
+
+// ----------------------------------------------------Admin Panel--------------------------------------------------------------------------------
+AdminBro.registerAdapter(AdminBroMongoose);
+
+const adminBro = new AdminBro({
+  databases: [mongoose],
+  rootPath: '/admin',
+  branding: {
+      companyName: "ikc-deal",
+      logo: 'https://lh3.googleusercontent.com/io4lPFkfL4caWaic_I8OYo3ejoW0EMRYkp_RBFP87Ff78E7n1ADevYv1d_xvGgS-fA=s100-rw'
+  },
+});
+
+const ADMIN = {
+    email: process.env.ADMIN_EMAIL || 'admin@ikc-deal.com',
+    password: process.env.ADMIN_PASSWORD || 'ikc-deal-2019'
+}
+
+const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+    cookieName: process.env.ADMIN_COOKIE_NAME || 'ikc-deal',
+    cookiePassword: process.env.ADMIN_COOKIE_PASS || 'ikc-deal-2019',
+    authenticate: async (email, password) => {
+        if(email === ADMIN.email && password === ADMIN.password)
+            return ADMIN;
+
+        return null;
+    },
+    softwareBrothers: false
+});
+
+app.use('/admin', router);
+
 
 
 app.listen(port, () => console.log('Server ready'))

@@ -1,8 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const Users = require('../model/users')
-const resetPassword = require('../model/resetPassword')
+const Users = require('../models/users')
+const resetPassword = require('../models/resetPassword')
 const sendOtp = require('./sendOtp')
 
 const forgotPassword = express.Router()

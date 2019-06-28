@@ -1,4 +1,4 @@
-const ShopingCategory = require('../model/shopingCategory');
+const ShopingCategory = require('../models/shopingCategory');
 
 const getCategories = (req, res) => {
     ShopingCategory.find({}).then((categories) => {

@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
 
-const Users = require('../model/users')
+const Users = require('../models/users')
 
 const updatePassword = express.Router();
 

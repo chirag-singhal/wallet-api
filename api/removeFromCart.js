@@ -1,4 +1,4 @@
-const CartProduct = require('../model/cartProduct');
+const CartProduct = require('../models/cartProduct');
 
 const removeFromCart = (req, res) => {
     const productId = req.body.productId;
