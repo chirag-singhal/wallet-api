@@ -66,6 +66,14 @@ const ProductSchema = new mongoose.Schema({
     },
     quantity: {
         type: Number
+    },
+    isReplaceable: {
+        type: Boolean,
+        required: true
+    },
+    isRefundable: {
+        type: Boolean,
+        required: true
     }
 });
 
@@ -80,6 +88,9 @@ const ShopingOrderSchema = new mongoose.Schema({
     diliveryAddress: {
         type: DiliveryAddressSchema
     },
+    amount: {
+        type: Number
+    },
     isRefunded: {
         type: Boolean
     },
@@ -87,6 +98,9 @@ const ShopingOrderSchema = new mongoose.Schema({
         type: Boolean
     },
     isDilivered: {
+        type: Boolean
+    },
+    isCancelledBeforeDilivery: {
         type: Boolean
     }
 });

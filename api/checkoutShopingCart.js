@@ -6,11 +6,21 @@ const User = require('../model/users');
 
 
 const checkoutShopingCart = async (req, res) => {
-    const cartProducts = await CartProduct.find( {} );
+    const cartProducts = await CartProduct.find({ userId: req.user._id });
     
     let amount = 0;
     let isOutOfStock = false;
     let productOutOfStock;
+
+    for(const cartProduct of cartProducts) {
+        amount += cartProduct.price * cartProduct.quantity;
+    }
+
+    if(amount > req.user.amount) {
+        return res.status(500).send("Not enough ikc balance!");
+    }
+
+    const diliveryAddress = await ShopingDiliveryAddress.findById(req.body.diliveryAddressId);
 
     for(const cartProduct of cartProducts) {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
@@ -23,31 +33,28 @@ const checkoutShopingCart = async (req, res) => {
             return res.status(500).send(cartProduct.title, " is currently out of stock!");
         }
 
-        amount += cartProduct.price * cartProduct.quantity;
-    }
-
-    if(amount > req.user.amount) {
-        return res.status(500).send("Not enough ikc balance!");
-    }
-
-    const diliveryAddress = await ShopingDiliveryAddress.findById(req.body.diliveryAddressId);
-
-    await User.findByIdAndUpdate(req.user._id, {
-        $inc: {
-            amount: -amount
-        }
-    })
-
-    for(const cartProduct of cartProducts) {
         const shopingOrder = new ShopingOrder({
-            userId: req.user_id,
+            userId: req.user._id,
             product: cartProduct,
             diliveryAddress,
+            amount: cartProduct.quantity * cartProduct.price,
             isRefunded: false,
             isReplaced: false,
-            isDilivered: false
+            isDilivered: false,
+            isCancelledBeforeDilivery: false
         });
         await shopingOrder.save();
+
+        await User.findByIdAndUpdate(req.user._id, {
+            $inc: {
+                amount: -(cartProduct.quantity * cartProduct.price)
+            }
+        });
+
+        product.stock -= 1;
+        await shopingCategory.save();
+
+        await CartProduct.deleteOne({productId: cartProduct.productId});
     }
 
     res.send("Order successfully placed!");

@@ -26,6 +26,10 @@ const decrementCartProductQty = require('./api/decrementCartProductQty');
 const addShopingDiliveryAddress = require('./api/addShopingDiliveryAddress');
 const checkoutShopingCart = require('./api/checkoutShopingCart');
 const getShopingDiliveryAddress = require('./api/getShopingDiliveryAddresses');
+const getShopingOrder = require('./api/getshopingOrders');
+const cancelBeforeDilivery = require('./api/cancelBeforeDilivery');
+const refundShopingOrder = require('./api/refundShopingOrder');
+const replaceShopingOrder = require('./api/replaceShopingOrder');
 
 
 
@@ -110,8 +114,24 @@ app.get('/shopingDiliveryAddress', jwtVerify, (req, res) => {
     getShopingDiliveryAddress(req, res);
 });
 
-app.post('/checkoutShopingCart', jwtVerify, (req, res) => {
+app.post('/shopingOrder', jwtVerify, (req, res) => {
     checkoutShopingCart(req, res);
+});
+
+app.get('/shopingOrder', jwtVerify, (req, res) => {
+    getShopingOrder(req, res);
+});
+
+app.patch('/cancelBeforeDilivery', jwtVerify, (req, res) => {
+    cancelBeforeDilivery(req, res);
+});
+
+app.patch('/refundShopingOrder', jwtVerify, (req, res) => {
+    refundShopingOrder(req, res);
+});
+
+app.patch('/replaceShopingOrder', jwtVerify, (req, res) => {
+    replaceShopingOrder(req, res);
 });
 
 
