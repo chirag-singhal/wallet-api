@@ -11,7 +11,7 @@ const verifyUser = express.Router();
 verifyUser.use(bodyParser.json())
 
 verifyUser.route('/')
-.get((req, res, next) => {
+.post((req, res, next) => {
     if(req.body.contact && req.body.otp){
         Otp.findOne({"contact": req.body.contact}).exec()
         .then((otp) => {

@@ -8,7 +8,7 @@ const verifyOtp = express.Router();
 verifyOtp.use(bodyParser.json())
 
 verifyOtp.route('/')
-.get((req, res) => {
+.post((req, res) => {
     if(req.body.contact && req.body.otp){
         Otp.findOne({"contact": req.body.contact}).exec()
         .then((otp) => {

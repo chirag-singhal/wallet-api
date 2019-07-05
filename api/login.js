@@ -16,7 +16,7 @@ const auth = express.Router();
 auth.use(bodyParser.json());
 
 
-auth.route('/login').get((req, res, next) => {
+auth.route('/login').post((req, res, next) => {
     if(req.body.contact && req.body.password){
         Users.findOne({contact: req.body.contact}).exec()
         .then((user) => {
