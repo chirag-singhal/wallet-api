@@ -5,21 +5,12 @@ const CartProduct = require('../models/cartProduct');
 
 const addToCart = (req, res) => {
     const productId = req.body.productId;
-    const subCategoryId = req.body.subCategoryId;
     const categoryId = req.body.categoryId;
 
-    let category;
-    let subCategory;
-    let productIdToBeAdded;
 
     ShopingCategory.findById(categoryId).then((category) => {
-        
-        subCategory = category.subCategories.id(subCategoryId);
-        if(!subCategory) {
-            return res.status(404).send("Invalid sub-category ID!");
-        }
 
-        productIdToBeAdded = subCategory.products.id(productId);
+        productIdToBeAdded = category.products.id(productId);
         if(!productIdToBeAdded) {
             return res.status(404).send("Invalid product ID!");
         }
@@ -36,7 +27,6 @@ const addToCart = (req, res) => {
                 ...productIdToBeAdded,
                 quantity: 1,
                 productId,
-                subCategoryId,
                 categoryId,
                 userId: req.user._id
             });

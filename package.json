@@ -28,6 +28,7 @@
     "express-session": "^1.16.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.14",
+    "mongoose-type-url": "^1.0.6",
     "morgan": "^1.9.1",
     "twilio": "^3.32.0"
   },

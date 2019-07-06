@@ -37,6 +37,9 @@ const getShopingOrder = require('./api/getshopingOrders');
 const cancelBeforeDilivery = require('./api/cancelBeforeDilivery');
 const refundShopingOrder = require('./api/refundShopingOrder');
 const replaceShopingOrder = require('./api/replaceShopingOrder');
+const dilivered = require('./api/dilivered');
+const successfullyPickedUpRefund = require('./api/successfullyPickedUpRefund');
+const unsuccessfullyPickedUpRefund = require('./api/unsuccessfullyPickedUpRefund');
 
 
 
@@ -195,6 +198,25 @@ const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
 });
 
 app.use('/admin', router);
+
+
+
+// ------------------------------------------admin managing requests---------------------------------------
+app.get('/dilivered/:orderToken', (req, res) => {
+    dilivered(req, res);
+});
+
+app.get('/successfullyPickedUpRefund/:orderToken', (req, res) => {
+    successfullyPickedUpRefund(req, res);
+});
+
+app.get('/unsuccessfullyPickedUpRefund/:orderToken', (req, res) => {
+    unsuccessfullyPickedUpRefund(req, res);
+});
+
+app.get('/refund/:orderToken', (req, res) => {
+    refund(req, res);
+});
 
 
 

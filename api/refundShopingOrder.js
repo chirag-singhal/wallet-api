@@ -1,6 +1,8 @@
 const ShopingOrder = require('../models/shopingOrder');
 const ShopingCategory = require('../models/shopingCategory');
 const User = require('../models/users');
+const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const refundShopingOrder = async (req, res) => {
     orderId = req.body.orderId;
@@ -22,27 +24,13 @@ const refundShopingOrder = async (req, res) => {
         return res.status(500).send("Product already refunded!");
     }
 
-    await User.findByIdAndUpdate(req.user._id, {
-        $inc: {
-            'amount': order.amount
-        }
-    });
+    if(order.isNotRefunded) {
+        return res.status(500).send("Sorry, product cannot be refunded!")
+    }
 
-
-    const productId = order.product.productId;
-    const subCategoryId = order.product.subCategoryId;
-    const categoryId = order.product.categoryId;
-
-    const category = await ShopingCategory.findById(categoryId);
-        
-    const subCategory = await category.subCategories.id(subCategoryId);
-
-    const productToBeAdded = await subCategory.products.id(productId);
-
-    productToBeAdded.stock += 1;
-    await category.save();
-
-    order.isRefunded = true;
+    order.isAppliedForRefund = true;
+    order.pickedUpSuccessfullyUrl = path.join(req.headers.host, "/successfullyPickedUpRefund/", jwt.sign({orderId: order._id}, "This is my secret code for refund process. Its highly complicated"));
+    order.pickedUpUnsuccessfullyUrl = path.join(req.headers.host, "/unsuccessfullyPickedUpRefund/", jwt.sign({orderId: order._id}, "This is my secret code for refund process. Its highly complicated"));
     await order.save().then(() => {
         res.send("Product successfully applied for refund!");    
     }).catch((e) => {

@@ -8,9 +8,7 @@ const incrementCartProductQty = async (req, res) => {
 
     const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
 
-    const subCategory = await shopingCategory.subCategories.id(cartProduct.subCategoryId);
-
-    const product = await subCategory.products.id(productId);
+    const product = await shopingCategory.products.id(productId);
 
     if(cartProduct.quantity >= product.stock) {
         return res.status(500).send("No more quantity avaialable");

@@ -3,6 +3,8 @@ const ShopingCategory = require('../models/shopingCategory');
 const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
 const ShopingOrder = require('../models/shopingOrder');
 const User = require('../models/users');
+const path = require('path');
+const jwt = require('jsonwebtoken');
 
 
 const checkoutShopingCart = async (req, res) => {
@@ -24,13 +26,11 @@ const checkoutShopingCart = async (req, res) => {
 
     for(const cartProduct of cartProducts) {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
-
-        const subCategory = await shopingCategory.subCategories.id(cartProduct.subCategoryId);
     
-        const product = await subCategory.products.id(cartProduct.productId);
+        const product = await shopingCategory.products.id(cartProduct.productId);
 
         if(cartProduct.quantity > product.stock) {
-            return res.status(500).send(cartProduct.title, " is currently out of stock!");
+            return res.status(500).send("The quantity of " + cartProduct.title + " is currently out of stock!");
         }
 
         const shopingOrder = new ShopingOrder({
@@ -43,7 +43,10 @@ const checkoutShopingCart = async (req, res) => {
             isDilivered: false,
             isCancelledBeforeDilivery: false
         });
-        await shopingOrder.save();
+        await shopingOrder.save().then(async () => {
+            shopingOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopingOrder._id}, "This is my secret code for refund process. Its highly complicated"));
+            await shopingOrder.save();
+        });
 
         await User.findByIdAndUpdate(req.user._id, {
             $inc: {

@@ -25,14 +25,11 @@ const cancelBeforeDilivery = async (req, res) => {
     });
 
     const productId = order.product.productId;
-    const subCategoryId = order.product.subCategoryId;
     const categoryId = order.product.categoryId;
 
     const category = await ShopingCategory.findById(categoryId);
-        
-    const subCategory = await category.subCategories.id(subCategoryId);
 
-    const productToBeAdded = await subCategory.products.id(productId);
+    const productToBeAdded = await category.products.id(productId);
 
     productToBeAdded.stock += 1;
     await category.save();

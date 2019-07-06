@@ -4,7 +4,10 @@ const Product = new mongoose.Schema({
     title: {
         type: String
     },
-    price: {
+    ikcPrice: {
+        type: Number
+    },
+    inrPrice: {
         type: Number
     },
     discount: {
@@ -27,104 +30,99 @@ const Product = new mongoose.Schema({
     }
 });
 
-const SubCategory = new mongoose.Schema({
+const Category = mongoose.model('categories', {
     title: {
         type: String,
+        required: true
     },
     products: {
         type: [Product]
     }
 });
 
-const Category = mongoose.model('categories', {
-    title: {
-        type: String,
-        required: true
-    },
-    subCategories: {
-        type: [SubCategory]
-    }
-});
-
 
 // const category = new Category({
-//     title: "Women",
-//     subCategories: [
+//     title: "E-talent",
+//     products: [
 //         {
-//             title: "Dupatta",
-//             products: [
-//                 {
-//                     title: "Dupatta-1",
-//                     price: 699,
-//                     discount: 0,
-//                     description: "This  is some random shit for Dupatta-1.",
-//                     imageUrl: "../images/RBF-SNC-25D-600x600.gif"
-//                 },
-//                 {
-//                     title: "Dupatta-2",
-//                     price: 549,
-//                     discount: 0,
-//                     description: "This  is some random shit for Dupatta-2.",
-//                     imageUrl: "../images/RBF-BAL-03A-600x600.jpg"
-//                 }
-//             ]
+//             title: "Dupatta-1",
+//             ikcPrice: 699,
+//             discount: 0,
+//             description: "This  is some random shit for Dupatta-1.",
+//             imageUrl: "../images/RBF-SNC-25D-600x600.gif",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
 //         },
 //         {
-//             title: "Suit",
-//             products: [
-//                 {
-//                     title: "Suit-1",
-//                     price: 520,
-//                     discount: 0,
-//                     description: "This  is some random shit for Suit-1.",
-//                     imageUrl: "../images/RBF-SUT-05-600x600.jpg"
-//                 },
-//                 {
-//                     title: "Suit-2",
-//                     price: 449,
-//                     discount: 0,
-//                     description: "This  is some random shit for Suit-2.",
-//                     imageUrl: "../images/RBF-SUT-04-600x600.jpg"
-//                 }
-//             ]
+//             title: "Dupatta-2",
+//             ikcPrice: 549,
+//             discount: 0,
+//             description: "This  is some random shit for Dupatta-2.",
+//             imageUrl: "../images/RBF-BAL-03A-600x600.jpg",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
 //         },
 //         {
-//             title: "kurti",
-//             products: [
-//                 {
-//                     title: "Kurti-1",
-//                     price: 360,
-//                     discount: 0,
-//                     description: "This  is some random shit for Kurti-1.",
-//                     imageUrl: "../images/RBF-SUT-03A-600x600.jpg"
-//                 },
-//                 {
-//                     title: "Kurti-2",
-//                     price: 749,
-//                     discount: 0,
-//                     description: "This  is some random shit for Kurti-2.",
-//                     imageUrl: "../images/RBF-KUR-04a-600x600.jpg"
-//                 }
-//             ]
+//             title: "Suit-1",
+//             ikcPrice: 520,
+//             discount: 0,
+//             description: "This  is some random shit for Suit-1.",
+//             imageUrl: "../images/RBF-SUT-05-600x600.jpg",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
 //         },
 //         {
-//             title: "Saree",
-//             products: [
-//                 {
-//                     title: "Saree-1",
-//                     price: 0,
-//                     discount: 0,
-//                     description: "This  is some random shit for Saree-1.",
-//                     imageUrl: "../images/RBF-SAR-PINK-01-600x600.gif"
-//                 },
-//                 {
-//                     title: "Saree-2",
-//                     price: 1450,
-//                     discount: 0,
-//                     description: "This  is some random shit for Saree-2.",
-//                     imageUrl: "../images/Saree-Red-600x600.gif"
-//                 }
-//             ]
+//             title: "Suit-2",
+//             ikcPrice: 449,
+//             discount: 0,
+//             description: "This  is some random shit for Suit-2.",
+//             imageUrl: "../images/RBF-SUT-04-600x600.jpg",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
+//         },
+//         {
+//             title: "Kurti-1",
+//             ikcPrice: 360,
+//             discount: 0,
+//             description: "This  is some random shit for Kurti-1.",
+//             imageUrl: "../images/RBF-SUT-03A-600x600.jpg",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
+//         },
+//         {
+//             title: "Kurti-2",
+//             ikcPrice: 749,
+//             discount: 0,
+//             description: "This  is some random shit for Kurti-2.",
+//             imageUrl: "../images/RBF-KUR-04a-600x600.jpg",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
+//         },
+//         {
+//             title: "Saree-1",
+//             ikcPrice: 0,
+//             discount: 0,
+//             description: "This  is some random shit for Saree-1.",
+//             imageUrl: "../images/RBF-SAR-PINK-01-600x600.gif",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
+//         },
+//         {
+//             title: "Saree-2",
+//             ikcPrice: 1450,
+//             discount: 0,
+//             description: "This  is some random shit for Saree-2.",
+//             imageUrl: "../images/Saree-Red-600x600.gif",
+//             stock: 5,
+//             isReplaceable: true,
+//             isRefundable: true
 //         }
 //     ]
 // });

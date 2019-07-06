@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('mongoose-type-url')
 
 const DiliveryAddressSchema = new mongoose.Schema({
     address: {
@@ -41,9 +42,6 @@ const DiliveryAddressSchema = new mongoose.Schema({
 
 const ProductSchema = new mongoose.Schema({
     productId: {
-        type: mongoose.Schema.Types.ObjectId
-    },
-    subCategoryId: {
         type: mongoose.Schema.Types.ObjectId
     },
     categoryId: {
@@ -91,17 +89,45 @@ const ShopingOrderSchema = new mongoose.Schema({
     amount: {
         type: Number
     },
+    isAppliedForRefund: {
+        type: Boolean,
+        default: false
+    },
     isRefunded: {
-        type: Boolean
+        type: Boolean,
+        default: false
+    },
+    isNotRefunded: {
+        type: Boolean,
+        default: false
     },
     isReplaced: {
-        type: Boolean
+        type: Boolean,
+        default: false
+    },
+    isNotReplaced: {
+        type: Boolean,
+        default: false
     },
     isDilivered: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     isCancelledBeforeDilivery: {
-        type: Boolean
+        type: Boolean,
+        default: false
+    },
+    diliveredUrl: {
+        type: mongoose.SchemaTypes.Url
+    },
+    pickedUpSuccessfullyUrl: {
+        type: mongoose.SchemaTypes.Url
+    },
+    pickedUpUnsuccessfullyUrl: {
+        type: mongoose.SchemaTypes.Url
+    },
+    refundUrl: {
+        type: mongoose.SchemaTypes.Url
     }
 });
 

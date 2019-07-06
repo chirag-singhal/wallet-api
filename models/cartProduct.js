@@ -5,10 +5,6 @@ const CartProductSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
-    subCategoryId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
-    },
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
