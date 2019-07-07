@@ -41,16 +41,13 @@ const DiliveryAddressSchema = new mongoose.Schema({
 });
 
 const ProductSchema = new mongoose.Schema({
-    productId: {
-        type: mongoose.Schema.Types.ObjectId
-    },
-    categoryId: {
-        type: mongoose.Schema.Types.ObjectId
-    },
     title: {
         type: String
     },
-    price: {
+    ikcPrice: {
+        type: Number
+    },
+    inrPrice: {
         type: Number
     },
     discount: {
@@ -62,29 +59,42 @@ const ProductSchema = new mongoose.Schema({
     imageUrl: {
         type: String
     },
-    quantity: {
+    stock: {
+        type: Number
+    },
+    noOfStockSold: {
         type: Number
     },
     isReplaceable: {
-        type: Boolean,
-        required: true
+        type: Boolean
     },
     isRefundable: {
-        type: Boolean,
-        required: true
+        type: Boolean
     }
 });
 
-const ShopingOrderSchema = new mongoose.Schema({
+const ShopAndEarnOrderSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    subCategoryId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    productId: {
+        type: mongoose.Schema.Types.ObjectId
     },
     product: {
         type: ProductSchema
     },
     diliveryAddress: {
         type: DiliveryAddressSchema
+    },
+    quantity: {
+        type: Number
     },
     amount: {
         type: Number
@@ -94,6 +104,9 @@ const ShopingOrderSchema = new mongoose.Schema({
     },
     diliveredDate: {
         type: Date
+    },
+    paymentMethod: {
+        type: String
     },
     isAppliedForRefund: {
         type: Boolean,
@@ -148,6 +161,6 @@ const ShopingOrderSchema = new mongoose.Schema({
 });
 
 
-const ShopingOrder = mongoose.model('ShopingOrder', ShopingOrderSchema);
+const ShopAndEarnOrder = mongoose.model('ShopAndEarnOrder', ShopAndEarnOrderSchema);
 
-module.exports = ShopingOrder;
+module.exports = ShopAndEarnOrder;

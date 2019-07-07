@@ -8,8 +8,6 @@ const AdminBroMongoose = require('admin-bro-mongoose');
 
 
 
-
-
 const auth = require('./api/login')
 const updatePassword = require('./api/updatePassword')
 const updateProfile = require('./api/updateProfile')
@@ -40,6 +38,12 @@ const replaceShopingOrder = require('./api/replaceShopingOrder');
 const dilivered = require('./api/dilivered');
 const successfullyPickedUpRefund = require('./api/successfullyPickedUpRefund');
 const unsuccessfullyPickedUpRefund = require('./api/unsuccessfullyPickedUpRefund');
+const refund = require('./api/refund');
+const successfullyPickedUpReplace = require('./api/successfullyPickedUpReplace');
+const unsuccessfullyPickedUpReplace = require('./api/unsuccessfullyPickedUpReplace');
+const getShopAndEarnCategories = require('./api/getShopAndEarnCategories');
+const buyWithIkc = require('./api/buyWithIkc');
+const getShopAndEarnOrder = require('./api/getShopAndEarnOrders');
 
 
 
@@ -136,6 +140,9 @@ app.get('/shopingOrder', jwtVerify, (req, res) => {
     getShopingOrder(req, res);
 });
 
+
+
+// --------------------------------------common shoping and shop & earn requests-----------------------------
 app.patch('/cancelBeforeDilivery', jwtVerify, (req, res) => {
     cancelBeforeDilivery(req, res);
 });
@@ -146,6 +153,21 @@ app.patch('/refundShopingOrder', jwtVerify, (req, res) => {
 
 app.patch('/replaceShopingOrder', jwtVerify, (req, res) => {
     replaceShopingOrder(req, res);
+});
+
+
+
+// ------------------------------------------------------Shop and Earn----------------------------------------------------------------------------
+app.get('/shopAndEarnCategory', (req, res) => {
+    getShopAndEarnCategories(req, res);
+});
+
+app.post('/buyWithIkc', jwtVerify, (req, res) => {
+    buyWithIkc(req, res);
+});
+
+app.get('/shopAndEarnOrder', jwtVerify, (req, res) => {
+    getShopAndEarnOrder(req, res);
 });
 
 
@@ -161,7 +183,7 @@ app.post('/auction', jwtVerify, (req, res) => {
 
 
 
-// --------------------------------------------Affiliate Product(Shop & earn)-------------------------------------------------------------------
+// --------------------------------------------Affiliate Product-------------------------------------------------------------------
 app.get('/getAffiliateProducts',  (req, res) => {
     getAffiliateProduct(req, res);
 });
@@ -201,7 +223,7 @@ app.use('/admin', router);
 
 
 
-// ------------------------------------------admin managing requests---------------------------------------
+// ------------------------------------------admin managed requests---------------------------------------
 app.get('/dilivered/:orderToken', (req, res) => {
     dilivered(req, res);
 });
@@ -216,6 +238,14 @@ app.get('/unsuccessfullyPickedUpRefund/:orderToken', (req, res) => {
 
 app.get('/refund/:orderToken', (req, res) => {
     refund(req, res);
+});
+
+app.get('/successfullyPickedUpReplace/:orderToken', (req, res) => {
+    successfullyPickedUpReplace(req, res);
+});
+
+app.get('/unsuccessfullyPickedUpReplace/:orderToken', (req, res) => {
+    unsuccessfullyPickedUpReplace(req, res);
 });
 
 

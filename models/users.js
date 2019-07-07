@@ -65,6 +65,12 @@ UserSchema.virtual('shopingOrder', {
   foreignField: 'userId'
 });
 
+UserSchema.virtual('shopAndEarnOrder', {
+  ref: 'ShopAndEarnOrder',
+  localField: '_id',
+  foreignField: 'userId'
+});
+
 
 UserSchema.methods.toJSON = function() {
   const user = this;

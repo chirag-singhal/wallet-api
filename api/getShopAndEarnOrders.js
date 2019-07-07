@@ -1,8 +1,8 @@
-const getShopingOrder = async (req, res) => {
+const getShopAndEarnOrder = async (req, res) => {
     try {
-        await req.user.populate('shopingOrder').execPopulate();
+        await req.user.populate('shopAndEarnOrder').execPopulate();
 
-        const orderObject = req.user.shopingOrder;
+        const orderObject = req.user.shopAndEarnOrder;
         
         for(i = 0; i < orderObject.length; i++) {
             orderObject[i] = orderObject[i].toObject();
@@ -14,10 +14,11 @@ const getShopingOrder = async (req, res) => {
             delete orderObject[i].refundUrl;
         }
 
+
         res.send(orderObject);
     } catch(e) {
         res.status(500).send(e);
     }
 }
 
-module.exports = getShopingOrder;
+module.exports = getShopAndEarnOrder;

@@ -37,14 +37,14 @@ const checkoutShopingCart = async (req, res) => {
             userId: req.user._id,
             product: cartProduct,
             diliveryAddress,
-            amount: cartProduct.quantity * cartProduct.price,
-            isRefunded: false,
-            isReplaced: false,
-            isDilivered: false,
-            isCancelledBeforeDilivery: false
+            amount: cartProduct.quantity * cartProduct.price
         });
         await shopingOrder.save().then(async () => {
             shopingOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopingOrder._id}, "This is my secret code for refund process. Its highly complicated"));
+            await ShopingOrder.update({ _id: shopingOrder._id }, { $currentDate: {
+                    orderDate: true
+                }
+            });
             await shopingOrder.save();
         });
 

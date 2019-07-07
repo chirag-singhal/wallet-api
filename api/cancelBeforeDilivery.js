@@ -1,14 +1,28 @@
 const ShopingOrder = require('../models/shopingOrder');
+const ShopAndEarnOrder = require('../models/shopAndEarnOrder');
 const ShopingCategory = require('../models/shopingCategory');
+const ShopAndEarnCategory = require('../models/shopAndEarnCategory');
 const User = require('../models/users');
 
 const cancelBeforeDilivery = async (req, res) => {
     orderId = req.body.orderId;
 
-    const order = await ShopingOrder.findOne({
-        '_id': orderId,
-        'userId': req.user._id
-    });
+    let order;
+
+    try {
+        order = await ShopingOrder.findOne({
+            '_id': orderId,
+            'userId': req.user._id
+        });
+        if(!order) {
+            throw new Error()
+        }
+    } catch(e) {
+        order = await ShopAndEarnOrder.findOne({
+            '_id': orderId,
+            'userId': req.user._id
+        });
+    }
 
     if(order.isDilivered) {
         return res.send("Product already been dilivered!");
@@ -24,12 +38,27 @@ const cancelBeforeDilivery = async (req, res) => {
         }
     });
 
-    const productId = order.product.productId;
-    const categoryId = order.product.categoryId;
+    const productId = order.productId;
+    const categoryId = order.categoryId;
+    let subCategoryId;
 
-    const category = await ShopingCategory.findById(categoryId);
+    let category;
+    let subCategory;
+    let productToBeAdded;
 
-    const productToBeAdded = await category.products.id(productId);
+    if(order.subCategoryId) {
+        subCategoryId = order.subCategoryId;
+
+        category = await ShopAndEarnCategory.findById(categoryId);
+        subCategory = await category.subCategories.id(subCategoryId);
+        productToBeAdded = await subCategory.products.id(productId);
+        productToBeAdded.noOfStockSold -= 1;
+    } else {
+        category = await ShopingCategory.findById(categoryId);
+        productToBeAdded = await category.products.id(productId);
+    }
+
+
 
     productToBeAdded.stock += 1;
     await category.save();
