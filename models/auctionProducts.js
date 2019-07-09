@@ -35,6 +35,12 @@ const AuctionProductSchema = new mongoose.Schema({
     imageUrl: {
         type: String
     },
+    startDate: {
+        type: Date
+    },
+    endDate: {
+        type: Date
+    },
     bid: {
         type: [BidSchema]
     }
