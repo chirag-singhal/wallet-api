@@ -11,7 +11,7 @@ const placeBid = (req, res) => {
             return res.status(500).send("Invalid Product Id!");
         }
 
-        return AuctionProduct.findOne({ 'bid.userId': userId })
+        return AuctionProduct.findOne({ '_id': req.body.productId, 'bid.userId': userId })
 
     }).then((user) => {
         if(user) {
