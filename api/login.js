@@ -29,7 +29,7 @@ auth.route('/login').post((req, res, next) => {
                     if(result){
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
-                        res.end("OTP has been send!! User is not verified")
+                        res.json({"message": "OTP has been send!! User is not verified"})
                     } else {
                         res.statusCode = 403;
                         res.setHeader('Content-Type', 'application/json');
@@ -59,8 +59,7 @@ auth.route('/login').post((req, res, next) => {
                         res.json({
                             success: true,
                             message: 'Authentication successful!',
-                            token: token,
-                            user: user
+                            token: token
                         });
                     }
                     else{
@@ -152,7 +151,7 @@ auth.route('/signup').post((req, res, next) => {
                     else if(user != null) {
                         res.statusCode = 403;
                         res.setHeader('Content-Type', 'application/json');
-                        res.end("User already exits");
+                        res.json({"message": "User already exits"});
                     } else {
                         Users.findOne({contact: req.body.contact}).exec().then((user) => {
                             if(user != null && !user.verified){

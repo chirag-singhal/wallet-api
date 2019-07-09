@@ -91,9 +91,10 @@ UserSchema.pre('save', function (next) {
         return next(err);
       }
       user.password = hash;
+      next();
     })
   } 
-  next();
+  else next();
 });
 
 

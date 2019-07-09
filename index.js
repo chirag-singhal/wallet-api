@@ -20,6 +20,7 @@ const forgotPassword = require('./api/forgotPassword')
 
 
 const getCategories = require('./api/getCategories');
+const getUserDetails = require('./api/getUserDetail');
 const addToCart = require('./api/addToCart');
 const removeFromCart = require('./api/removeFromCart');
 const getCartProducts = require('./api/getCartProducts');
@@ -92,6 +93,7 @@ app.use('/updatePassword', jwtVerify, updatePassword);
 app.use('/updateProfile', jwtVerify, updateProfile);
 
 
+app.use('/getUserDetails', jwtVerify, getUserDetails);
 
 // ------------------------------------------------Shopping Categories Request----------------------------------------------------------------
 app.get('/categories', (req, res) => {
