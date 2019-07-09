@@ -105,6 +105,12 @@ const ShopAndEarnOrderSchema = new mongoose.Schema({
     diliveredDate: {
         type: Date
     },
+    gatewayTransactionId: {
+        type: String
+    },
+    gatewayTransactionStatus: {
+        type: String
+    },
     paymentMethod: {
         type: String
     },

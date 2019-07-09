@@ -45,6 +45,8 @@ const unsuccessfullyPickedUpReplace = require('./api/unsuccessfullyPickedUpRepla
 const getShopAndEarnCategories = require('./api/getShopAndEarnCategories');
 const buyWithIkc = require('./api/buyWithIkc');
 const getShopAndEarnOrder = require('./api/getShopAndEarnOrders');
+const buyWithInr = require('./api/buyWithInr');
+const verifyCheckSumHash = require('./api/verifyCheckSumHash');
 
 
 
@@ -170,6 +172,14 @@ app.post('/buyWithIkc', jwtVerify, (req, res) => {
 
 app.get('/shopAndEarnOrder', jwtVerify, (req, res) => {
     getShopAndEarnOrder(req, res);
+});
+
+app.get('/buyWithInr', (req, res) => {
+    buyWithInr(req, res);
+});
+
+app.post('/verifyCheckSumHash', (req, res) => {
+    verifyCheckSumHash(req, res);
 });
 
 
