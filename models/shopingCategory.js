@@ -47,6 +47,7 @@ const category = new Category({
         {
             title: "Dupatta-1",
             ikcPrice: 699,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Dupatta-1.",
             imageUrl: "../images/RBF-SNC-25D-600x600.gif",
@@ -67,6 +68,7 @@ const category = new Category({
         {
             title: "Suit-1",
             ikcPrice: 520,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Suit-1.",
             imageUrl: "../images/RBF-SUT-05-600x600.jpg",
@@ -77,6 +79,7 @@ const category = new Category({
         {
             title: "Suit-2",
             ikcPrice: 449,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Suit-2.",
             imageUrl: "../images/RBF-SUT-04-600x600.jpg",
@@ -87,6 +90,7 @@ const category = new Category({
         {
             title: "Kurti-1",
             ikcPrice: 360,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Kurti-1.",
             imageUrl: "../images/RBF-SUT-03A-600x600.jpg",
@@ -97,6 +101,7 @@ const category = new Category({
         {
             title: "Kurti-2",
             ikcPrice: 749,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Kurti-2.",
             imageUrl: "../images/RBF-KUR-04a-600x600.jpg",
@@ -107,6 +112,7 @@ const category = new Category({
         {
             title: "Saree-1",
             ikcPrice: 0,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Saree-1.",
             imageUrl: "../images/RBF-SAR-PINK-01-600x600.gif",
@@ -117,6 +123,7 @@ const category = new Category({
         {
             title: "Saree-2",
             ikcPrice: 1450,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Saree-2.",
             imageUrl: "../images/Saree-Red-600x600.gif",
