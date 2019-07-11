@@ -5,9 +5,9 @@ const BidSchema = new mongoose.Schema({
     bidAmount: {
         type: Number
     },
-    bidRemark: {
-        type: String
-    },
+    // bidRemark: {
+    //     type: String
+    // },
     userId: {
         type: mongoose.Schema.Types.ObjectId
     }

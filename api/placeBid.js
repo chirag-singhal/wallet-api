@@ -3,26 +3,28 @@ const AuctionProduct = require('../models/auctionProducts');
 const placeBid = (req, res) => {
     const productId = req.body.productId;
     const bidAmount = req.body.bidAmount;
-    const bidRemark = req.body.bidRemark;
-    const userId = req.body.userId;
+    // const bidRemark = req.body.bidRemark;
+    const userId = req.user._id;
+    console.log(userId)
 
     AuctionProduct.findById(productId).then((product) => {
         if(!product) {
-            return res.status(500).send("Invalid Product Id!");
+            return res.status(500).json({"message": "Invalid Product Id!"});
         }
 
-        return AuctionProduct.findOne({ 'bid.userId': userId })
+        return AuctionProduct.findOne({ '_id': req.body.productId })
 
-    }).then((user) => {
-        if(user) {
-            return res.send("Bid already placed!");
+    }).then((product) => {
+        if(product.bid.userId == req.user._id) {
+            console.log(user)
+            return res.json({"message": "Bid already placed!"});
         }
 
         AuctionProduct.findByIdAndUpdate(productId, {
             $push: {
                 "bid": {
                     bidAmount,
-                    bidRemark,
+                    // bidRemark,
                     userId
                 }
             },
@@ -30,15 +32,16 @@ const placeBid = (req, res) => {
                 "numberOfBids": 1
             }
         })
-        .then(() => {
-            res.send("Bid successfully placed!");
+        .then((bid) => {
+            console.log(bid)
+            res.json({"messgage": "Bid successfully placed!"});
         }).catch((e) => {
             console.log(e);
             res.send(e);
         });
     }).catch((e) => {
         console.log(e);
-        res.send(e);
+        res.json(e);
     });
 }
 
