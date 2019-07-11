@@ -6,5 +6,6 @@ module.exports = {
   CHANNEL_ID: "WEB",
   INDUSTRY_TYPE_ID: "Retail",
   CALLBACK_URL: "http://localhost:3000/payWithPaytmResponse",
+  CALLBACK_URL_ADD: "http://localhost:3000/addToWalletResponse",
   PORT: 3000
 };

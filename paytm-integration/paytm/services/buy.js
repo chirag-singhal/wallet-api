@@ -97,6 +97,7 @@ const responsePayment = function(req) {
           const product = await subCategory.products.id(req.query.productId);
 
           const shopAndEarnOrder = new ShopAndEarnOrder({
+              _id: new mongodb.ObjectId(response.ORDERID),
               // userId: req.query.userId,
               product,
               diliveryAddress,
@@ -107,16 +108,12 @@ const responsePayment = function(req) {
               productId: req.query.productId,
               paymentMethod: "inr",
               gatewayTransactionId: response.TXNID,
-              gatewayTransactionStatus: response.STATUS
+              gatewayTransactionStatus: response.STATUS,
+              orderDate: Date.now()
           });
           await shopAndEarnOrder.save().then(async () => {
               shopAndEarnOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
               await shopAndEarnOrder.save();
-              await ShopAndEarnOrder.findByIdAndUpdate(response.ORDERID, {
-                $currentDate: {
-                  orderDate: true
-                }
-              });
           });
 
           return resolve("Order successfully placed!");
@@ -132,6 +129,7 @@ const responsePayment = function(req) {
           const product = await subCategory.products.id(req.query.productId);
 
           const shopAndEarnOrder = new ShopAndEarnOrder({
+              _id: new mongodb.ObjectId(response.ORDERID),
               userId: req.query.userId,
               product,
               diliveryAddress,

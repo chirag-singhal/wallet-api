@@ -90,7 +90,8 @@ const ShopingOrderSchema = new mongoose.Schema({
         type: Number
     },
     orderDate: {
-        type: Date
+        type: Number,
+        default: Date.now()
     },
     diliveredDate: {
         type: Date

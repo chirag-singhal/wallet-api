@@ -178,7 +178,7 @@ app.get('/shopAndEarnOrder', jwtVerify, (req, res) => {
     getShopAndEarnOrder(req, res);
 });
 
-const {initPayment, responsePayment} = require("./paytm-integration/paytm/services/index");
+const {initPayment, responsePayment} = require("./paytm-integration/paytm/services/buy");
 
 app.use(cors());
 
@@ -204,6 +204,35 @@ app.get("/payWithPaytm", (req, res) => {
 
 app.post("/payWithPaytmResponse", (req, res) => {
     responsePayment(req).then(
+        success => {
+            res.send(success);
+        },
+        error => {
+            res.send(error);
+        }
+    );
+});
+
+
+
+// -----------------------------------------------------Wallet requests----------------------------------------------------------------------
+const {initAdd, responseAdd} = require("./paytm-integration/paytm/services/add");
+app.get("/addTOWallet", (req, res) => {
+    initAdd(req).then(
+        success => {
+            res.render("paytmRedirect.ejs", {
+                resultData: success,
+                paytmFinalUrl: config.PAYTM_FINAL_URL
+            });
+        },
+        error => {
+            res.send(error);
+        }
+    );
+});
+
+app.post("/addToWalletResponse", (req, res) => {
+    responseAdd(req).then(
         success => {
             res.send(success);
         },
