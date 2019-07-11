@@ -49,6 +49,7 @@ const unsuccessfullyPickedUpReplace = require('./api/unsuccessfullyPickedUpRepla
 const getShopAndEarnCategories = require('./api/getShopAndEarnCategories');
 const buyWithIkc = require('./api/buyWithIkc');
 const getShopAndEarnOrder = require('./api/getShopAndEarnOrders');
+const sendIkc = require('./api/sendIkc');
 
 
 
@@ -240,6 +241,10 @@ app.post("/addToWalletResponse", (req, res) => {
             res.send(error);
         }
     );
+});
+
+app.post("/sendIkc", (req, res) => {
+    sendIkc(req, res);
 });
 
 
