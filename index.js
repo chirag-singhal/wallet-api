@@ -5,6 +5,10 @@ const morgan = require('morgan');
 const AdminBro = require('admin-bro');
 const AdminBroExpress = require('admin-bro-expressjs');
 const AdminBroMongoose = require('admin-bro-mongoose');
+const bodyParser = require("body-parser");
+const config = require('./paytm-integration/paytm/config');
+const cors = require("cors");
+const ejs = require("ejs");
 
 
 
@@ -45,8 +49,6 @@ const unsuccessfullyPickedUpReplace = require('./api/unsuccessfullyPickedUpRepla
 const getShopAndEarnCategories = require('./api/getShopAndEarnCategories');
 const buyWithIkc = require('./api/buyWithIkc');
 const getShopAndEarnOrder = require('./api/getShopAndEarnOrders');
-const buyWithInr = require('./api/buyWithInr');
-const verifyCheckSumHash = require('./api/verifyCheckSumHash');
 
 
 
@@ -82,7 +84,9 @@ const connect = mongoose.connect(url,{useNewUrlParser : true});
 
 connect.then((db) => {
     console.log("connected to database");
-}, (err) => {console.log(err);})
+}, (err) => {
+    console.log(err);
+})
 
 
 
@@ -174,12 +178,39 @@ app.get('/shopAndEarnOrder', jwtVerify, (req, res) => {
     getShopAndEarnOrder(req, res);
 });
 
-app.get('/buyWithInr', (req, res) => {
-    buyWithInr(req, res);
+const {initPayment, responsePayment} = require("./paytm-integration/paytm/services/index");
+
+app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(express.static(__dirname + "/paytm-integration/views"));
+app.set("view engine", "ejs");
+
+app.get("/payWithPaytm", (req, res) => {
+    initPayment(req).then(
+        success => {
+            res.render("paytmRedirect.ejs", {
+                resultData: success,
+                paytmFinalUrl: config.PAYTM_FINAL_URL
+            });
+        },
+        error => {
+            res.send(error);
+        }
+    );
 });
 
-app.post('/verifyCheckSumHash', (req, res) => {
-    verifyCheckSumHash(req, res);
+app.post("/payWithPaytmResponse", (req, res) => {
+    responsePayment(req).then(
+        success => {
+            res.send(success);
+        },
+        error => {
+            res.send(error);
+        }
+    );
 });
 
 

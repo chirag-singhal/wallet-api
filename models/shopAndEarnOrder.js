@@ -100,7 +100,7 @@ const ShopAndEarnOrderSchema = new mongoose.Schema({
         type: Number
     },
     orderDate: {
-        type: Date
+        type: Number
     },
     diliveredDate: {
         type: Date

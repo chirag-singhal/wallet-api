@@ -24,12 +24,15 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "ejs": "^2.6.2",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.14",
     "mongoose-type-url": "^1.0.6",
     "morgan": "^1.9.1",
+    "request": "^2.88.0",
     "twilio": "^3.32.0"
   },
   "devDependencies": {

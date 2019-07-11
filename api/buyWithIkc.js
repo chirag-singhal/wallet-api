@@ -32,14 +32,11 @@ const buyWithIkc = async (req, res) => {
         categoryId: req.body.categoryId,
         subCategoryId: req.body.subCategoryId,
         productId: req.body.productId,
-        paymentMethod: "ikc"
+        paymentMethod: "ikc",
+        orderDate: Date.now()
     });
     await shopAndEarnOrder.save().then(async () => {
         shopAndEarnOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
-        await ShopAndEarnOrder.updateOne({ _id: shopAndEarnOrder._id }, { $currentDate: {
-                orderDate: true
-            }
-        });
         await shopAndEarnOrder.save();
     });
 
