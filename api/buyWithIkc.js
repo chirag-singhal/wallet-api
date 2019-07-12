@@ -4,6 +4,7 @@ const ShopAndEarnOrder = require('../models/shopAndEarnOrder');
 const User = require('../models/users');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const shortid = require('shortid');
 
 
 const buyWithIkc = async (req, res) => {
@@ -49,6 +50,17 @@ const buyWithIkc = async (req, res) => {
     product.stock -= 1;
     product.noOfStockSold += 1;
     await shopAndEarnCategory.save();
+    await User.findByIdAndUpdate(req.user._id, {
+        $push: {
+            transactions: {
+                transactionId: shortid.generate(),
+                amount: -(req.body.quantity * product.ikcPrice),
+                paymentType: 'ikc',
+                detail: "Bought " + product.title,
+                time: Date.now()
+            }
+        }
+    });
 
     res.send("Order successfully placed!");
 }

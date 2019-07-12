@@ -33,6 +33,7 @@
     "mongoose-type-url": "^1.0.6",
     "morgan": "^1.9.1",
     "request": "^2.88.0",
+    "shortid": "^2.2.14",
     "twilio": "^3.32.0"
   },
   "devDependencies": {
