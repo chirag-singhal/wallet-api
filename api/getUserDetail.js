@@ -13,6 +13,7 @@ userDetails.route('/')
             res.statusCode = 200
             res.setHeader('Content-Type', 'application/json')
             res.json({
+                _id: req.user._id,
                 username: user.username,
                 contact: user.contact,
                 email: user.email,
