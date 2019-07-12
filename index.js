@@ -218,7 +218,7 @@ app.post("/payWithPaytmResponse", (req, res) => {
 
 // -----------------------------------------------------Wallet requests----------------------------------------------------------------------
 const {initAdd, responseAdd} = require("./paytm-integration/paytm/services/add");
-app.get("/addTOWallet", (req, res) => {
+app.get("/addTOWallet", jwtVerify, (req, res) => {
     initAdd(req).then(
         success => {
             res.render("paytmRedirect.ejs", {
@@ -243,7 +243,7 @@ app.post("/addToWalletResponse", (req, res) => {
     );
 });
 
-app.post("/sendIkc", (req, res) => {
+app.post("/sendIkc",jwtVerify, (req, res) => {
     sendIkc(req, res);
 });
 
