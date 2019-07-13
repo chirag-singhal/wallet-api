@@ -15,7 +15,7 @@ const initAdd =  function(req) {
     let paymentObj = {
       ORDER_ID: orderId.toString(),
       CUST_ID: req.user._id,
-      // CUST_ID: "5d0b20420b7ea8296cf20041",
+      // CUST_ID: "5d24421f41f820200d125c5d",
       INDUSTRY_TYPE_ID: config.INDUSTRY_TYPE_ID,
       CHANNEL_ID: config.CHANNEL_ID,
       TXN_AMOUNT: req.body.amount.toString(),
@@ -23,7 +23,7 @@ const initAdd =  function(req) {
       MID: config.MID,
       WEBSITE: config.WEBSITE,
       CALLBACK_URL: config.CALLBACK_URL + "?userId=" + req.user._id
-      // CALLBACK_URL: config.CALLBACK_URL_ADD + "?userId=" + "5d0b20420b7ea8296cf20041"
+      // CALLBACK_URL: config.CALLBACK_URL_ADD + "?userId=" + "5d24421f41f820200d125c5d"
     };
 
     checksum.genchecksum(
