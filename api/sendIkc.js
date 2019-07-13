@@ -13,7 +13,21 @@ const sendIkc = async (req, res) => {
     const ikcTransfer = new IkcTransfer({
         to: req.body.to,
         amount: req.body.amount
-    })
+    });
+
+    await User.findByIdAndUpdate(req.user._id, {
+        $push: {
+            transactions: {
+                transactionId: shortid.generate(),
+                amount: -req.body.amount,
+                paymentType: 'ikc',
+                detail: "Sent to " + req.body.to,
+                time: Date.now()
+            }
+        }
+    });
+
+    res.send("ikc successfully transferred!")
 }
 
 module.exports = sendIkc

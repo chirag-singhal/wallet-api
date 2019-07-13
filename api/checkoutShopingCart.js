@@ -4,15 +4,14 @@ const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
 const ShopingOrder = require('../models/shopingOrder');
 const User = require('../models/users');
 const path = require('path');
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');const shortid = require('shortid');
+
 
 
 const checkoutShopingCart = async (req, res) => {
     const cartProducts = await CartProduct.find({ userId: req.user._id });
     
     let amount = 0;
-    let isOutOfStock = false;
-    let productOutOfStock;
 
     for(const cartProduct of cartProducts) {
         amount += cartProduct.price * cartProduct.quantity;
@@ -58,6 +57,18 @@ const checkoutShopingCart = async (req, res) => {
         await shopingCategory.save();
 
         await CartProduct.deleteOne({productId: cartProduct.productId});
+
+        await User.findByIdAndUpdate(req.user._id, {
+            $push: {
+                transactions: {
+                    transactionId: shortid.generate(),
+                    amount: -(cartProduct.quantity * cartProduct.price),
+                    paymentType: 'ikc',
+                    detail: "Bought " + product.title,
+                    time: Date.now()
+                }
+            }
+        });
     }
 
     res.send("Order successfully placed!");

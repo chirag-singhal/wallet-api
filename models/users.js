@@ -39,7 +39,13 @@ var UserSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  transactions : [],
+  transactions : [{
+    transactionId: String,
+    amount: Number,
+    paymentType: String,
+    detail: String,
+    time: Number
+  }],
   tokens: [{
     token: {
       type: String

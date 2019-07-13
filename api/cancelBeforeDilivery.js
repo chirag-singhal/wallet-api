@@ -3,6 +3,7 @@ const ShopAndEarnOrder = require('../models/shopAndEarnOrder');
 const ShopingCategory = require('../models/shopingCategory');
 const ShopAndEarnCategory = require('../models/shopAndEarnCategory');
 const User = require('../models/users');
+const shortid = require('shortid');
 
 const cancelBeforeDilivery = async (req, res) => {
     orderId = req.body.orderId;
@@ -64,7 +65,18 @@ const cancelBeforeDilivery = async (req, res) => {
     await category.save();
 
     order.isCancelledBeforeDilivery = true;
-    await order.save().then(() => {
+    await order.save().then(async () => {
+        await User.findByIdAndUpdate(req.user._id, {
+            $push: {
+                transactions: {
+                    transactionId: shortid.generate(),
+                    amount: order.amount,
+                    paymentType: 'ikc',
+                    detail: "Refund for " + order.product.title,
+                    time: Date.now()
+                }
+            }
+        });
         res.send("Product successfully cancelled!");    
     }).catch((e) => {
         res.send("Something went wrong!", e);
