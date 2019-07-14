@@ -28,6 +28,7 @@ Offerers.create({
 }).then((offer) => {
     console.log(offer)
 })
+.catch((err) => console.log(err))
 
 const getCategories = require('./api/getCategories');
 const getUserDetails = require('./api/getUserDetail');

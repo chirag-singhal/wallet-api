@@ -14,6 +14,5 @@ var Offerer = mongoose.model('offerers', OffererSchema)
 
 
 
-.catch((err) => console.log(err))
 
 module.exports = Offerer
