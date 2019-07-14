@@ -23,3 +23,5 @@ transactions.route('/')
         res.json(err);
     })
 })
+
+module.exports = transactions
