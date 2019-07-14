@@ -1,43 +1,68 @@
 const mongoose = require('mongoose');
 
 const Product = new mongoose.Schema({
-    title: {
-        type: String
+        title: {
+            type: String
+        },
+        ikcPrice: {
+            type: Number
+        },
+        inrPrice: {
+            type: Number
+        },
+        discount: {
+            type: Number
+        },
+        description: {
+            type: String
+        },
+        imageUrl: {
+            type: String
+        },
+        stock: {
+            type: Number
+        },
+        offererId: {
+            type: mongoose.Schema.Types.ObjectId
+        },
+        offererName: {
+            type: String
+        },
+        offererImage: {
+            type: String
+        },
+        isReplaceable: {
+            type: Boolean
+        },
+        isRefundable: {
+            type: Boolean
+        }
     },
-    ikcPrice: {
-        type: Number
-    },
-    inrPrice: {
-        type: Number
-    },
-    discount: {
-        type: Number
-    },
-    description: {
-        type: String
-    },
-    imageUrl: {
-        type: String
-    },
-    stock: {
-        type: Number
-    },
-    isReplaceable: {
-        type: Boolean
-    },
-    isRefundable: {
-        type: Boolean
-    }
-});
+    {
+        toObject: {
+            virtuals: true
+        },
+        toJSON: {
+            virtuals: true 
+        }
+    });
+
+Product.set('toObject', { getters: true });
 
 const Category = mongoose.model('categories', {
-    title: {
-        type: String,
-        required: true
-    },
-    products: {
-        type: [Product]
-    }
+        title: {
+            type: String,
+            required: true
+        },
+        products: {
+            type: [Product]
+        }
+    });
+
+Product.virtual('offerers', {
+    ref: 'offerer',
+    localField: 'offererId',
+    foreignField: '_id'
 });
 
 
@@ -53,17 +78,24 @@ const category = new Category({
             imageUrl: "../images/RBF-SNC-25D-600x600.gif",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         },
         {
             title: "Dupatta-2",
             ikcPrice: 549,
+            inrPrice: 999,
             discount: 0,
             description: "This  is some random shit for Dupatta-2.",
             imageUrl: "../images/RBF-BAL-03A-600x600.jpg",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         },
         {
             title: "Suit-1",
@@ -74,7 +106,10 @@ const category = new Category({
             imageUrl: "../images/RBF-SUT-05-600x600.jpg",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         },
         {
             title: "Suit-2",
@@ -85,7 +120,10 @@ const category = new Category({
             imageUrl: "../images/RBF-SUT-04-600x600.jpg",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         },
         {
             title: "Kurti-1",
@@ -96,7 +134,10 @@ const category = new Category({
             imageUrl: "../images/RBF-SUT-03A-600x600.jpg",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         },
         {
             title: "Kurti-2",
@@ -107,7 +148,10 @@ const category = new Category({
             imageUrl: "../images/RBF-KUR-04a-600x600.jpg",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         },
         {
             title: "Saree-1",
@@ -118,7 +162,10 @@ const category = new Category({
             imageUrl: "../images/RBF-SAR-PINK-01-600x600.gif",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         },
         {
             title: "Saree-2",
@@ -129,7 +176,10 @@ const category = new Category({
             imageUrl: "../images/Saree-Red-600x600.gif",
             stock: 5,
             isReplaceable: true,
-            isRefundable: true
+            isRefundable: true,
+            offererId: '5d2ac52be0d3ad14b114efe2',
+            offererName: 'Test Actor',
+            offererImage: '../images/RBF-SNC-25D-600x600.gif'
         }
     ]
 });

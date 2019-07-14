@@ -20,6 +20,7 @@ const verifyUser = require('./api/verifyUser')
 const verifyOtp = require('./api/verifyOtp')
 const changePassword = require('./api/changePassword')
 const forgotPassword = require('./api/forgotPassword')
+const Offerers = require('./models/offerer')
 
 
 
@@ -218,10 +219,11 @@ app.post("/payWithPaytmResponse", (req, res) => {
 
 // -----------------------------------------------------Wallet requests----------------------------------------------------------------------
 const {initAdd, responseAdd} = require("./paytm-integration/paytm/services/add");
-app.post("/addTOWallet", jwtVerify, (req, res) => {
+app.get("/addTOWallet", (req, res) => {
     initAdd(req).then(
         success => {
-            res.render("paytmRedirect.ejs", {
+            console.log(success);
+            res.json( {
                 resultData: success,
                 paytmFinalUrl: config.PAYTM_FINAL_URL
             });
