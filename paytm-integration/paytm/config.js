@@ -1,6 +1,6 @@
 module.exports = {
-  MID: "XIUwac52445474215596",
-  PAYTM_MERCHANT_KEY: "_YfKVbAfzWCtTFLQ",
+  MID: "FMeRvs93987018477619",
+  PAYTM_MERCHANT_KEY: "7UmP2Y0oMdF1dmnj",
   PAYTM_FINAL_URL: "https://securegw-stage.paytm.in/theia/processTransaction",
   WEBSITE: "WEBSTAGING",
   CHANNEL_ID: "WAP",
