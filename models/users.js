@@ -44,7 +44,7 @@ var UserSchema = new mongoose.Schema({
     amount: Number,
     paymentType: String,
     detail: String,
-    time: Number
+    time: Date
   }],
   tokens: [{
     token: {
