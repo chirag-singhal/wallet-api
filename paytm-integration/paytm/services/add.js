@@ -10,10 +10,10 @@ const initAdd =  function(req) {
   return new Promise(async (resolve, reject) => {
     
 
-    const orderId = new mongodb.ObjectId();
+    // const orderId = new mongodb.ObjectId();
     console.log(req.user)
     let paymentObj = {
-      ORDER_ID: orderId.toString(),
+      ORDER_ID: req.body.order_id.toString(),
       CUST_ID: req.user._id,
       // CUST_ID: "5d24421f41f820200d125c5d",
       INDUSTRY_TYPE_ID: config.INDUSTRY_TYPE_ID,
