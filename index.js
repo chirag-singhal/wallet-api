@@ -189,7 +189,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/paytm-integration/views"));
 app.set("view engine", "ejs");
 
-app.get("/payWithPaytm", jwtVerify, (req, res) => {
+app.post("/payWithPaytm", jwtVerify, (req, res) => {
     initPayment(req).then(
         success => {
             res.render("paytmRedirect.ejs", {
