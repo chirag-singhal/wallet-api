@@ -22,7 +22,12 @@ const changePassword = require('./api/changePassword')
 const forgotPassword = require('./api/forgotPassword')
 const Offerers = require('./models/offerer')
 
-
+Offerers.create({
+    offererName: "Test Actor",
+    offererImage: "../images/RBF-SNC-25D-600x600.gif"
+}).then((offer) => {
+    console.log(offer)
+})
 
 const getCategories = require('./api/getCategories');
 const getUserDetails = require('./api/getUserDetail');
