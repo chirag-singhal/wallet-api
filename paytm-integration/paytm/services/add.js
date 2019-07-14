@@ -11,7 +11,7 @@ const initAdd =  function(req) {
     
 
     const orderId = new mongodb.ObjectId();
-
+    console.log(req.user)
     let paymentObj = {
       ORDER_ID: orderId.toString(),
       CUST_ID: req.user._id,
