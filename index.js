@@ -189,7 +189,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/paytm-integration/views"));
 app.set("view engine", "ejs");
 
-app.post("/payWithPaytm", jwtVerify, (req, res) => {
+app.get("/payWithPaytm", jwtVerify, (req, res) => {
     initPayment(req).then(
         success => {
             res.render("paytmRedirect.ejs", {
@@ -218,7 +218,7 @@ app.post("/payWithPaytmResponse", (req, res) => {
 
 // -----------------------------------------------------Wallet requests----------------------------------------------------------------------
 const {initAdd, responseAdd} = require("./paytm-integration/paytm/services/add");
-app.get("/addTOWallet", (req, res) => {
+app.post("/addTOWallet", (req, res) => {
     initAdd(req).then(
         success => {
             console.log(success);
