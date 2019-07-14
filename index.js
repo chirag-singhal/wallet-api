@@ -24,6 +24,7 @@ const Offerers = require('./models/offerer')
 
 
 const getCategories = require('./api/getCategories');
+const getTransactions = require('./api/getTransactions')
 const getUserDetails = require('./api/getUserDetail');
 const addToCart = require('./api/addToCart');
 const removeFromCart = require('./api/removeFromCart');
@@ -99,6 +100,7 @@ app.use('/updatePassword', jwtVerify, updatePassword);
 // ------------------------------------------------Update Profile----------------------------------------------------------------
 app.use('/updateProfile', jwtVerify, updateProfile);
 
+app.use('/getTransactions', jwtVerify, getTransactions)
 
 app.use('/getUserDetails', jwtVerify, getUserDetails);
 
