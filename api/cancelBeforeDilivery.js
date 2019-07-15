@@ -70,6 +70,7 @@ const cancelBeforeDilivery = async (req, res) => {
             $push: {
                 transactions: {
                     transactionId: shortid.generate(),
+                    transactionStatus: 'TXN_SUCCESS',
                     amount: order.amount,
                     paymentType: 'ikc',
                     detail: "Refund for " + order.product.title,

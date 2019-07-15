@@ -54,6 +54,7 @@ const buyWithIkc = async (req, res) => {
         $push: {
             transactions: {
                 transactionId: shortid.generate(),
+                transactionStatus: 'TXN_SUCCESS',
                 amount: -(req.body.quantity * product.ikcPrice),
                 paymentType: 'ikc',
                 detail: "Bought " + product.title,

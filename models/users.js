@@ -43,6 +43,7 @@ var UserSchema = new mongoose.Schema({
     transactionId: String,
     amount: Number,
     paymentType: String,
+    transactionStatus: String,
     detail: String,
     time: Date
   }],

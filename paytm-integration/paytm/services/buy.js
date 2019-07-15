@@ -27,8 +27,8 @@ const initPayment =  function(req) {
 
     let paymentObj = {
       ORDER_ID: orderId.toString(),
-      // CUST_ID: req.user._id,
-      CUST_ID: "CUST001",
+      CUST_ID: req.user._id,
+      // CUST_ID: "CUST001",
       INDUSTRY_TYPE_ID: config.INDUSTRY_TYPE_ID,
       CHANNEL_ID: config.CHANNEL_ID,
       TXN_AMOUNT: ((req.body.quantity || req.query.quantity) * product.inrPrice).toString(),

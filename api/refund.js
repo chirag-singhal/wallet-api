@@ -37,6 +37,7 @@ const refund = async (req, res) => {
                 transactions: {
                     transactionId: shortid.generate(),
                     amount: (req.body.quantity * product.ikcPrice),
+                    transactionStatus: 'TXN_SUCCESS',
                     paymentType: 'ikc',
                     detail: "Refund for " + product.title,
                     time: Date.now()
@@ -94,6 +95,7 @@ const refund = async (req, res) => {
                             transactions: {
                                 transactionId: response.txnId,
                                 amount: response.refundAmount,
+                                transactionStatus: 'TXN_SUCCESS',
                                 paymentType: 'inr',
                                 detail: "Refund for " + product.title,
                                 time: Date.now()

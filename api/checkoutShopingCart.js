@@ -63,6 +63,7 @@ const checkoutShopingCart = async (req, res) => {
                 transactions: {
                     transactionId: shortid.generate(),
                     amount: -(cartProduct.quantity * cartProduct.price),
+                    transactionStatus: 'TXN_SUCCESS',
                     paymentType: 'ikc',
                     detail: "Bought " + product.title,
                     time: Date.now()

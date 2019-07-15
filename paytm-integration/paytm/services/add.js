@@ -76,6 +76,7 @@ const responseAdd = function(req) {
       post_res.on('end',async function(){
         response = JSON.parse(response);
         if(response.STATUS === "TXN_SUCCESS") {
+          console.log(response)
             const walletAdd = new WalletAdd({
                 _id: new mongodb.ObjectId(response.ORDERID),
                 transactionId: response.TXNID,
@@ -87,6 +88,19 @@ const responseAdd = function(req) {
             await walletAdd.save();
 
             await User.findByIdAndUpdate(req.query.userId, {
+              $push: {
+                  transactions: {
+                      transactionId: new mongodb.ObjectId(response.ORDERID),
+                      transactionStatus: response.STATUS,
+                      amount: response.TXNAMOUNT,
+                      paymentType: 'inr',
+                      detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
+                      time: Date.now()
+                  }
+                }
+            });
+
+            await User.findByIdAndUpdate(req.query.userId, {
                 $inc: {
                     amount: response.TXNAMOUNT
                 }
@@ -94,17 +108,32 @@ const responseAdd = function(req) {
 
             return resolve("Amount successfully added!");
         } else if(response.STATUS === "TXN_FAILURE") {
+            await User.findByIdAndUpdate(req.query.userId, {
+              $push: {
+                  transactions: {
+                      transactionId: new mongodb.ObjectId(response.ORDERID),
+                      transactionStatus: response.STATUS,
+                      amount: response.TXNAMOUNT,
+                      paymentType: 'inr',
+                      detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
+                      time: Date.now()
+                  }
+                }
+            });
             return reject("Transaction failed")
         } else if(response.STATUS === "PENDING") {
-            const walletAdd = new WalletAdd({
-                _id: new mongodb.ObjectId(response.ORDERID),
-                transactionId: response.TXNID,
-                transactionStatus: response.STATUS,
-                amount: response.TXNAMOUNT,
-                transactionDate: Date.now(),
-                userId: new mongodb.ObjectId(req.query.userId)
+            await User.findByIdAndUpdate(req.query.userId, {
+              $push: {
+                  transactions: {
+                      transactionId: new mongodb.ObjectId(response.ORDERID),
+                      transactionStatus: response.STATUS,
+                      amount: response.TXNAMOUNT,
+                      paymentType: 'inr',
+                      detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
+                      time: Date.now()
+                  }
+                }
             });
-            
             return resolve("Transaction pending");
         }
       });
