@@ -1,4 +1,3 @@
-// const CartProduct = require('../models/cartProduct');
 const ShopingCategory = require('../models/shopingCategory');
 const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
 const ShopingOrder = require('../models/shopingOrder');
@@ -9,7 +8,6 @@ const jwt = require('jsonwebtoken');const shortid = require('shortid');
 
 
 const checkoutShopingCart = async (req, res) => {
-    // const cartProducts = await CartProduct.find({ userId: req.user._id });
     const cartProducts = req.body;    
     let amount = 0;
 
@@ -22,7 +20,7 @@ const checkoutShopingCart = async (req, res) => {
     }
 
     const diliveryAddress = await ShopingDiliveryAddress.find({userId: req.user._id});
-
+    
     for(const cartProduct of cartProducts) {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
     
@@ -40,7 +38,7 @@ const checkoutShopingCart = async (req, res) => {
         });
         await shopingOrder.save().then(async () => {
             shopingOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopingOrder._id}, "This is my secret code for refund process. Its highly complicated"));
-            await ShopingOrder.update({ _id: shopingOrder._id }, { $currentDate: {
+            await ShopingOrder.updateOne({ _id: shopingOrder._id }, { $currentDate: {
                     orderDate: true
                 }
             });
@@ -56,7 +54,6 @@ const checkoutShopingCart = async (req, res) => {
         product.stock -= 1;
         await shopingCategory.save();
 
-        await CartProduct.deleteOne({productId: cartProduct.productId});
 
     }
 
@@ -64,10 +61,10 @@ const checkoutShopingCart = async (req, res) => {
         $push: {
             transactions: {
                 transactionId: shortid.generate(),
-                amount: this.amount,
+                amount: amount,
                 transactionStatus: 'TXN_SUCCESS',
                 paymentType: 'ikc',
-                detail: "Paid for Order " + this.transactionId,
+                detail: "Paid for Order " + amount,
                 time: Date.now()
             }
         }
