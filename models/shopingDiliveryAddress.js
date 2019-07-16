@@ -23,13 +23,11 @@ const DiliveryAddressSchema = new mongoose.Schema({
     },
     phone1: {
         type: Number,
-        required: true,
         minlength: 10,
         maxlength: 10
     },
     phone2: {
         type: Number,
-        required: true,
         minlength: 10,
         maxlength: 10
     },

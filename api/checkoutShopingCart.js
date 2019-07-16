@@ -1,4 +1,4 @@
-const CartProduct = require('../models/cartProduct');
+// const CartProduct = require('../models/cartProduct');
 const ShopingCategory = require('../models/shopingCategory');
 const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
 const ShopingOrder = require('../models/shopingOrder');
@@ -9,8 +9,8 @@ const jwt = require('jsonwebtoken');const shortid = require('shortid');
 
 
 const checkoutShopingCart = async (req, res) => {
-    const cartProducts = await CartProduct.find({ userId: req.user._id });
-    
+    // const cartProducts = await CartProduct.find({ userId: req.user._id });
+    const cartProducts = req.body;    
     let amount = 0;
 
     for(const cartProduct of cartProducts) {
@@ -18,10 +18,10 @@ const checkoutShopingCart = async (req, res) => {
     }
 
     if(amount > req.user.amount) {
-        return res.status(500).send("Not enough ikc balance!");
+        return res.status(403).json({"message": "Not enough ikc balance!"});
     }
 
-    const diliveryAddress = await ShopingDiliveryAddress.findById(req.body.diliveryAddressId);
+    const diliveryAddress = await ShopingDiliveryAddress.find({userId: req.user._id});
 
     for(const cartProduct of cartProducts) {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
@@ -29,13 +29,13 @@ const checkoutShopingCart = async (req, res) => {
         const product = await shopingCategory.products.id(cartProduct.productId);
 
         if(cartProduct.quantity > product.stock) {
-            return res.status(500).send("The quantity of " + cartProduct.title + " is currently out of stock!");
+            return res.status(403).send("The quantity of " + cartProduct.title + " is currently out of stock!");
         }
 
         const shopingOrder = new ShopingOrder({
             userId: req.user._id,
             product: cartProduct,
-            diliveryAddress,
+            diliveryAddress: diliveryAddress,
             amount: cartProduct.quantity * cartProduct.price
         });
         await shopingOrder.save().then(async () => {
@@ -58,21 +58,22 @@ const checkoutShopingCart = async (req, res) => {
 
         await CartProduct.deleteOne({productId: cartProduct.productId});
 
-        await User.findByIdAndUpdate(req.user._id, {
-            $push: {
-                transactions: {
-                    transactionId: shortid.generate(),
-                    amount: -(cartProduct.quantity * cartProduct.price),
-                    transactionStatus: 'TXN_SUCCESS',
-                    paymentType: 'ikc',
-                    detail: "Bought " + product.title,
-                    time: Date.now()
-                }
-            }
-        });
     }
 
-    res.send("Order successfully placed!");
+    await User.findByIdAndUpdate(req.user._id, {
+        $push: {
+            transactions: {
+                transactionId: shortid.generate(),
+                amount: this.amount,
+                transactionStatus: 'TXN_SUCCESS',
+                paymentType: 'ikc',
+                detail: "Paid for Order " + this.transactionId,
+                time: Date.now()
+            }
+        }
+    });
+
+    res.status(200).json({"message": "Order successfully placed!"});
 }
 
 module.exports = checkoutShopingCart;

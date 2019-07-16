@@ -3,6 +3,7 @@ const DiliveryAddress = require('../models/shopingDiliveryAddress');
 const addShopingDiliveryAddress = (req, res) => {
     const diliveryAddress = new DiliveryAddress({
         ...req.body,
+        phone1: req.user.contact,
         userId: req.user._id
     });
 

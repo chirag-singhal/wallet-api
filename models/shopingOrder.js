@@ -53,25 +53,11 @@ const ProductSchema = new mongoose.Schema({
     price: {
         type: Number
     },
-    discount: {
-        type: Number
-    },
-    description: {
-        type: String
-    },
-    imageUrl: {
-        type: String
-    },
     quantity: {
         type: Number
     },
-    isReplaceable: {
-        type: Boolean,
-        required: true
-    },
-    isRefundable: {
-        type: Boolean,
-        required: true
+    offererId: {
+        type: mongoose.Schema.Types.ObjectId
     }
 });
 
