@@ -43,6 +43,7 @@ const initAdd =  function(req) {
 const responseAdd = function(req) {
   return new Promise(async (resolve, reject) => {
     const paytmParams = req.body;
+    console.log(req.body)
     let paytmChecksum;
     const merchantKey = config.PAYTM_MERCHANT_KEY;
 
