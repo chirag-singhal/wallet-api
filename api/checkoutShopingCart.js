@@ -22,13 +22,16 @@ const checkoutShopingCart = async (req, res) => {
         }
     }
 
-    if(amount > req.user.amount || outOfStock.length > 0) {
+    if(amount > req.user.amount) {
         return res.status(403).json({"message": "Not enough ikc balance!", "outOfStock": outOfStock});
     }
 
+    if(outOfStock.length > 0){
+        return res.status(403).json({"message": "Out of Stock Products!", "outOfStock": outOfStock});
+    }
 
 
-    const diliveryAddress = await ShopingDiliveryAddress.find({userId: req.user._id});
+    const diliveryAddress = await ShopingDiliveryAddress.findById(req.body.diliveryId);
     
     for(const cartProduct of cartProducts) {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);

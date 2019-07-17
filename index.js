@@ -135,19 +135,19 @@ app.patch('/decrementCartProductQty', jwtVerify, (req, res) => {
 
 
 // ---------------------------------------------------Cart Checkout Requests------------------------------------------------------------------
-app.post('/shopingDiliveryAddress', jwtVerify, (req, res) => {
+app.post('/shoppingDiliveryAddress', jwtVerify, (req, res) => {
     addShopingDiliveryAddress(req, res); 
 });
 
-app.get('/shopingDiliveryAddress', jwtVerify, (req, res) => {
+app.get('/shoppingDiliveryAddress', jwtVerify, (req, res) => {
     getShopingDiliveryAddress(req, res);
 });
 
-app.post('/shopingOrder', jwtVerify, (req, res) => {
+app.post('/shoppingOrder', jwtVerify, (req, res) => {
     checkoutShopingCart(req, res);
 });
 
-app.get('/shopingOrder', jwtVerify, (req, res) => {
+app.get('/shopipngOrder', jwtVerify, (req, res) => {
     getShopingOrder(req, res);
 });
 
@@ -238,7 +238,7 @@ app.post("/addTOWallet", jwtVerify, (req, res) => {
 app.post("/addToWalletResponse", (req, res) => {
     responseAdd(req).then(
         success => {
-            res.json(success);
+            res.json({message: success});
         },
         error => {
             res.json({"message": error});
