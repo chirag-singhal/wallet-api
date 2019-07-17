@@ -220,7 +220,7 @@ app.post("/payWithPaytmResponse", (req, res) => {
 
 // -----------------------------------------------------Wallet requests----------------------------------------------------------------------
 const {initAdd, responseAdd} = require("./paytm-integration/paytm/services/add");
-app.post("/addTOWallet", (req, res) => {
+app.post("/addTOWallet", jwtVerify, (req, res) => {
     initAdd(req).then(
         success => {
             console.log(success)
