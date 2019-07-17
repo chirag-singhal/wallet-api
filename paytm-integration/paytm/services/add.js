@@ -22,7 +22,7 @@ const initAdd =  function(req) {
       // TXN_AMOUNT: req.query.amount.toString(),
       MID: config.MID,
       WEBSITE: config.WEBSITE,
-      CALLBACK_URL: config.CALLBACK_URL_ADD + "?userId=" + req.user._id
+      CALLBACK_URL: config.CALLBACK_URL_ADD + "?ORDER_ID=" + orderId.toString
       // CALLBACK_URL: config.CALLBACK_URL_ADD + "?userId=" + "5d24421f41f820200d125c5d"
     };
 
