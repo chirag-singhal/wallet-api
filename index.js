@@ -238,10 +238,10 @@ app.post("/addTOWallet", jwtVerify, (req, res) => {
 app.post("/addToWalletResponse", (req, res) => {
     responseAdd(req).then(
         success => {
-            res.send(success);
+            res.json(success);
         },
         error => {
-            res.send(error);
+            res.json({"message": error});
         }
     );
 });

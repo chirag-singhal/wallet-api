@@ -67,6 +67,7 @@ function verifychecksum(params, key) {
     var salt = checksum.substr(checksum.length - 4);
     var sha256 = checksum.substr(0, checksum.length - 4);
     var hash = crypto.createHash('sha256').update(data + salt).digest('hex');
+    console.log(hash, '  ', sha256)
     if (hash === sha256) {
       return true;
     } else {

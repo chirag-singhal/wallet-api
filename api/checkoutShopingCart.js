@@ -8,16 +8,25 @@ const jwt = require('jsonwebtoken');const shortid = require('shortid');
 
 
 const checkoutShopingCart = async (req, res) => {
-    const cartProducts = req.body;    
+    const cartProducts = req.body.cartProducts;    
     let amount = 0;
+    const outOfStock = [];
 
     for(const cartProduct of cartProducts) {
         amount += cartProduct.price * cartProduct.quantity;
+        const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
+    
+        const product = await shopingCategory.products.id(cartProduct.productId);
+        if(cartProduct.quantity > product.stock) {
+            outOfStock.push(cartProduct.productId)
+        }
     }
 
-    if(amount > req.user.amount) {
-        return res.status(403).json({"message": "Not enough ikc balance!"});
+    if(amount > req.user.amount || outOfStock.length > 0) {
+        return res.status(403).json({"message": "Not enough ikc balance!", "outOfStock": outOfStock});
     }
+
+
 
     const diliveryAddress = await ShopingDiliveryAddress.find({userId: req.user._id});
     
@@ -25,10 +34,6 @@ const checkoutShopingCart = async (req, res) => {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
     
         const product = await shopingCategory.products.id(cartProduct.productId);
-
-        if(cartProduct.quantity > product.stock) {
-            return res.status(403).send("The quantity of " + cartProduct.title + " is currently out of stock!");
-        }
 
         const shopingOrder = new ShopingOrder({
             userId: req.user._id,
