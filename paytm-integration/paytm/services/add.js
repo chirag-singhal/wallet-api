@@ -84,11 +84,11 @@ const responseAdd = function(req) {
                 transactionStatus: response.STATUS,
                 amount: response.TXNAMOUNT,
                 transactionDate: Date.now(),
-                userId: new mongodb.ObjectId(req.query.userId)
+                userId: new mongodb.ObjectId(req.user._id)
             });
             await walletAdd.save();
 
-            await User.findByIdAndUpdate(req.query.userId, {
+            await User.findByIdAndUpdate(req.user._id, {
               $push: {
                   transactions: {
                       transactionId: new mongodb.ObjectId(response.ORDERID),
@@ -101,7 +101,7 @@ const responseAdd = function(req) {
                 }
             });
 
-            await User.findByIdAndUpdate(req.query.userId, {
+            await User.findByIdAndUpdate(req.user._id, {
                 $inc: {
                     amount: response.TXNAMOUNT
                 }
@@ -109,7 +109,7 @@ const responseAdd = function(req) {
 
             return resolve("Amount successfully added!");
         } else if(response.STATUS === "TXN_FAILURE") {
-            await User.findByIdAndUpdate(req.query.userId, {
+            await User.findByIdAndUpdate(req.user._id, {
               $push: {
                   transactions: {
                       transactionId: new mongodb.ObjectId(response.ORDERID),
@@ -123,7 +123,7 @@ const responseAdd = function(req) {
             });
             return reject("Transaction failed")
         } else if(response.STATUS === "PENDING") {
-            await User.findByIdAndUpdate(req.query.userId, {
+            await User.findByIdAndUpdate(req.user._id, {
               $push: {
                   transactions: {
                       transactionId: new mongodb.ObjectId(response.ORDERID),

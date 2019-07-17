@@ -235,7 +235,7 @@ app.post("/addTOWallet", jwtVerify, (req, res) => {
     );
 });
 
-app.post("/addToWalletResponse", (req, res) => {
+app.post("/addToWalletResponse", jwtVerify, (req, res) => {
     responseAdd(req).then(
         success => {
             res.json({message: success});
