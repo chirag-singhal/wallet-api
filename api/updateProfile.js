@@ -13,11 +13,11 @@ updateProfile.route('/')
         Users.findById(req.user._id)
         .then((user) => {
             Users.findOne({email: req.body.email})
-            .then((user) => {
-                if(user == null || req.user.email == req.user.email){
+            .then((user2) => {
+                if(user2 == null || req.user.email == req.user.email){
                     Users.findOne({username: req.body.username})
-                    .then((user) => {
-                        if(user == null || req.body.username == req.user.username){
+                    .then((user2) => {
+                        if(user2 == null || req.body.username == req.user.username){
                             user.username = req.body.username;
                             user.email = req.body.email;
                             user.save()
