@@ -31,7 +31,7 @@ const checkoutShopingCart = async (req, res) => {
     }
 
 
-    const diliveryAddress = await ShopingDiliveryAddress.findById(req.body.diliveryId);
+    const diliveryAddress = await ShopingDiliveryAddress.findOne({userId: req.user._id});
     
     for(const cartProduct of cartProducts) {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
