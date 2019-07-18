@@ -8,7 +8,7 @@ const changePassword = express.Router()
 changePassword.use(bodyParser.json())
 
 changePassword.route('/')
-.get((req, res, next) => {
+.post((req, res, next) => {
     if(req.body.contact && req.body.token && req.body.password){
         Users.findOne({ "contact": req.body.contact }).exec()
         .then((user) =>{

@@ -19,7 +19,6 @@ const DiliveryAddressSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true
     },
     phone1: {
         type: Number,

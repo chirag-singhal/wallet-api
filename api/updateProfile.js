@@ -8,10 +8,7 @@ const updateProfile = express.Router();
 updateProfile.use(bodyParser.json());
 
 updateProfile.route('/')
-.post((req, res) => {
-
-   
-    
+.post((req, res) => { 
     if(req.body.username && req.body.email){
         Users.findById(req.user._id)
         .then((user) => {

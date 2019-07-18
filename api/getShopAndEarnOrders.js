@@ -15,7 +15,7 @@ const getShopAndEarnOrder = async (req, res) => {
         }
 
 
-        res.send(orderObject);
+        res.json(orderObject);
     } catch(e) {
         res.status(500).send(e);
     }

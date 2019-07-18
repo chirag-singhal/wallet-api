@@ -10,7 +10,7 @@ const forgotPassword = express.Router()
 forgotPassword.use(bodyParser.json())
 
 forgotPassword.route('/')
-.get((req, res, next) => {
+.post((req, res, next) => {
     if(req.body.contact && req.body.countrycode){
         Users.findOne({contact: req.contact}).exec()
         .then((user) => {

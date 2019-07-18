@@ -8,7 +8,7 @@ const addShopingDiliveryAddress = (req, res) => {
     });
 
     diliveryAddress.save().then(() => {
-        res.send("Address successfully added!");
+        res.json({"message": "Address successfully added!"});
     }).catch((e) => {
         console.log(e);
         res.status(500).send(e);

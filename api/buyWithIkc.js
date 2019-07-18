@@ -63,7 +63,7 @@ const buyWithIkc = async (req, res) => {
         }
     });
 
-    res.send("Order successfully placed!");
+    res.json({"message": "Order successfully placed!"});
 }
 
 module.exports = buyWithIkc;

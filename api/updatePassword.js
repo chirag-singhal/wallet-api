@@ -10,8 +10,8 @@ updatePassword.use(bodyParser.json());
 
 updatePassword.route('/')
 .post((req, res, next) => {
-    if(req.body.username && req.body.oldPassword && req.body.newPassword){
-        Users.findOne({ "username": req.body.username}).exec()
+    if(req.body.oldPassword && req.body.newPassword){
+        Users.findById(req.user._id)
         .then((user) =>{
             bcrypt.compare(req.body.oldPassword, user.password)
                 .then((result) => {
