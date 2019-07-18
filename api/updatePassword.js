@@ -26,14 +26,14 @@ updatePassword.route('/')
                         .then((userSaved) => {
                             res.statusCode = 200;
                             res.setHeader('Content-Type', 'application/json');
-                            res.json(userSaved);
+                            res.json({"message": "Password Updated"});
                         })
                         .catch((err) => next(err))
                     }
                     else{
                         res.statusCode = 403;
                         res.setHeader('Content-Type', 'application/json');
-                        res.end("Incorrect Password");
+                        res.json({"message": "Incorrect Password"});
                     }
                 })
                 .catch((err) => {
