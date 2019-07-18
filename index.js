@@ -135,11 +135,11 @@ app.patch('/decrementCartProductQty', jwtVerify, (req, res) => {
 
 
 // ---------------------------------------------------Cart Checkout Requests------------------------------------------------------------------
-app.post('/shoppingDiliveryAddress', jwtVerify, (req, res) => {
+app.post('/shoppingDeliveryAddress', jwtVerify, (req, res) => {
     addShopingDiliveryAddress(req, res); 
 });
 
-app.get('/shoppingDiliveryAddress', jwtVerify, (req, res) => {
+app.get('/shoppingDeliveryAddress', jwtVerify, (req, res) => {
     getShopingDiliveryAddress(req, res);
 });
 
