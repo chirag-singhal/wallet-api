@@ -19,14 +19,13 @@ updatePassword.route('/')
                         bcrypt.hash(req.body.newPassword, 10)
                         .then((hashedPassword) => {
                             user.password = hashedPassword;
-                        })
-                        .catch((err) => next(err))
-                        
-                        user.save()
-                        .then((userSaved) => {
-                            res.statusCode = 200;
-                            res.setHeader('Content-Type', 'application/json');
-                            res.json({"message": "Password Updated"});
+                            user.save().then((userSaved) => {
+                                console.log(userSaved)
+                                res.statusCode = 200;
+                                res.setHeader('Content-Type', 'application/json');
+                                res.json({"message": "Password Updated"});
+                            })
+                            .catch((err) => next(err))
                         })
                         .catch((err) => next(err))
                     }
