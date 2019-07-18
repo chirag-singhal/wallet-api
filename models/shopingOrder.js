@@ -30,7 +30,6 @@ const DiliveryAddressSchema = new mongoose.Schema({
     },
     phone2: {
         type: Number,
-        required: true,
         minlength: 10,
         maxlength: 10
     },
