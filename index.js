@@ -51,8 +51,8 @@ const getShopAndEarnCategories = require('./api/getShopAndEarnCategories');
 const buyWithIkc = require('./api/buyWithIkc');
 const getShopAndEarnOrder = require('./api/getShopAndEarnOrders');
 const sendIkc = require('./api/sendIkc');
-
-
+const recharge = require('./api/recharge')
+const rechargePending = require('./api/rechargePending')
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -95,7 +95,11 @@ connect.then((db) => {
 // ------------------------------------------------Update Password----------------------------------------------------------------
 app.use('/updatePassword', jwtVerify, updatePassword);
 
+//----------------------------------------------------Recharge--------------------------------------------------------------------
 
+app.use('/recharge', jwtVerify, recharge);
+
+app.use('rechargePending', rechargePending);
 
 // ------------------------------------------------Update Profile----------------------------------------------------------------
 app.use('/updateProfile', jwtVerify, updateProfile);
