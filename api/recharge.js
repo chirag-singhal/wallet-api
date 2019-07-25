@@ -18,9 +18,9 @@ recharge.route('/')
         let data = '';
         resp.on('data', (chunk) => {
             data += chunk;
-        });
-
-        if(resp.status === 'success') {
+        console.log(data)
+        data = JSON.parse(data)
+        if(data.status == "success") {
             User.findByIdAndUpdate(req.user._id, {
                 $inc: {
                     amount: -req.body.amount
@@ -30,7 +30,7 @@ recharge.route('/')
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {
-                            transactionId: resp.operator_ref,
+                            transactionId: data.operator_ref,
                             amount: req.body.amount,
                             transactionStatus: 'TXN_SUCCESS',
                             paymentType: 'ikc',
@@ -49,11 +49,12 @@ recharge.route('/')
                 res.statusCode = 403
                 res.json(err);
             })
-        } else if(resp.status === 'failure') {
+        } else if(data.status == "failure") {
+            console.log("Failure")
             User.findByIdAndUpdate(req.user._id, {
                 $push: {
                     transactions: {
-                        transactionId: resp.operator_ref,
+                        transactionId: data.operator_ref,
                         amount: req.body.amount,
                         transactionStatus: 'TXN_FAILURE',
                         paymentType: 'ikc',
@@ -71,7 +72,7 @@ recharge.route('/')
                 res.json(err);
             })
             
-        } else if(resp.status === 'pending') {
+        } else if(data.status == "pending") {
             User.findByIdAndUpdate(req.user._id, {
                 $inc: {
                     amount: -req.body.amount
@@ -81,7 +82,7 @@ recharge.route('/')
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {
-                            transactionId: resp.operator_ref,
+                            transactionId: data.operator_ref,
                             amount: req.body.amount,
                             transactionStatus: 'TXN_PENDING',
                             paymentType: 'ikc',
@@ -101,10 +102,9 @@ recharge.route('/')
                 res.json(err);
             })
         }
-
-        
+    });
         resp.on('end', () => {
-            console.log(JSON.parse(data));
+            
         });
     })
     .on("error", (err) => {
