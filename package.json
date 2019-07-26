@@ -34,7 +34,8 @@
     "morgan": "^1.9.1",
     "request": "^2.88.0",
     "shortid": "^2.2.14",
-    "twilio": "^3.32.0"
+    "twilio": "^3.32.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"

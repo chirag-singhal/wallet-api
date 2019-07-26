@@ -1,12 +1,11 @@
 var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
+const uuidv1 = require('uuid/v1');
 
 var UserSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
-    required: true,
     trim: true
   },
   username: {
@@ -26,11 +25,15 @@ var UserSchema = new mongoose.Schema({
   },
   countrycode: {
       type: Number,
-      required: true
+      default: 91
   },
   verified:{
     type: Boolean,
     default: false
+  },
+  qrCode: {
+    type: String,
+    default: uuidv1() 
   },
   address: {
     type: String,
@@ -46,6 +49,10 @@ var UserSchema = new mongoose.Schema({
     transactionStatus: String,
     detail: String,
     time: Date
+  }],
+  tickets: [{
+    eventId: mongoose.Schema.Types.ObjectId,
+    numberOfTickets: Number
   }],
   tokens: [{
     token: {

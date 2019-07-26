@@ -53,7 +53,14 @@ const getShopAndEarnOrder = require('./api/getShopAndEarnOrders');
 const sendIkc = require('./api/sendIkc');
 const recharge = require('./api/recharge')
 const rechargePending = require('./api/rechargePending')
-
+const buyEvent = require('./api/buyEvents');
+const getEvents = require('./api/getEvents');
+const getEventsForOwner = require('./api/getEventsForOwner');
+const addEventTemp = require('./api/addTempEvent');
+const verifyTicket = require('./api/verifyTicket');
+const jwtEventVerify = require('./jwtVerifyEvents');
+const eventLogin = require('./api/loginEvent');
+const addEvent = require('./api/addEvent');
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
 
@@ -91,6 +98,15 @@ connect.then((db) => {
 })
 
 
+//--------------------------------------------------Events------------------------------------------------------------------------
+
+app.use('/buyEvent', jwtVerify, buyEvent);
+app.use('/getEvents', jwtVerify, getEvents);
+app.use('/getEventsForOwner', jwtEventVerify, getEventsForOwner);
+app.use('/addTempEvent', jwtEventVerify, addEventTemp);
+app.use('/addEvent', addEvent);
+app.use('/eventLogin', eventLogin);
+app.use('/verifyTicket', jwtVerify, verifyTicket)
 
 // ------------------------------------------------Update Password----------------------------------------------------------------
 app.use('/updatePassword', jwtVerify, updatePassword);

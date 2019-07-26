@@ -17,6 +17,7 @@ userDetails.route('/')
                 username: user.username,
                 contact: user.contact,
                 email: user.email,
+                qrCode: user.qrCode,
                 countrycode: user.countrycode
             })
         } else {

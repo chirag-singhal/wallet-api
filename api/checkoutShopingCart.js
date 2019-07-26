@@ -3,7 +3,8 @@ const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
 const ShopingOrder = require('../models/shopingOrder');
 const User = require('../models/users');
 const path = require('path');
-const jwt = require('jsonwebtoken');const shortid = require('shortid');
+const jwt = require('jsonwebtoken');
+const shortid = require('shortid');
 
 
 
