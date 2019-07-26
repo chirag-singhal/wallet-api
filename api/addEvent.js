@@ -38,9 +38,11 @@ addEvent.route('/:eventToken')
                     image: eventTemp.image,
                 })
                 eventOwner.save().then(() => {
-                    console.log(event);
-                    res.statusCode = 200;
-                    res.json({"message": "Event Added to IKC Deal"});
+                    EventTemp.findByIdAndDelete(decoded.eventId).then(() => {
+                        console.log(event);
+                        res.statusCode = 200;
+                        res.json({"message": "Event Added to IKC Deal"});
+                    }).catch((err) => next(err))
                 }).catch((err) => next(err))
             }).catch((err) => next(err))
         }).catch((err) => next(err))
