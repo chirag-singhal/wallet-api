@@ -59,6 +59,7 @@ buyEvent.route('/')
                             console.log("Not found")
                             user.tickets.push({
                                 eventId: event._id,
+                                name: event.name,
                                 numberOfTickets: req.body.quantity
                             })
                         }

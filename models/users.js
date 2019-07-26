@@ -52,6 +52,7 @@ var UserSchema = new mongoose.Schema({
   }],
   tickets: [{
     eventId: mongoose.Schema.Types.ObjectId,
+    name: String,
     numberOfTickets: Number
   }],
   tokens: [{

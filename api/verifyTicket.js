@@ -17,8 +17,12 @@ verifyTicket.route('/')
                     res.statusCode = 404;
                     res.json({"message": "No Ticket Found"})
                 }
-                else
+                else{
                     user.tickets[i].numberOfTickets--;
+                    if(user.tickets[i].numberOfTickets == 0){
+                        user.tickets.splice(i, 1);
+                    }
+                }
                 break;
             }
         }

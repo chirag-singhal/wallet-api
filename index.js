@@ -61,6 +61,10 @@ const verifyTicket = require('./api/verifyTicket');
 const jwtEventVerify = require('./jwtVerifyEvents');
 const eventLogin = require('./api/loginEvent');
 const addEvent = require('./api/addEvent');
+const getTickets = require('./api/getTickets');
+
+
+
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
 
@@ -82,7 +86,7 @@ app.use('/verifyUser', verifyUser)
 app.use('/verifyOtp', verifyOtp)
 app.use('/changePassword', changePassword)
 app.use('/forgotPassword', forgotPassword)
-
+app.use('/getTickets', jwtVerify, getTickets)
 
 
 // ----------------------------------------------------Connect to Database--------------------------------------------------------------------
@@ -106,7 +110,7 @@ app.use('/getEventsForOwner', jwtEventVerify, getEventsForOwner);
 app.use('/addTempEvent', jwtEventVerify, addEventTemp);
 app.use('/addEvent', addEvent);
 app.use('/eventLogin', eventLogin);
-app.use('/verifyTicket', jwtVerify, verifyTicket)
+app.use('/verifyTicket', jwtEventVerify, verifyTicket)
 
 // ------------------------------------------------Update Password----------------------------------------------------------------
 app.use('/updatePassword', jwtVerify, updatePassword);
