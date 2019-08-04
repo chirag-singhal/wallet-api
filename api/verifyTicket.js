@@ -13,7 +13,7 @@ verifyTicket.route('/')
     Users.findOne({qrCode: req.body.qrCode}).then((user) => {
         for(var i = 0; i < user.tickets.length; i++){
             if(user.tickets[i].eventId == req.body.eventId){
-                if(!user.tickets[i].numberOfTickets > 0){
+                if(user.tickets[i].numberOfTickets < 1){
                     res.statusCode = 404;
                     res.json({"message": "No Ticket Found"})
                 }
