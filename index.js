@@ -62,7 +62,8 @@ const jwtEventVerify = require('./jwtVerifyEvents');
 const eventLogin = require('./api/loginEvent');
 const addEvent = require('./api/addEvent');
 const getTickets = require('./api/getTickets');
-
+const createWallet = require('./api/createWallet');
+const getBalance = require('./api/getBalance')
 
 
 const app = express()
@@ -78,7 +79,10 @@ const port = 3000
 app.use(express.json());
 app.use(morgan('dev'))
 
+//---------------------------------------------------I Kick--------------------------------------------------------------------
 
+app.use('/getBalance', getBalance)
+app.use('/createWallet', createWallet)
 
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 app.use('/auth', auth);

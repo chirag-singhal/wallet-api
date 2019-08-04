@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const wallet = express.Router()
 const Users = require('../models/users')
 wallet.use(bodyParser.json())
+const bcrypt = require('bcrypt');
 
 wallet.route('/')
 .post((req, res, next) => {
@@ -90,7 +91,8 @@ wallet.route('/')
                                     res.json({"message": "wallet  created"})
                                 })
                                 .catch((err) => next(err))
-                        } else {                            
+                        } else {    
+                                console.log("mo user found")                        
                                 Users.create({
                                     ...req.body,
                                     verified: true
@@ -110,3 +112,5 @@ wallet.route('/')
         res.end(err);
     });
 })
+
+module.exports = wallet
