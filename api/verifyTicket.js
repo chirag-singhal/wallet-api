@@ -33,7 +33,7 @@ verifyTicket.route('/')
                     console.log(eventOwner)
                     for(var i = 0; i < eventOwner.events.length; i++){
                         console.log("Find event")
-                        if(eventOwner.events[i].eventId == req.body.eventId){
+                        if(eventOwner.events[i]._id == req.body.eventId){
                             eventOwner.events[i].checkedIn++;
                             event.save().then(() => {
                                 res.statusCode = 200;
