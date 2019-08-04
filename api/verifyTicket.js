@@ -26,6 +26,7 @@ verifyTicket.route('/')
                 break;
             }
         }
+        user.markModified('tickets');
         console.log("ticket found")
         user.save().then((userSaved) => {
             console.log(userSaved);
