@@ -35,7 +35,7 @@ verifyTicket.route('/')
                         console.log("Find event")
                         if(eventOwner.events[i]._id == req.body.eventId){
                             eventOwner.events[i].checkedIn++;
-                            event.save().then(() => {
+                            eventOwner.save().then(() => {
                                 res.statusCode = 200;
                                 res.json({"message": "Successfull Check In"});
                             }).catch((err) => next(err))
