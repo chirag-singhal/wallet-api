@@ -29,9 +29,7 @@ verifyTicket.route('/')
         console.log("ticket found")
         user.save().then((userSaved) => {
             console.log(userSaved);
-            Events.findById(req.body.eventId).then((event) => {
-                console.log(event)
-                EventOwner.findById(event.eventOwner).then((eventOwner) => {
+                EventOwner.findById(req.user._id).then((eventOwner) => {
                     console.log(eventOwner)
                     for(var i = 0; i < eventOwner.events.length; i++){
                         console.log("Find event")
@@ -45,7 +43,6 @@ verifyTicket.route('/')
                     }
                 }).catch((err) => next(err))
             }).catch((err) => next(err))
-        }).catch((err) => next(err))
     }).catch((err) => {
         res.statusCode = 403;
         res.json(err)
