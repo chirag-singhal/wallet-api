@@ -9,7 +9,7 @@ const verifyTicket = express.Router();
 verifyTicket.use(bodyParser.json());
 
 verifyTicket.route('/')
-.post((req, res, next) => {
+.post(async (req, res, next) => {
     Users.findOne({qrCode: req.body.qrCode}).then((user) => {
         for(var i = 0; i < user.tickets.length; i++){
             if(user.tickets[i].eventId == req.body.eventId){
@@ -19,14 +19,18 @@ verifyTicket.route('/')
                 }
                 else{
                     user.tickets[i].numberOfTickets--;
-                    if(user.tickets[i].numberOfTickets == 0){
-                        user.tickets.splice(i, 1);
-                    }
+                    user.save().then(() => {
+                        if(user.tickets[i].numberOfTickets == 0){
+                            user.tickets.splice(i, 1);
+                            user.save().then((userSaved) => {
+                                console.log(userSaved)
+                            }).catch((err) => next(err))
+                        }
+                    }).catch((err) => next(err))
                 }
                 break;
             }
         }
-        user.markModified('tickets');
         console.log("ticket found")
         user.save().then((userSaved) => {
             console.log(userSaved);
