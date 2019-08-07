@@ -11,11 +11,10 @@ wallet.route('/')
     Users.findOne({email: req.body.email}).exec().then((user) => {
         if(user != null && !user.verified){
             console.log(user, "Not verified")
-            user.username = req.body.username
             user.contact = req.body.contact
             user.countrycode = req.body.countrycode
-            user.email = req.body.username
-            user.verified = true
+            user.email = req.body.email
+            user.verified = false
             bcrypt.hash(req.body.password, 10)
                 .then((hashedPassword) => {
                     console.log(hashedPassword)
