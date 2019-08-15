@@ -15,12 +15,6 @@ wallet.route('/')
             user.countrycode = req.body.countrycode
             user.email = req.body.email
             user.verified = false
-            bcrypt.hash(req.body.password, 10)
-                .then((hashedPassword) => {
-                    console.log(hashedPassword)
-                    user.password = hashedPassword;
-                })
-                .catch((err) => next(err))
                 user.save()
                 .then(() => {
                     console.log("saved")
@@ -57,11 +51,6 @@ wallet.route('/')
                             user.countrycode = req.body.countrycode
                             user.verified = true
                             user.email = req.body.username
-                            bcrypt.hash(req.body.password, 10)
-                                .then((hashedPassword) => {
-                                    user.password = hashedPassword;
-                                })
-                                .catch((err) => next(err))
                                 user.save()
                                 .then(() => {
                                     console.log("saved")
@@ -77,11 +66,6 @@ wallet.route('/')
                             user.countrycode = req.body.countrycode
                             user.verified = true
                             user.email = req.body.username
-                            bcrypt.hash(req.body.password, 10)
-                                .then((hashedPassword) => {
-                                    user.password = hashedPassword;
-                                })
-                                .catch((err) => next(err))
                                 user.save()
                                 .then(() => {
                                     console.log("saved")
