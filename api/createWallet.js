@@ -27,11 +27,6 @@ wallet.route('/')
             user.contact = req.body.contact
             user.countrycode = req.body.countrycode
             user.verified = true
-            bcrypt.hash(req.body.password, 10)
-                .then((hashedPassword) => {
-                    user.password = hashedPassword;
-                })
-                .catch((err) => next(err))
                 user.save()
                 .then(() => {
                     console.log("saved")
