@@ -13,7 +13,6 @@ wallet.route('/')
             console.log(user, "Not verified")
             user.contact = req.body.contact
             user.countrycode = req.body.countrycode
-            user.email = req.body.email
             user.verified = false
                 user.save()
                 .then(() => {
@@ -25,11 +24,9 @@ wallet.route('/')
                 .catch((err) => next(err))
         }
         else if(user != null) {
-            user.username = req.body.username
             user.contact = req.body.contact
             user.countrycode = req.body.countrycode
             user.verified = true
-            user.email = req.body.username
             bcrypt.hash(req.body.password, 10)
                 .then((hashedPassword) => {
                     user.password = hashedPassword;
@@ -46,11 +43,9 @@ wallet.route('/')
         } else {
                     Users.findOne({contact: req.body.contact}).exec().then((user) => {
                         if(user != null && !user.verified){
-                            user.username = req.body.username
                             user.contact = req.body.contact
                             user.countrycode = req.body.countrycode
                             user.verified = true
-                            user.email = req.body.username
                                 user.save()
                                 .then(() => {
                                     console.log("saved")
@@ -61,11 +56,9 @@ wallet.route('/')
                                 .catch((err) => next(err))
                         }
                         else if(user != null){
-                            user.username = req.body.username
                             user.contact = req.body.contact
                             user.countrycode = req.body.countrycode
                             user.verified = true
-                            user.email = req.body.username
                                 user.save()
                                 .then(() => {
                                     console.log("saved")
