@@ -1,34 +1,118 @@
 const User = require('../models/users');
-const IkcTransfer = require('../models/ikcTransfer')
+const shortid = require('shortid');
+const express = require('express')
+const bodyParser = require('body-parser')
+const Vendors = require('../models/eventOwner');
+const sendIkc = express.Router();
+sendIkc.use(bodyParser.json())
+sendIkc.route('/')
+    .post((req, res, next) => {
 
-const sendIkc = async (req, res) => {
-    await User.findByIdAndUpdate(req.user._id, {
-        $inc: -req.body.amount
-    });
+        User.findById(req.user._id).then((user) => {
+            if (user != null && user.amount > req.body.amount) {
+                console.log(user.amount)
+                User.findByIdAndUpdate(req.user._id, {
+                    $inc: { amount: -req.body.amount }
+                }).then((saved) => {
 
-    await User.findOneAndUpdate({ contact: req.body.to }, {
-        $inc: req.body.amount
-    });
-
-    const ikcTransfer = new IkcTransfer({
-        to: req.body.to,
-        amount: req.body.amount
-    });
-
-    await User.findByIdAndUpdate(req.user._id, {
-        $push: {
-            transactions: {
-                transactionId: shortid.generate(),
-                amount: -req.body.amount,
-                transactionStatus: 'TXN_SUCCESS',
-                paymentType: 'ikc',
-                detail: "Sent to " + req.body.to,
-                time: Date.now()
+                })
+                    .catch((err) => next(err))
             }
-        }
-    });
+            else {
+                throw new Error('Insufficient Balance')
+            }
+        }).catch((err) => next(err))
 
-    res.send("ikc successfully transferred!")
-}
+        User.findOne({ qrCode: req.body.qrCode }).then((user) => {
+
+            if (user) {
+                User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
+                    $inc: { amount: +req.body.amount }
+                }).then(() => {
+                    User.findByIdAndUpdate(req.user._id, {
+                        $push: {
+                            transactions: {
+                                transactionId: shortid.generate(),
+                                amount: -req.body.amount,
+                                transactionStatus: 'TXN_SUCCESS',
+                                paymentType: 'ikc',
+                                detail: "Sent to " + req.body.qrCode,
+                                time: Date.now()
+                            }
+                        }
+                    }).then(() => {
+                        User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
+                            $push: {
+                                transactions: {
+                                    transactionId: shortid.generate(),
+                                    amount: +req.body.amount,
+                                    transactionStatus: 'TXN_SUCCESS',
+                                    paymentType: 'ikc',
+                                    detail: "Received from " + req.user.contact,
+                                    time: Date.now()
+                                }
+                            }
+                        }).then(() => {
+                            console.log('saved')
+                            res.statusCode = 200;
+                            res.json({ "message": "ikc successfully transferred!" })
+                        }).catch((err) => next(err))
+                    }).catch((err) => next(err))
+                }).catch((err) => next(err))
+
+            }
+            else {
+                console.log('vendor')
+                console.log(req.body.qrCode)
+                Vendors.findOne({ qrCode: req.body.qrCode }).then((vendor) => {
+                    console.log(vendor)
+                    Vendors.findOneAndUpdate({ qrCode: req.body.qrCode }, {
+                        $inc: { totalEarnings: req.body.amount }
+                    }).then(() => {
+                        console.log(vendor.walletId)
+                        User.findById(vendor.walletId).then((user) => {
+                            console.log(user)
+                        })
+                        User.findByIdAndUpdate(req.user._id, {
+                            $push: {
+                                transactions: {
+                                    transactionId: shortid.generate(),
+                                    amount: -req.body.amount,
+                                    transactionStatus: 'TXN_SUCCESS',
+                                    paymentType: 'ikc',
+                                    detail: "Sent to " + req.body.qrCode,
+                                    time: Date.now()
+                                }
+                            }
+                        }).then(() => {
+                            User.findByIdAndUpdate(vendor.walletId, {
+                                $push: {
+                                    transactions: {
+                                        transactionId: shortid.generate(),
+                                        amount: +req.body.amount,
+                                        transactionStatus: 'TXN_SUCCESS',
+                                        paymentType: 'ikc',
+                                        detail: "Received from " + req.user.contact,
+                                        time: Date.now()
+                                    }
+                                }
+                            }).then(() => {
+                                User.findByIdAndUpdate(vendor.walletId, {
+                                    $inc: { amount: req.body.amount }
+                                }).then((user) => {
+                                    console.log(user);
+                                    res.statusCode = 200;
+                                    res.json({ "message": "ikc successfully transferred!" })
+                                }).catch((err) => next(err))
+                            }).catch((err) => next(err))
+                        }).catch((err) => next(err))
+                    }).catch((err) => next(err))
+                });
+            }
+        }).catch((err) => {
+            res.statusCode = 403;
+            res.json(err);
+        })
+    })
 
 module.exports = sendIkc

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Users = require('./users');
+const uuidv1 = require('uuid/v1');
 
 const eventSchema = new mongoose.Schema({
     eventId: {
@@ -56,11 +57,15 @@ const eventOwnerSchema = new mongoose.Schema({
     events: {
         type: [eventSchema]
     },
+    qrCode: {
+        type: String,
+        default: uuidv1()
+    },
     contact: {
         type: Number,
         required: true
     },
-    walletId : {
+    walletId: {
         type: mongoose.Schema.Types.ObjectId
     },
     totalEarnings: {
@@ -69,54 +74,54 @@ const eventOwnerSchema = new mongoose.Schema({
     },
     tokens: [{
         token: {
-          type: String
+            type: String
         }
-      }]
+    }]
 })
 
-eventOwnerSchema.methods.toJSON = function() {
+eventOwnerSchema.methods.toJSON = function () {
     const user = this;
     const userObject = user.toObject();
-  
+
     delete userObject.password;
     delete userObject.tokens;
-  
+
     return userObject;
-  }
+}
 
 eventOwnerSchema.pre('save', function (next) {
-    if(this.isNew){
-      var eventOwner = this;
-      bcrypt.hash(eventOwner.password, 10, function (err, hash){
-        if (err) {
-          return next(err);
-        }
-        Users.findOne({"contact": eventOwner.contact}).then((eventVendor) => {
-            if(eventVendor == null) {
-                Users.create({
-                    username: eventOwner.username,
-                    password: hash,
-                    verified: true,
-                    contact: eventOwner.contact
-                }).then((user) => {
-                    eventOwner.walletId = user._id;
-                    eventOwner.password = hash;
-                    next();
-                })
-                .catch((err) => next(err))
-            } else {
-                eventVendor.username = eventOwner.username;
-                eventVendor.password = hash;
-                eventVendor.verified = true;
-                eventVendor.save().then((eventVendorSaved) => {
-                    console.log(eventVendorSaved)
-                }).catch((err) => next(err))
+    if (this.isNew) {
+        var eventOwner = this;
+        bcrypt.hash(eventOwner.password, 10, function (err, hash) {
+            if (err) {
+                return next(err);
             }
+            Users.findOne({ "contact": eventOwner.contact }).then((eventVendor) => {
+                if (eventVendor == null) {
+                    Users.create({
+                        username: eventOwner.username,
+                        password: hash,
+                        verified: true,
+                        contact: eventOwner.contact
+                    }).then((user) => {
+                        eventOwner.walletId = user._id;
+                        eventOwner.password = hash;
+                        next();
+                    })
+                        .catch((err) => next(err))
+                } else {
+                    eventVendor.username = eventOwner.username;
+                    eventVendor.password = hash;
+                    eventVendor.verified = true;
+                    eventVendor.save().then((eventVendorSaved) => {
+                        console.log(eventVendorSaved)
+                    }).catch((err) => next(err))
+                }
+            })
         })
-      })
-    } 
+    }
     else next();
-  });
+});
 
 var EventOwner = mongoose.model('EventOwner', eventOwnerSchema);
 module.exports = EventOwner;

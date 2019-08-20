@@ -63,7 +63,7 @@ const eventLogin = require('./api/loginEvent');
 const addEvent = require('./api/addEvent');
 const getTickets = require('./api/getTickets');
 const createWallet = require('./api/createWallet');
-const getBalance = require('./api/getBalance')
+const getBalance = require('./api/getBalance');
 
 
 const app = express()
@@ -274,9 +274,7 @@ app.post("/addToWalletResponse", jwtVerify, (req, res) => {
     );
 });
 
-app.post("/sendIkc",jwtVerify, (req, res) => {
-    sendIkc(req, res);
-});
+app.use('/sendIkc', jwtVerify, sendIkc);
 
 
 
