@@ -14,10 +14,12 @@ const sendOTP = (contact, countrycode, callback) => {
         let data = '';
         resp.on('data', (chunk) => {
             data += chunk;
-
-            Otp.findOne({contact: contact}).exec()
+            console.log(contact)
+            Otp.findOne({"contact": contact})
             .then((OTP) => {
                 if(OTP != null){
+                    console.log("FOUND OTP");
+                    
                     OTP.otp = otp
                     OTP.save()
                     .then(() => {
@@ -30,6 +32,8 @@ const sendOTP = (contact, countrycode, callback) => {
                     })
                 }
                 else{
+                    console.log("OTP CREATED");
+                    
                     Otp.create({
                         "contact": contact,
                         "otp": otp
@@ -49,7 +53,7 @@ const sendOTP = (contact, countrycode, callback) => {
                 callback(false)
             })
             
-          });
+          })
         
         resp.on('end', () => {
             console.log(JSON.parse(data));
