@@ -9,7 +9,7 @@ balance.use(bodyParser.json())
 const apiKey = 'dnjskfnjksj32i@32opo'
 
 balance.route('/')
-.get((req, res, next) => {
+.post((req, res, next) => {
     if(req.query.key == apiKey){
         Users.findOne({contact: req.body.contact}).exec()
         .then((user) => {
