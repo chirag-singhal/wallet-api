@@ -48,19 +48,19 @@ changePassword.route('/')
                                     else {
                                         res.statusCode = 403;
                                         res.setHeader('Content-Type', 'application/json');
-                                        res.json({ message: "Token Expired" });
+                                        res.json({"message": "Token Expired" });
                                     }
                                 }
                                 else {
                                     res.statusCode = 403;
                                     res.setHeader('Content-Type', 'application/json');
-                                    res.end("Token not found");
+                                    res.json({"message": "Token not found"});
                                 }
                             }
                             else {
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
-                                res.end("User not found");
+                                res.json({"message": "User not found"});
                             }
                         })
                 })
@@ -74,7 +74,7 @@ changePassword.route('/')
         else {
             res.statusCode = 403;
             res.setHeader('Content-Type', 'application/json');
-            res.end("Missing Fields");
+            res.json({"message": "Missing Fields"});
         }
     })
 

@@ -11,62 +11,73 @@ const rechargePending = express.Router();
 rechargePending.use(bodyParser.json());
 
 rechargePending.route('/')
-.get((req, res, next) => {
-    const userId = req.query.client_id
-    const refCode = req.query.operator_id
-    const status = req.query.status
+    .get((req, res, next) => {
+        let amount;
+        const userId = req.query.client_id
+        const refCode = req.query.operator_id
+        const status = req.query.status
+        User.findById(userId).then((user) => {
+            if (user != null) {
+                for (transaction of user.transactions)
+                    if (transaction.transactionId == refCode)
+                        amount = transaction.amount;
 
-    if(resp.status === 'success') {
-        User.findByIdAndUpdate(req.user._id, {
-            $push: {
-                transactions: {
-                    transactionId: resp.operator_ref,
-                    amount: req.body.amount,
-                    transactionStatus: 'TXN_SUCCESS',
-                    paymentType: 'ikc',
-                    detail: "Recharged " + req.body.amount +' ' + req.body.number,
-                    time: Date.now()
+                if (status === 'success') {
+                    User.findByIdAndUpdate(userId, {
+                        $push: {
+                            transactions: {
+                                transactionId: refCode,
+                                amount: amount,
+                                transactionStatus: 'TXN_SUCCESS',
+                                paymentType: 'ikc',
+                                detail: "Recharged ",
+                                time: Date.now()
+                            }
+                        }
+                    })
+                        .then(() => {
+                            res.statusCode = 200;
+                            res.json({ "message": "Recharge Successfull" });
+                        })
+                        .catch((err) => next(err))
+
+                } else if (status === 'failure') {
+                    User.findByIdAndUpdate(userId, {
+                        $inc: {
+                            amount: +amount
+                        }
+                    })
+                        .then(() => {
+                            User.findByIdAndUpdate(userId, {
+                                $push: {
+                                    transactions: {
+                                        transactionId: refCode,
+                                        amount: amount,
+                                        transactionStatus: 'TXN_FAILURE',
+                                        paymentType: 'ikc',
+                                        detail: "Refund for Recharge ",
+                                        time: Date.now()
+                                    }
+                                }
+                            })
+                                .then(() => {
+                                    res.statusCode = 403;
+                                    res.json({ "message": "Recharge Unsuccessfull" });
+                                })
+                                .catch((err) => next(err))
+                        })
+                        .catch((err) => {
+                            res.statusCode = 403
+                            res.json(err);
+                        })
                 }
             }
-        })
-        .then(() => {
-            res.statusCode = 200;
-            res.json({"message": "Recharge Successfull"});
-        })
-        .catch((err) => next(err))
-        
-    } else if(resp.status === 'failure') {
-        User.findByIdAndUpdate(req.user._id, {
-            $inc: {
-                amount: +req.body.amount
-            }
-        })
-        .then(() => {
-            User.findByIdAndUpdate(req.user._id, {
-                $push: {
-                    transactions: {
-                        transactionId: resp.operator_ref,
-                        amount: req.body.amount,
-                        transactionStatus: 'TXN_FAILURE',
-                        paymentType: 'ikc',
-                        detail: "Refund for Recharge " + req.body.amount +' ' + req.body.number,
-                        time: Date.now()
-                    }
-                }
-            })
-            .then(() => {
+            else {
                 res.statusCode = 403;
-                res.json({"message": "Recharge Unsuccessfull"});
-            })
-            .catch((err) => next(err))
+                res.json({ "message": "User not found" });
+            }
         })
-        .catch((err) => {
-            res.statusCode = 403
-            res.json(err);
-        })
-        
-    }
 
-})
+    })
 
 module.exports = rechargePending

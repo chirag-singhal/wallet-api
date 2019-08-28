@@ -15,7 +15,7 @@ forgotPassword.route('/')
             Users.findOne({ contact: req.body.contact })
                 .then((user) => {
                     const token = crypto.randomBytes(32).toString('hex')
-                    if (user != null) {
+                    if (user != null && user.verified) {
                         console.log(user)
                         resetPassword.findOne({ contact: req.body.contact })
                             .then((reset) => {
@@ -69,7 +69,7 @@ forgotPassword.route('/')
         else {
             res.statusCode = 403;
             res.setHeader('Content-Type', 'application/json');
-            res.end({ "messgae": "Missing Fields" });
+            res.json({ "messgae": "Missing Fields" });
         }
     })
 

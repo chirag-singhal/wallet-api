@@ -74,6 +74,9 @@ const ShopingOrderSchema = new mongoose.Schema({
     amount: {
         type: Number
     },
+    quantity: {
+        type: Number
+    },
     orderDate: {
         type: Number,
         default: Date.now()

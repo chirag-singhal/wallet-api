@@ -14,7 +14,7 @@ updateProfile.route('/')
         .then((user) => {
             Users.findOne({email: req.body.email})
             .then((user2) => {
-                if(user2 == null || req.user.email == req.user.email){
+                if(user2 == null || req.user.email == req.body.email){
                     Users.findOne({username: req.body.username})
                     .then((user2) => {
                         if(user2 == null || req.body.username == req.user.username){

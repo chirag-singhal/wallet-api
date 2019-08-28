@@ -17,11 +17,11 @@ const buyWithIkc = async (req, res) => {
     const product = await subCategory.products.id(req.body.productId);
 
     if(req.body.quantity > product.stock) {
-        return res.status(500).send("The quantity of " + cartProduct.title + " is currently out of stock!");
+        return res.status(403).json({"message": "The quantity of " + cartProduct.title + " is currently out of stock!"});
     }
 
     if((req.body.quantity * product.ikcPrice) > req.user.amount) {
-        return res.status(500).send("Not enough ikc balance!");
+        return res.status(403).json({"message": "Not enough ikc balance!"});
     }
 
     const shopAndEarnOrder = new ShopAndEarnOrder({
@@ -47,8 +47,8 @@ const buyWithIkc = async (req, res) => {
         }
     });
 
-    product.stock -= 1;
-    product.noOfStockSold += 1;
+    product.stock -= req.body.quantity;
+    product.noOfStockSold += req.body.quantity;
     await shopAndEarnCategory.save();
     await User.findByIdAndUpdate(req.user._id, {
         $push: {

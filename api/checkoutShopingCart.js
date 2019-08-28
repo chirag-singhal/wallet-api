@@ -42,6 +42,7 @@ const checkoutShopingCart = async (req, res) => {
         const shopingOrder = new ShopingOrder({
             userId: req.user._id,
             product: cartProduct,
+            quantity: cartProduct.quantity,
             diliveryAddress: diliveryAddress,
             amount: cartProduct.quantity * cartProduct.price
         });
@@ -60,7 +61,8 @@ const checkoutShopingCart = async (req, res) => {
             }
         });
 
-        product.stock -= 1;
+        product.stock -= cartProduct.quantity;
+        product.noOfStockSold += cartProduct.quantity;
         await shopingCategory.save();
 
 

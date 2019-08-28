@@ -121,7 +121,7 @@ app.use('/updatePassword', jwtVerify, updatePassword);
 
 app.use('/recharge', jwtVerify, recharge);
 
-app.use('rechargePending', rechargePending);
+app.use('/rechargePending', rechargePending);
 
 // ------------------------------------------------Update Profile----------------------------------------------------------------
 app.use('/updateProfile', jwtVerify, updateProfile);
@@ -264,7 +264,7 @@ app.post("/addTOWallet", jwtVerify, (req, res) => {
 app.post("/addToWalletResponse", jwtVerify, (req, res) => {
     responseAdd(req).then(
         success => {
-            res.json({message: success});
+            res.json({"message": success});
         },
         error => {
             res.json({"message": error});
