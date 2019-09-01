@@ -191,10 +191,10 @@ auth.route('/signup').post((req, res, next) => {
                                 const authkey = '10703APwDdCpscSPz5c43753d';
                                 const body = `Your otp to register in IKC is :  ${otp}`;
                                 const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${req.body.contact},${req.body.countrycode}${req.body.contact}&message=${body}&sender=${sender}&route=4&response=json`;
-                                https.get(url,{rejectUnauthorized:false}, (resp) => {
-                                    let data = '';
-                                    resp.on('data', (chunk) => {
-                                        data += chunk;
+                                // https.get(url,{rejectUnauthorized:false}, (resp) => {
+                                //     let data = '';
+                                //     resp.on('data', (chunk) => {
+                                //         data += chunk;
                                             Otp.create({
                                                 "contact": req.body.contact,
                                                 "otp": otp
@@ -212,15 +212,15 @@ auth.route('/signup').post((req, res, next) => {
                                                     res.json(user);
                                                 })
                                             }).catch((err) => next(err))
-                                    });
+                                //     });
 
-                                    resp.on('end', () => {
-                                        console.log(JSON.parse(data));
-                                    });
-                                }).on("error", (err) => {
-                                    console.log("Error: " + err.message);
-                                    next(err);
-                                });
+                                //     resp.on('end', () => {
+                                //         console.log(JSON.parse(data));
+                                //     });
+                                // }).on("error", (err) => {
+                                //     console.log("Error: " + err.message);
+                                //     next(err);
+                                // });
                             }
                         });
                     }

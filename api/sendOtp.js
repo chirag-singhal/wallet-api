@@ -10,10 +10,10 @@ const sendOTP = (contact, countrycode, callback) => {
     const body = `Your otp to register in IKC is :  ${otp}`
     const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${contact},${countrycode}${contact}&message=${body}&sender=${sender}&route=4&response=json`
 
-    https.get(url,{rejectUnauthorized:false}, (resp) => {
-        let data = '';
-        resp.on('data', (chunk) => {
-            data += chunk;
+    // https.get(url,{rejectUnauthorized:false}, (resp) => {
+    //     let data = '';
+    //     resp.on('data', (chunk) => {
+    //         data += chunk;
             console.log(contact)
             Otp.findOne({"contact": contact})
             .then((OTP) => {
@@ -53,16 +53,16 @@ const sendOTP = (contact, countrycode, callback) => {
                 callback(false)
             })
             
-          })
+    //       })
         
-        resp.on('end', () => {
-            console.log(JSON.parse(data));
-        });
-    })
-    .on("error", (err) => {
-        console.log("Error: " + err.message);
-        callback(false)
-    });
+    //     resp.on('end', () => {
+    //         console.log(JSON.parse(data));
+    //     });
+    // })
+    // .on("error", (err) => {
+    //     console.log("Error: " + err.message);
+    //     callback(false)
+    // });
 }
 
 module.exports = sendOTP
