@@ -29,6 +29,8 @@ rechargePending.route('/')
                                 transactionId: refCode,
                                 amount: amount,
                                 transactionStatus: 'TXN_SUCCESS',
+                                name: 'RECHARGE',
+                                contact: user.contact,
                                 paymentType: 'ikc',
                                 detail: "Recharged ",
                                 time: Date.now()
@@ -53,6 +55,8 @@ rechargePending.route('/')
                                     transactions: {
                                         transactionId: refCode,
                                         amount: amount,
+                                        name: 'REFUND',
+                                        contact: user.contact,
                                         transactionStatus: 'TXN_FAILURE',
                                         paymentType: 'ikc',
                                         detail: "Refund for Recharge ",

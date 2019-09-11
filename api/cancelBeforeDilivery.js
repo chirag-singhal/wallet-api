@@ -32,7 +32,8 @@ const cancelBeforeDilivery = async (req, res) => {
     if(order.isCancelledBeforeDilivery) {
         return res.send("Product already been cancelled!")
     }
-
+    const user = await User.findById(req.user._id);
+    
     await User.findByIdAndUpdate(req.user._id, {
         $inc: {
             'amount': order.amount
@@ -72,6 +73,8 @@ const cancelBeforeDilivery = async (req, res) => {
                     transactionId: shortid.generate(),
                     transactionStatus: 'TXN_SUCCESS',
                     amount: order.amount,
+                    name: 'REFUND',
+                    contact: user.contact,
                     paymentType: 'ikc',
                     detail: "Refund for " + order.product.title,
                     time: Date.now()

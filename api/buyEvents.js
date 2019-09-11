@@ -28,6 +28,8 @@ buyEvent.route('/')
                         user.transactions.push({
                             transactionId: shortid.generate(),
                             amount: price,
+                            name: 'EVENTS',
+                            contact: user.contact,
                             transactionStatus: 'TXN_SUCCESS',
                             paymentType: 'ikc',
                             detail: "Bought Event Ticket" + event.name + ' quantity ' + req.body.quantity,
@@ -38,6 +40,8 @@ buyEvent.route('/')
                         eventOwnerWallet.transactions.push({
                             transactionId: shortid.generate(),
                             amount: price,
+                            name: 'EVENTS',
+                            contact: user.contact,
                             transactionStatus: 'TXN_SUCCESS',
                             paymentType: 'ikc',
                             detail: "Sold Event Ticket" + event.name + ' quantity ' + req.body.quantity,

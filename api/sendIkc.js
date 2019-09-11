@@ -35,6 +35,8 @@ sendIkc.route('/')
                                 transactionId: shortid.generate(),
                                 amount: -req.body.amount,
                                 transactionStatus: 'TXN_SUCCESS',
+                                name: user.name,
+                                contact: user.contact,
                                 paymentType: 'ikc',
                                 detail: "Sent to " + req.body.qrCode,
                                 time: Date.now()
@@ -47,6 +49,8 @@ sendIkc.route('/')
                                     transactionId: shortid.generate(),
                                     amount: +req.body.amount,
                                     transactionStatus: 'TXN_SUCCESS',
+                                    name: req.user.name,
+                                    contact: req.user.contact,
                                     paymentType: 'ikc',
                                     detail: "Received from " + req.user.contact,
                                     time: Date.now()
@@ -79,6 +83,8 @@ sendIkc.route('/')
                                     transactionId: shortid.generate(),
                                     amount: -req.body.amount,
                                     transactionStatus: 'TXN_SUCCESS',
+                                    name: user.name,
+                                    contact: user.contact,
                                     paymentType: 'ikc',
                                     detail: "Sent to " + req.body.qrCode,
                                     time: Date.now()
@@ -91,6 +97,8 @@ sendIkc.route('/')
                                         transactionId: shortid.generate(),
                                         amount: +req.body.amount,
                                         transactionStatus: 'TXN_SUCCESS',
+                                        name: req.user.name,
+                                        contact: req.user.contact,
                                         paymentType: 'ikc',
                                         detail: "Received from " + req.user.contact,
                                         time: Date.now()

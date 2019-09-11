@@ -63,7 +63,8 @@ const addEvent = require('./api/addEvent');
 const getTickets = require('./api/getTickets');
 const createWallet = require('./api/createWallet');
 const getBalance = require('./api/getBalance');
-
+const dthRecharge = require('./api/dth');
+const send = require('./api/send');
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -120,6 +121,7 @@ app.use('/updatePassword', jwtVerify, updatePassword);
 //----------------------------------------------------Recharge--------------------------------------------------------------------
 
 app.use('/recharge', jwtVerify, recharge);
+app.use('/dthRecharge', jwtVerify, dthRecharge);
 
 app.use('/rechargePending', rechargePending);
 
@@ -273,7 +275,7 @@ app.post("/addToWalletResponse", jwtVerify, (req, res) => {
 });
 
 app.use('/sendIkc', jwtVerify, sendIkc);
-
+app.use('/send', jwtVerify, send);
 
 
 // ----------------------------------------------------Auction Request-------------------------------------------------------------------------

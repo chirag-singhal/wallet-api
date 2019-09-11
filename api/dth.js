@@ -7,13 +7,13 @@ const User = require('../models/users')
 
 const api_token = 'y8mRIylfHInNtopxM0ZHuKbCWGlWryTKtPFCvcOe5LVXMJYunXp74eoflPdN'
 
-const recharge = express.Router();
+const dth = express.Router();
 
-recharge.use(bodyParser.json());
+dth.use(bodyParser.json());
 
-recharge.route('/')
+dth.route('/')
 .post((req, res, next) => {
-    const url = `https://www.pay2all.in/web-api/paynow?api_token=${api_token}&number=${req.body.number}&provider_id=${req.body.provider_id}&amount=${req.body.amount}&client_id=${req.user._id}`
+    const url = `https://www.pay2all.in/web-api/paynow?api_token=${api_token}&number=${req.user.contact}&provider_id=${req.body.provider_id}&amount=${req.body.amount}&client_id=${req.body.client_id}`
     https.get(url,{rejectUnauthorized:false}, (resp) => {
         let data = '';
         resp.on('data', (chunk) => {
@@ -33,9 +33,9 @@ recharge.route('/')
                             transactionId: data.operator_ref,
                             amount: req.body.amount,
                             transactionStatus: 'TXN_SUCCESS',
-                            paymentType: 'ikc',
-                            name: 'RECHARGE',
+                            name: 'DTH',
                             contact: req.user.contact,
+                            paymentType: 'ikc',
                             detail: "Refund for Recharge " + req.body.amount +' ' + req.body.number,
                             time: Date.now()
                         }
@@ -58,9 +58,9 @@ recharge.route('/')
                     transactions: {
                         transactionId: data.operator_ref,
                         amount: req.body.amount,
-                        name: 'RECHARGE',
-                        contact: req.user.contact,
                         transactionStatus: 'TXN_FAILURE',
+                        name: 'DTH',
+                        contact: req.user.contact,
                         paymentType: 'ikc',
                         detail: "Recharged " + req.body.amount +' ' + req.body.number,
                         time: Date.now()
@@ -88,9 +88,9 @@ recharge.route('/')
                         transactions: {
                             transactionId: data.operator_ref,
                             amount: req.body.amount,
-                            transactionStatus: 'TXN_PENDING',
-                            name: 'RECHARGE',
+                            name: 'DTH',
                             contact: req.user.contact,
+                            transactionStatus: 'TXN_PENDING',
                             paymentType: 'ikc',
                             detail: "Refund for Recharge " + req.body.amount +' ' + req.body.number,
                             time: Date.now()
@@ -119,4 +119,4 @@ recharge.route('/')
     });
 })
 
-module.exports = recharge
+module.exports = dth

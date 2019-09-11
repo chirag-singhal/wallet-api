@@ -56,6 +56,8 @@ const buyWithIkc = async (req, res) => {
                 transactionId: shortid.generate(),
                 transactionStatus: 'TXN_SUCCESS',
                 amount: -(req.body.quantity * product.ikcPrice),
+                name: 'SHOPPING',
+                contact: user.contact,
                 paymentType: 'ikc',
                 detail: "Bought " + product.title,
                 time: Date.now()
