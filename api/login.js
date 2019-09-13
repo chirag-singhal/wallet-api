@@ -86,7 +86,7 @@ auth.route('/login').post((req, res, next) => {
 auth.route('/signup').post((req, res, next) => {
     if (req.body.email && req.body.username && req.body.password && req.body.countrycode && req.body.contact) {
 
-        Users.findOne({email: req.body.email}).exec().then((user) => {
+        Users.findOne({email: req.body.email}).then((user) => {
             if(user != null && !user.verified){
                 console.log(user, "Not verified")
                 user.username = req.body.username
@@ -121,7 +121,7 @@ auth.route('/signup').post((req, res, next) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.end("User already exits");
             } else {
-                Users.findOne({username: req.body.username}).exec().then((user) => {
+                Users.findOne({username: req.body.username}).then((user) => {
                     if(user != null && !user.verified){
                         user.username = req.body.username
                         user.contact = req.body.contact
@@ -153,7 +153,7 @@ auth.route('/signup').post((req, res, next) => {
                         res.setHeader('Content-Type', 'application/json');
                         res.json({"message": "User already exits"});
                     } else {
-                        Users.findOne({contact: req.body.contact}).exec().then((user) => {
+                        Users.findOne({contact: req.body.contact}).then((user) => {
                             if(user != null && !user.verified){
                                 user.username = req.body.username
                                 user.contact = req.body.contact
