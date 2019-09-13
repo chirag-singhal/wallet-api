@@ -86,28 +86,33 @@ auth.route('/login').post((req, res, next) => {
 
 auth.route('/signup').post(async (req, res, next) => {
     if (req.body.email && req.body.username && req.body.password && req.body.countrycode && req.body.contact) {
-        const user = await Users.findOne({ email: req.body.email });
+        const user1 = await Users.findOne({ email: req.body.email });
+        const user2 = await Users.findOne({ username: req.body.username });
+        const user3 = await Users.findOne({ contact: req.body.contact });
+        console.log(user1);
+        console.log(user2);
+        console.log(user3);
         Users.findOne({ email: req.body.email }).then(async () => {
-            if (user != null && !user.verified) {
-                console.log(user, "Not verified")
-                user.username = req.body.username
-                user.contact = req.body.contact
-                user.countrycode = req.body.countrycode
-                user.email = req.body.email
+            if (user1 != null && !user1.verified) {
+                console.log(user1, "Not verified")
+                user1.username = req.body.username
+                user1.contact = req.body.contact
+                user1.countrycode = req.body.countrycode
+                user1.email = req.body.email
                 bcrypt.hash(req.body.password, 10)
                     .then((hashedPassword) => {
                         console.log(hashedPassword)
-                        user.password = hashedPassword;
+                        user1.password = hashedPassword;
                     })
                     .catch((err) => next(err))
-                user.save()
+                user1.save()
                     .then(() => {
                         console.log("saved")
-                        sendOtp(user.contact, user.countrycode, (result) => {
+                        sendOtp(user1.contact, user1.countrycode, (result) => {
                             if (result) {
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'application/json');
-                                res.json(user)
+                                res.json(user1)
                             } else {
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
@@ -117,31 +122,30 @@ auth.route('/signup').post(async (req, res, next) => {
                     })
                     .catch((err) => next(err))
             }
-            else if (user != null) {
+            else if (user1 != null) {
                 res.statusCode = 403;
                 res.setHeader('Content-Type', 'application/json');
                 res.json({ "message": "User already exits" });
             } else {
-                const user = await Users.findOne({ username: req.body.username });
                 Users.findOne({ username: req.body.username }).then(async () => {
-                    if (user != null && !user.verified) {
+                    if (user2 != null && !user2.verified) {
                         console.log("same username")
-                        user.username = req.body.username
-                        user.contact = req.body.contact
-                        user.countrycode = req.body.countrycode
-                        user.email = req.body.email
+                        user2.username = req.body.username
+                        user2.contact = req.body.contact
+                        user2.countrycode = req.body.countrycode
+                        user2.email = req.body.email
                         bcrypt.hash(req.body.password, 10)
                             .then((hashedPassword) => {
-                                user.password = hashedPassword;
+                                user2.password = hashedPassword;
                             })
                             .catch((err) => next(err))
-                        user.save()
+                        user2.save()
                             .then(() => {
-                                sendOtp(user.contact, user.countrycode, (result) => {
+                                sendOtp(user2.contact, user2.countrycode, (result) => {
                                     if (result) {
                                         res.statusCode = 200;
                                         res.setHeader('Content-Type', 'application/json');
-                                        res.json(user)
+                                        res.json(user2)
                                     } else {
                                         res.statusCode = 403;
                                         res.setHeader('Content-Type', 'application/json');
@@ -151,32 +155,31 @@ auth.route('/signup').post(async (req, res, next) => {
                             })
                             .catch((err) => next(err))
                     }
-                    else if (user != null) {
+                    else if (user2 != null) {
                         res.statusCode = 403;
                         res.setHeader('Content-Type', 'application/json');
                         res.json({ "message": "User already exits" });
                     } else {
-                        const user = await Users.findOne({ contact: req.body.contact });
-                        console.log(user)
+                        console.log(user1)
                         Users.findOne({ contact: req.body.contact }).then(() => {
-                            if (user != null && !user.verified) {
+                            if (user3 != null && !user3.verified) {
                                 console.log("same contact")
-                                user.username = req.body.username
-                                user.contact = req.body.contact
-                                user.countrycode = req.body.countrycode
-                                user.email = req.body.email
+                                user3.username = req.body.username
+                                user3.contact = req.body.contact
+                                user3.countrycode = req.body.countrycode
+                                user3.email = req.body.email
                                 bcrypt.hash(req.body.password, 10)
                                     .then((hashedPassword) => {
-                                        user.password = hashedPassword;
+                                        user3.password = hashedPassword;
                                     })
                                     .catch((err) => next(err))
-                                user.save()
+                                user3.save()
                                     .then(() => {
-                                        sendOtp(user.contact, user.countrycode, (result) => {
+                                        sendOtp(user3.contact, user3.countrycode, (result) => {
                                             if (result) {
                                                 res.statusCode = 200;
                                                 res.setHeader('Content-Type', 'application/json');
-                                                res.json(user)
+                                                res.json(user3)
                                             } else {
                                                 res.statusCode = 403;
                                                 res.setHeader('Content-Type', 'application/json');
@@ -186,7 +189,7 @@ auth.route('/signup').post(async (req, res, next) => {
                                     })
                                     .catch((err) => next(err))
                             }
-                            else if (user != null) {
+                            else if (user3 != null) {
                                 console.log(user);
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
