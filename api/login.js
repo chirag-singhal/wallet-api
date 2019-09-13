@@ -195,6 +195,7 @@ auth.route('/signup').post((req, res, next) => {
                                 //     let data = '';
                                 //     resp.on('data', (chunk) => {
                                 //         data += chunk;
+                                console.log(req.body.contact,"CHeck");
                                             Otp.create({
                                                 "contact": req.body.contact,
                                                 "otp": otp
