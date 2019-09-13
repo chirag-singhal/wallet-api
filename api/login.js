@@ -23,7 +23,7 @@ auth.route('/login').post((req, res, next) => {
             if(user == null) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
-                res.end("User not exits");
+                res.json({"message": "User not exits"});
             } else if(!user.verified) {
                 sendOtp(user.contact, user.countrycode, (result) =>{
                     if(result){
@@ -33,7 +33,7 @@ auth.route('/login').post((req, res, next) => {
                     } else {
                         res.statusCode = 403;
                         res.setHeader('Content-Type', 'application/json');
-                        res.end("Something went wrong")
+                        res.json({"message": "Something went wrong"});
                     }
                 })
 
@@ -65,7 +65,7 @@ auth.route('/login').post((req, res, next) => {
                     else{
                         res.statusCode = 403;
                         res.setHeader('Content-Type', 'application/json');
-                        res.end("Incorrect Password");
+                        res.json({"message": "Incorrect Password"});
                     }
                 })
                 .catch((err) => next(err));
@@ -75,11 +75,11 @@ auth.route('/login').post((req, res, next) => {
             console.log(err);
             res.statusCode = 403;
             res.setHeader('Content-Type', 'application/json');
-            res.end(err);})
+            res.json(err);})
     } else {
         res.statusCode = 403;
         res.setHeader('Content-Type', 'application/json');
-        res.end("Missing Fields");
+        res.json({"message": "Missing Fields"});
     }
 });
 
@@ -110,7 +110,7 @@ auth.route('/signup').post((req, res, next) => {
                             } else {
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
-                                res.end("Something went wrong")
+                                res.json({"message": "Something went wrong"});
                             }
                         })
                     })
@@ -119,7 +119,7 @@ auth.route('/signup').post((req, res, next) => {
             else if(user != null) {
                 res.statusCode = 403;
                 res.setHeader('Content-Type', 'application/json');
-                res.end("User already exits");
+                res.json({"message": "User already exits"});
             } else {
                 Users.findOne({username: req.body.username}).then((user) => {
                     if(user != null && !user.verified){
@@ -142,7 +142,7 @@ auth.route('/signup').post((req, res, next) => {
                                 } else {
                                     res.statusCode = 403;
                                     res.setHeader('Content-Type', 'application/json');
-                                    res.end("Something went wrong")
+                                    res.json({"message": "Something went wrong"});
                                 }
                             })
                         })
@@ -174,7 +174,7 @@ auth.route('/signup').post((req, res, next) => {
                                             } else {
                                                 res.statusCode = 403;
                                                 res.setHeader('Content-Type', 'application/json');
-                                                res.end("Something went wrong")
+                                                res.json({"message": "Something went wrong"});
                                             }
                                         })
                                     })
@@ -184,7 +184,7 @@ auth.route('/signup').post((req, res, next) => {
                                 console.log(user);
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
-                                res.end("User already exits");
+                                res.json({"message": "User already exits"});
                             } else {
                                 const otp = Math.floor(100000 + Math.random() * 900000)
                                 const sender = 'ikcdel';
@@ -231,12 +231,12 @@ auth.route('/signup').post((req, res, next) => {
             console.log(err);
             res.statusCode = 403;
             res.setHeader('Content-Type', 'application/json');
-            res.end(err);
+            res.json({"message": "Something went wrong"});
         });
     } else {
         res.statusCode = 403;
         res.setHeader('Content-Type', 'application/json');
-        res.end("Missing Fields");
+        res.json({"message": "Missing Fields"});
     }
 });
 
