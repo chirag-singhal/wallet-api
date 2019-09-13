@@ -18,7 +18,7 @@ auth.use(bodyParser.json());
 
 auth.route('/login').post((req, res, next) => {
     if (req.body.contact && req.body.password) {
-        Users.findOne({ contact: req.body.contact }).exec()
+        Users.findOne({ contact: req.body.contact })
             .then((user) => {
                 if (user == null) {
                     res.statusCode = 404;
@@ -84,10 +84,10 @@ auth.route('/login').post((req, res, next) => {
     }
 });
 
-auth.route('/signup').post((req, res, next) => {
+auth.route('/signup').post(async (req, res, next) => {
     if (req.body.email && req.body.username && req.body.password && req.body.countrycode && req.body.contact) {
-
-        Users.findOne({ email: req.body.email }).then((user) => {
+        const user = await Users.findOne({ email: req.body.email });
+        Users.findOne({ email: req.body.email }).then(async () => {
             if (user != null && !user.verified) {
                 console.log(user, "Not verified")
                 user.username = req.body.username
@@ -122,7 +122,8 @@ auth.route('/signup').post((req, res, next) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.json({ "message": "User already exits" });
             } else {
-                Users.findOne({ username: req.body.username }).then((user) => {
+                const user = await Users.findOne({ username: req.body.username });
+                Users.findOne({ username: req.body.username }).then(async () => {
                     if (user != null && !user.verified) {
                         console.log("same username")
                         user.username = req.body.username
@@ -155,7 +156,9 @@ auth.route('/signup').post((req, res, next) => {
                         res.setHeader('Content-Type', 'application/json');
                         res.json({ "message": "User already exits" });
                     } else {
-                        Users.findOne({ contact: req.body.contact }).then((user) => {
+                        const user = await Users.findOne({ contact: req.body.contact });
+                        console.log(user)
+                        Users.findOne({ contact: req.body.contact }).then(() => {
                             if (user != null && !user.verified) {
                                 console.log("same contact")
                                 user.username = req.body.username
