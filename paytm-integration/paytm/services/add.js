@@ -83,6 +83,8 @@ const responseAdd = function(req) {
                 transactionId: response.TXNID,
                 transactionStatus: response.STATUS,
                 amount: response.TXNAMOUNT,
+                name: 'Paytm',
+                contact: req.user.contact,
                 transactionDate: Date.now(),
                 userId: new mongodb.ObjectId(req.user._id)
             });
@@ -95,6 +97,8 @@ const responseAdd = function(req) {
                       transactionStatus: response.STATUS,
                       amount: response.TXNAMOUNT,
                       paymentType: 'inr',
+                      name: 'Paytm',
+                      contact: req.user.contact,
                       detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
                       time: Date.now()
                   }
@@ -115,6 +119,8 @@ const responseAdd = function(req) {
                       transactionId: new mongodb.ObjectId(response.ORDERID),
                       transactionStatus: response.STATUS,
                       amount: response.TXNAMOUNT,
+                      name: 'Paytm',
+                      contact: req.user.contact,
                       paymentType: 'inr',
                       detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
                       time: Date.now()
@@ -130,6 +136,8 @@ const responseAdd = function(req) {
                       transactionStatus: response.STATUS,
                       amount: response.TXNAMOUNT,
                       paymentType: 'inr',
+                      name: 'Paytm',
+                      contact: req.user.contact,
                       detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
                       time: Date.now()
                   }
