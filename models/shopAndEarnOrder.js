@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('mongoose-type-url')
 
-const DiliveryAddressSchema = new mongoose.Schema({
+const DeliveryAddressSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true
@@ -90,8 +90,8 @@ const ShopAndEarnOrderSchema = new mongoose.Schema({
     product: {
         type: ProductSchema
     },
-    diliveryAddress: {
-        type: DiliveryAddressSchema
+    DeliveryAddress: {
+        type: DeliveryAddressSchema
     },
     quantity: {
         type: Number
@@ -103,7 +103,7 @@ const ShopAndEarnOrderSchema = new mongoose.Schema({
         type: Number,
         default: Date.now()
     },
-    diliveredDate: {
+    deliveredDate: {
         type: Date
     },
     gatewayTransactionId: {
@@ -139,15 +139,15 @@ const ShopAndEarnOrderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isDilivered: {
+    isdelivered: {
         type: Boolean,
         default: false
     },
-    isCancelledBeforeDilivery: {
+    isCancelledBeforeDelivery: {
         type: Boolean,
         default: false
     },
-    diliveredUrl: {
+    deliveredUrl: {
         type: mongoose.SchemaTypes.Url
     },
     pickedUpSuccessfullyReplaceUrl: {

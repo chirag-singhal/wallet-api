@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const Users = require('./users');
 const uuidv1 = require('uuid/v1');
 
-const DiliveryAddressSchema = new mongoose.Schema({
+const DeliveryAddressSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true
@@ -67,11 +67,14 @@ const ShoppingOrderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    orderId: {
+        type: String
+    },
     product: {
         type: ProductSchema
     },
-    diliveryAddress: {
-        type: DiliveryAddressSchema
+    deliveryAddress: {
+        type: DeliveryAddressSchema
     },
     amount: {
         type: Number
@@ -83,11 +86,12 @@ const ShoppingOrderSchema = new mongoose.Schema({
         type: Number,
         default: Date.now()
     },
-    diliveredDate: {
+    deliveredDate: {
         type: Date
     },
     status: {
-        type: String
+        type: String,
+        default: 'Successfully Placed'
     },
     isAppliedForRefund: {
         type: Boolean,
@@ -113,15 +117,15 @@ const ShoppingOrderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isDilivered: {
+    isdelivered: {
         type: Boolean,
         default: false
     },
-    isCancelledBeforeDilivery: {
+    isCancelledBeforeDelivery: {
         type: Boolean,
         default: false
     },
-    diliveredUrl: {
+    deliveredUrl: {
         type: mongoose.SchemaTypes.Url
     },
     pickedUpSuccessfullyReplaceUrl: {

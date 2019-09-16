@@ -33,14 +33,14 @@ const placeBid = require('./api/placeBid');
 const getAffiliateProduct = require('./api/getAffiliateProduct');
 const incrementCartProductQty = require('./api/incrementCartProductQty');
 const decrementCartProductQty = require('./api/decrementCartProductQty');
-const addShopingDiliveryAddress = require('./api/addShopingDiliveryAddress');
+const addShopingDeliveryAddress = require('./api/addShopingDeliveryAddress');
 const checkoutShopingCart = require('./api/checkoutShopingCart');
-const getShopingDiliveryAddress = require('./api/getShopingDiliveryAddresses');
+const getShopingDeliveryAddress = require('./api/getShopingDeliveryAddresses');
 const getShopingOrder = require('./api/getshopingOrders');
-const cancelBeforeDilivery = require('./api/cancelBeforeDilivery');
+const cancelBeforeDelivery = require('./api/cancelBeforeDelivery');
 const refundShopingOrder = require('./api/refundShopingOrder');
 const replaceShopingOrder = require('./api/replaceShopingOrder');
-const dilivered = require('./api/dilivered');
+const deliveredUrl = require('./api/deliveredUrl');
 const successfullyPickedUpRefund = require('./api/successfullyPickedUpRefund');
 const unsuccessfullyPickedUpRefund = require('./api/unsuccessfullyPickedUpRefund');
 const refund = require('./api/refund');
@@ -72,7 +72,14 @@ const addAuction = require('./api/addAuction');
 const jwtAuction = require('./jwtAuction');
 const jwtDelivery = require('./jwtDelivery');
 const jwtShopVendor = require('./jwtShopVendor');
-
+const deliveryProducts = require('./api/getDeliveryProducts');
+const getOrdersVendor = require('./api/getOrdersVendor');
+const getOrders = require('./api/getOrders');
+const getAuctionOrders = require('./api/getAuctionVendor')
+const assign = require('./api/assign');
+const outForDelivery = require('./api/outForDelivery');
+const delivered = require('./api/delivered');
+const cantDeliver = require('./api/cantDeliver')
 
 
 const app = express()
@@ -173,11 +180,11 @@ app.patch('/decrementCartProductQty', jwtVerify, (req, res) => {
 
 // ---------------------------------------------------Cart Checkout Requests------------------------------------------------------------------
 app.post('/shoppingDeliveryAddress', jwtVerify, (req, res) => {
-    addShopingDiliveryAddress(req, res); 
+    addShopingDeliveryAddress(req, res); 
 });
 
 app.get('/shoppingDeliveryAddress', jwtVerify, (req, res) => {
-    getShopingDiliveryAddress(req, res);
+    getShopingDeliveryAddress(req, res);
 });
 
 app.post('/shoppingOrder', jwtVerify, (req, res) => {
@@ -191,8 +198,8 @@ app.get('/shopipngOrder', jwtVerify, (req, res) => {
 
 
 // --------------------------------------common shoping and shop & earn requests-----------------------------
-app.patch('/cancelBeforeDilivery', jwtVerify, (req, res) => {
-    cancelBeforeDilivery(req, res);
+app.patch('/cancelBeforeDelivery', jwtVerify, (req, res) => {
+    cancelBeforeDelivery(req, res);
 });
 
 app.patch('/refundShopingOrder', jwtVerify, (req, res) => {
@@ -213,6 +220,20 @@ app.use('/shopVendorLogin', ShopVendorLogin);
 app.use('/auctionLogin', auctionLogin);
 
 app.use('/addAuction', jwtAuction, addAuction);
+
+app.use('/getOrdersVendor', jwtShopVendor, getOrdersVendor);
+
+app.use('/getOrders', jwtVerify, getOrders);
+
+app.use('/getDeliveryProducts', jwtDelivery, deliveryProducts)
+
+app.use('/getAuctions', jwtAuction, getAuctionOrders);
+
+app.use('/outForDelivery', jwtDelivery, outForDelivery);
+
+app.use('/deliveredOrder', jwtDelivery, delivered);
+
+app.use('/cantDeliver', jwtDelivery, cantDeliver);
 
 // ------------------------------------------------------Shop and Earn----------------------------------------------------------------------------
 app.get('/shopAndEarnCategory', (req, res) => {
@@ -348,8 +369,8 @@ app.use('/admin', router);
 
 
 // ------------------------------------------admin managed requests---------------------------------------
-app.get('/dilivered/:orderToken', (req, res) => {
-    dilivered(req, res);
+app.get('/delivered/:orderToken', (req, res) => {
+    deliveredUrl(req, res);
 });
 
 app.get('/successfullyPickedUpRefund/:orderToken', (req, res) => {

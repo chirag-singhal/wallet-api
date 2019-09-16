@@ -1,5 +1,5 @@
 const ShopAndEarnCategory = require('../models/shopAndEarnCategory');
-const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
+const ShopingDeliveryAddress = require('../models/shopingDeliveryAddress');
 const ShopAndEarnOrder = require('../models/shopAndEarnOrder');
 const User = require('../models/users');
 const path = require('path');
@@ -8,7 +8,7 @@ const shortid = require('shortid');
 
 
 const buyWithIkc = async (req, res) => {
-    const diliveryAddress = await ShopingDiliveryAddress.findById(req.body.diliveryAddressId);
+    const DeliveryAddress = await ShopingDeliveryAddress.findById(req.body.DeliveryAddressId);
 
     const shopAndEarnCategory = await ShopAndEarnCategory.findById(req.body.categoryId);
 
@@ -27,7 +27,7 @@ const buyWithIkc = async (req, res) => {
     const shopAndEarnOrder = new ShopAndEarnOrder({
         userId: req.user._id,
         product,
-        diliveryAddress,
+        DeliveryAddress,
         amount: req.body.quantity * product.ikcPrice,
         quantity: req.body.quantity,
         categoryId: req.body.categoryId,
@@ -37,7 +37,7 @@ const buyWithIkc = async (req, res) => {
         orderDate: Date.now()
     });
     await shopAndEarnOrder.save().then(async () => {
-        shopAndEarnOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
+        shopAndEarnOrder.deliveredUrl = path.join(req.headers.host, "/delivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
         await shopAndEarnOrder.save();
     });
 

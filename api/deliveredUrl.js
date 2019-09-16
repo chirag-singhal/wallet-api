@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const ShopingOrder = require('../models/shopingOrder');
 const ShopAndEarnOrder = require('../models/shopAndEarnOrder');
 
-const dilivered = async (req, res) => {
+const delivered = async (req, res) => {
     const orderToken = req.params.orderToken;
 
     const  decoded = await jwt.verify(orderToken, "This is my secret code for refund process. Its highly complicated");
@@ -14,20 +14,20 @@ const dilivered = async (req, res) => {
             throw new Error();
         }
         await ShopingOrder.update({ _id: order._id }, { $currentDate: {
-                diliveredDate: true
+                deliveredDate: true
             }
         });
     } catch(e) {
         order = await ShopAndEarnOrder.findById(decoded.orderId);
         await ShopAndEarnOrder.update({ _id: order._id }, { $currentDate: {
-                diliveredDate: true
+                deliveredDate: true
             }
         });
     }
-    order.isDilivered = true;
+    order.isdelivered = true;
     await order.save();
 
-    res.send("Product dilivered!")
+    res.send("Product delivered!")
 }
 
-module.exports = dilivered;
+module.exports = delivered;

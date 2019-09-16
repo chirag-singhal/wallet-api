@@ -2,7 +2,7 @@ const checksum = require('../lib/checksum');
 const config = require('../config');
 const ShopAndEarnCategory = require('../../../models/shopAndEarnCategory');
 const ShopAndEarnOrder = require('../../../models/shopAndEarnOrder');
-const ShopingDiliveryAddress = require('../../../models/shopingDiliveryAddress');
+const ShopingDeliveryAddress = require('../../../models/shopingDeliveryAddress');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const https = require('https');
@@ -11,7 +11,7 @@ const mongodb = require('mongodb');
 
 const initPayment =  function(req) {
   return new Promise(async (resolve, reject) => {
-    const diliveryAddress = await ShopingDiliveryAddress.findById(req.body.diliveryAddressId || req.query.diliveryAddressId);
+    const DeliveryAddress = await ShopingDeliveryAddress.findById(req.body.DeliveryAddressId || req.query.DeliveryAddressId);
 
     const shopAndEarnCategory = await ShopAndEarnCategory.findById(req.body.categoryId || req.query.categoryId);
 
@@ -34,8 +34,8 @@ const initPayment =  function(req) {
       TXN_AMOUNT: ((req.body.quantity || req.query.quantity) * product.inrPrice).toString(),
       MID: config.MID,
       WEBSITE: config.WEBSITE,
-      // CALLBACK_URL: config.CALLBACK_URL + "?userId=" + req.user._id + "&diliveryAddressId=" + req.body.diliveryAddressId + "&categoryId=" + req.body.categoryId + "&subCategoryId=" + req.body.subCategoryId + "&productId=" + req.body.productId + "&quantity=" + req.body.quantity
-      CALLBACK_URL: config.CALLBACK_URL + "?userId=" + "CUST001" + "&diliveryAddressId=" + req.query.diliveryAddressId + "&categoryId=" + req.query.categoryId + "&subCategoryId=" + req.query.subCategoryId + "&productId=" + req.query.productId + "&quantity=" + req.query.quantity
+      // CALLBACK_URL: config.CALLBACK_URL + "?userId=" + req.user._id + "&DeliveryAddressId=" + req.body.DeliveryAddressId + "&categoryId=" + req.body.categoryId + "&subCategoryId=" + req.body.subCategoryId + "&productId=" + req.body.productId + "&quantity=" + req.body.quantity
+      CALLBACK_URL: config.CALLBACK_URL + "?userId=" + "CUST001" + "&DeliveryAddressId=" + req.query.DeliveryAddressId + "&categoryId=" + req.query.categoryId + "&subCategoryId=" + req.query.subCategoryId + "&productId=" + req.query.productId + "&quantity=" + req.query.quantity
     };
 
     checksum.genchecksum(
@@ -88,7 +88,7 @@ const responsePayment = function(req) {
       post_res.on('end',async function(){
         response = JSON.parse(response);
         if(response.STATUS === "TXN_SUCCESS") {
-          const diliveryAddress = await ShopingDiliveryAddress.findById(req.query.diliveryAddressId);
+          const DeliveryAddress = await ShopingDeliveryAddress.findById(req.query.DeliveryAddressId);
 
           const shopAndEarnCategory = await ShopAndEarnCategory.findById(req.query.categoryId);
 
@@ -100,7 +100,7 @@ const responsePayment = function(req) {
               _id: new mongodb.ObjectId(response.ORDERID),
               // userId: req.query.userId,
               product,
-              diliveryAddress,
+              DeliveryAddress,
               amount: response.TXNAMOUNT,
               quantity: (req.query.quantity),
               categoryId: req.query.categoryId,
@@ -112,7 +112,7 @@ const responsePayment = function(req) {
               orderDate: Date.now()
           });
           await shopAndEarnOrder.save().then(async () => {
-              shopAndEarnOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
+              shopAndEarnOrder.deliveredUrl = path.join(req.headers.host, "/delivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
               await shopAndEarnOrder.save();
           });
 
@@ -120,7 +120,7 @@ const responsePayment = function(req) {
         } else if(response.STATUS === "TXN_FAILURE") {
             return reject("Transaction failed and order cancelled")
         } else if(response.STATUS === "PENDING") {
-          const diliveryAddress = await ShopingDiliveryAddress.findById(req.query.diliveryAddressId);
+          const DeliveryAddress = await ShopingDeliveryAddress.findById(req.query.DeliveryAddressId);
 
           const shopAndEarnCategory = await ShopAndEarnCategory.findById(req.query.categoryId);
 
@@ -132,7 +132,7 @@ const responsePayment = function(req) {
               _id: new mongodb.ObjectId(response.ORDERID),
               userId: req.query.userId,
               product,
-              diliveryAddress,
+              DeliveryAddress,
               amount: response.TXNAMOUNT,
               quantity: (req.query.quantity),
               categoryId: req.query.categoryId,
@@ -144,7 +144,7 @@ const responsePayment = function(req) {
               orderDate: Date.now()
           });
           await shopAndEarnOrder.save().then(async () => {
-              shopAndEarnOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
+              shopAndEarnOrder.deliveredUrl = path.join(req.headers.host, "/delivered/", jwt.sign({orderId: shopAndEarnOrder._id}, "This is my secret code for refund process. Its highly complicated"));
               await shopAndEarnOrder.save();
           });
 

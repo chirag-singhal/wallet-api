@@ -8,7 +8,7 @@ const placeBid = (req, res) => {
     // const bidRemark = req.body.bidRemark;
     const userId = req.user._id;
     console.log(userId)
-    const status = "Successfully Placed";
+    const winner = false;
     AuctionProduct.findById(productId).then((product) => {
         if (!product) {
             return res.status(500).json({ "message": "Invalid Product Id!" });

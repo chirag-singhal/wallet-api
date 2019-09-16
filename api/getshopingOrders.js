@@ -6,7 +6,7 @@ const getShopingOrder = async (req, res) => {
         
         for(i = 0; i < orderObject.length; i++) {
             orderObject[i] = orderObject[i].toObject();
-            delete orderObject[i].diliveredUrl;
+            delete orderObject[i].deliveredUrl;
             delete orderObject[i].pickedUpSuccessfullyReplaceUrl;
             delete orderObject[i].pickedUpUnsuccessfullyReplaceUrl;
             delete orderObject[i].pickedUpSuccessfullyUrl;

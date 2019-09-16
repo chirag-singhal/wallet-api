@@ -1,7 +1,7 @@
-const DiliveryAddress = require('../models/shopingDiliveryAddress');
+const DeliveryAddress = require('../models/shopingDeliveryAddress');
 
-const addShopingDiliveryAddress = (req, res) => {
-    DiliveryAddress.findOne({userId: req.user._id})
+const addShopingDeliveryAddress = (req, res) => {
+    DeliveryAddress.findOne({userId: req.user._id})
     .then((address) => {
         if(address != null){
             address.address = req.body.address;
@@ -19,12 +19,12 @@ const addShopingDiliveryAddress = (req, res) => {
             })
         }
         else{
-            const diliveryAddress = new DiliveryAddress({
+            const DeliveryAddress = new DeliveryAddress({
                 ...req.body,
                 phone1: req.user.contact,
                 userId: req.user._id
             });
-            diliveryAddress.save().then(() => {
+            DeliveryAddress.save().then(() => {
                 res.json({"message": "Address successfully added!"});
             }).catch((e) => {
                 console.log(e);
@@ -34,4 +34,4 @@ const addShopingDiliveryAddress = (req, res) => {
     })
 }
 
-module.exports = addShopingDiliveryAddress;
+module.exports = addShopingDeliveryAddress;

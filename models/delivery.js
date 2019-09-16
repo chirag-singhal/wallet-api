@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const uuidv1 = require('uuid/v1');
 
-const DiliveryAddressSchema = new mongoose.Schema({
+const DeliveryAddressSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true
@@ -40,8 +40,136 @@ const DiliveryAddressSchema = new mongoose.Schema({
     }
 });
 
+const AuctionProductSchema = new mongoose.Schema({
+    auctionId: {
+      type: mongoose.Schema.Types.ObjectId
+    },
+    title: {
+        type: String
+    },
+    price: {
+        type: Number
+    },
+    description: {
+        type: String
+    },
+    quantity: {
+        type: Number
+    },
+    numberOfBids: {
+        type: Number
+    },
+    duration: {
+        type: String
+    },
+    imageUrl: {
+        type: Buffer
+    },
+    startDate: {
+        type: Date
+    },
+    endDate: {
+        type: Date
+    },
+    auctionCreator: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    winner: {
+        winner: mongoose.Schema.Types.ObjectId,
+        bidAmount: Number
+    }
+  });
+
+  const AuctionOrderSchema = new mongoose.Schema({
+    orderId: {
+      type: String,
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    auctionId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    product: {
+      type: AuctionProductSchema
+    },
+    deliveryAddress: {
+      type: DeliveryAddressSchema
+    },
+    amount: {
+      type: Number
+    },
+    quantity: {
+      type: Number
+    },
+    orderDate: {
+      type: Number,
+      default: Date.now()
+    },
+    deliveredDate: {
+      type: Date
+    },
+    status: {
+      type: String,
+      default: 'Successfully Placed'
+    },
+    isAppliedForRefund: {
+      type: Boolean,
+      default: false
+    },
+    isAppliedForReplace: {
+      type: Boolean,
+      default: false
+    },
+    isRefunded: {
+      type: Boolean,
+      default: false
+    },
+    isNotRefunded: {
+      type: Boolean,
+      default: false
+    },
+    noOfReplace: {
+      type: Number,
+      default: 0
+    },
+    isNotReplaced: {
+      type: Boolean,
+      default: false
+    },
+    isDelivered: {
+      type: Boolean,
+      default: false
+    },
+    isCancelledBeforeDelivery: {
+      type: Boolean,
+      default: false
+    },
+    deliveredUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpSuccessfullyReplaceUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpUnsuccessfullyReplaceUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpSuccessfullyUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpUnsuccessfullyUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    refundUrl: {
+      type: mongoose.SchemaTypes.Url
+    }
+  });
+
 const ProductSchema = new mongoose.Schema({
     productId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    userId: {
         type: mongoose.Schema.Types.ObjectId
     },
     categoryId: {
@@ -62,6 +190,9 @@ const ProductSchema = new mongoose.Schema({
 });
 
 const ShoppingOrderSchema = new mongoose.Schema({
+    orderId: {
+        type: String
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -69,8 +200,8 @@ const ShoppingOrderSchema = new mongoose.Schema({
     product: {
         type: ProductSchema
     },
-    diliveryAddress: {
-        type: DiliveryAddressSchema
+    DeliveryAddress: {
+        type: DeliveryAddressSchema
     },
     amount: {
         type: Number
@@ -82,7 +213,7 @@ const ShoppingOrderSchema = new mongoose.Schema({
         type: Number,
         default: Date.now()
     },
-    diliveredDate: {
+    deliveredDate: {
         type: Date
     },
     status: {
@@ -112,15 +243,15 @@ const ShoppingOrderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isDilivered: {
+    isdelivered: {
         type: Boolean,
         default: false
     },
-    isCancelledBeforeDilivery: {
+    isCancelledBeforeDelivery: {
         type: Boolean,
         default: false
     },
-    diliveredUrl: {
+    deliveredUrl: {
         type: mongoose.SchemaTypes.Url
     },
     pickedUpSuccessfullyReplaceUrl: {
@@ -151,6 +282,9 @@ const DeliverySchema = new mongoose.Schema({
     },
     orders: {
         type: [ShoppingOrderSchema]
+    },
+    auctionOrders: {
+        type: [AuctionOrderSchema]
     },
     qrCode: {
         type: String,

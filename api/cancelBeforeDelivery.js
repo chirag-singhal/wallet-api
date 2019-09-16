@@ -5,7 +5,7 @@ const ShopAndEarnCategory = require('../models/shopAndEarnCategory');
 const User = require('../models/users');
 const shortid = require('shortid');
 
-const cancelBeforeDilivery = async (req, res) => {
+const cancelBeforeDelivery = async (req, res) => {
     orderId = req.body.orderId;
 
     let order;
@@ -25,11 +25,11 @@ const cancelBeforeDilivery = async (req, res) => {
         });
     }
 
-    if(order.isDilivered) {
-        return res.send("Product already been dilivered!");
+    if(order.isdelivered) {
+        return res.send("Product already been delivered!");
     }
 
-    if(order.isCancelledBeforeDilivery) {
+    if(order.isCancelledBeforeDelivery) {
         return res.send("Product already been cancelled!")
     }
     const user = await User.findById(req.user._id);
@@ -65,7 +65,7 @@ const cancelBeforeDilivery = async (req, res) => {
     productToBeAdded.stock += 1;
     await category.save();
 
-    order.isCancelledBeforeDilivery = true;
+    order.isCancelledBeforeDelivery = true;
     await order.save().then(async () => {
         await User.findByIdAndUpdate(req.user._id, {
             $push: {
@@ -87,4 +87,4 @@ const cancelBeforeDilivery = async (req, res) => {
     });
 }
 
-module.exports = cancelBeforeDilivery;
+module.exports = cancelBeforeDelivery;

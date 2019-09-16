@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DiliveryAddressSchema = new mongoose.Schema({
+const DeliveryAddressSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true
@@ -41,6 +41,6 @@ const DiliveryAddressSchema = new mongoose.Schema({
     }
 });
 
-const DiliveryAddress = mongoose.model('ShopingDiliveryAddress', DiliveryAddressSchema);
+const DeliveryAddress = mongoose.model('ShopingDeliveryAddress', DeliveryAddressSchema);
 
-module.exports = DiliveryAddress;
+module.exports = DeliveryAddress;

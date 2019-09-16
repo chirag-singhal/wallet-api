@@ -50,9 +50,6 @@ const BidSchema = new mongoose.Schema({
 });
 
 const AuctionProductSchema = new mongoose.Schema({
-    auctionId: {
-        type: mongoose.Schema.Types.ObjectId
-    },
     orderId: {
         type: mongoose.Schema.Types.ObjectId
     },
@@ -80,6 +77,10 @@ const AuctionProductSchema = new mongoose.Schema({
     startDate: {
         type: Date
     },
+    results: {
+        type: Boolean,
+        default: false
+    },
     endDate: {
         type: Date
     },
@@ -95,6 +96,91 @@ const AuctionProductSchema = new mongoose.Schema({
     }
 });
 
+const AuctionOrderSchema = new mongoose.Schema({
+    orderId: {
+        type: String
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    auctionId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    product: {
+      type: AuctionProductSchema
+    },
+    deliveryAddress: {
+      type: DeliveryAddressSchema
+    },
+    amount: {
+      type: Number
+    },
+    quantity: {
+      type: Number
+    },
+    orderDate: {
+      type: Number,
+      default: Date.now()
+    },
+    deliveredDate: {
+      type: Date
+    },
+    status: {
+      type: String,
+      default: 'Successfully Placed'
+    },
+    isAppliedForRefund: {
+      type: Boolean,
+      default: false
+    },
+    isAppliedForReplace: {
+      type: Boolean,
+      default: false
+    },
+    isRefunded: {
+      type: Boolean,
+      default: false
+    },
+    isNotRefunded: {
+      type: Boolean,
+      default: false
+    },
+    noOfReplace: {
+      type: Number,
+      default: 0
+    },
+    isNotReplaced: {
+      type: Boolean,
+      default: false
+    },
+    isDelivered: {
+      type: Boolean,
+      default: false
+    },
+    isCancelledBeforeDelivery: {
+      type: Boolean,
+      default: false
+    },
+    deliveredUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpSuccessfullyReplaceUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpUnsuccessfullyReplaceUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpSuccessfullyUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    pickedUpUnsuccessfullyUrl: {
+      type: mongoose.SchemaTypes.Url
+    },
+    refundUrl: {
+      type: mongoose.SchemaTypes.Url
+    }
+  });
+
 const AuctionVendorSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -108,7 +194,7 @@ const AuctionVendorSchema = new mongoose.Schema({
         type: [AuctionProductSchema]
     },
     orders: {
-        type: [AuctionProductSchema]
+        type: [AuctionOrderSchema]
     },
     contact: {
         type: Number,

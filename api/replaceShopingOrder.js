@@ -25,12 +25,12 @@ const replaceShopingOrder = async (req, res) => {
     }
 
 
-    if(Date.now() - order.diliveredDate.getTime() > 2592000000) {
+    if(Date.now() - order.deliveredDate.getTime() > 2592000000) {
         return res.status(500).send("Replace period is over!");
     }
 
-    if(!order.isDilivered) {
-        return res.status(500).send("Product is not yet dilivered! Try 'cancel before dilivery' option");
+    if(!order.isdelivered) {
+        return res.status(500).send("Product is not yet delivered! Try 'cancel before Delivery' option");
     }
 
     if(order.isRefunded) {

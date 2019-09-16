@@ -61,6 +61,9 @@ const ProductSchema = new mongoose.Schema({
 });
 
 const ShopingOrderSchema = new mongoose.Schema({
+    orderId: {
+        type: String
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -85,7 +88,8 @@ const ShopingOrderSchema = new mongoose.Schema({
         type: Date
     },
     status: {
-        type: String
+        type: String,
+        default: 'Successfully Placed'
     },
     isAppliedForRefund: {
         type: Boolean,

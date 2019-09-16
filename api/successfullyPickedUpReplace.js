@@ -19,7 +19,7 @@ const successfullyPickedUpReplace = async (req, res) => {
         order = await ShopAndEarnOrder.findById(decoded.orderId);
     }
 
-    order.isDilivered = false;
+    order.isdelivered = false;
     order.isAppliedForReplace = false;
     order.noOfReplace += 1;
     await order.save();

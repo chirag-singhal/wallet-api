@@ -41,6 +41,46 @@ const DeliveryAddressSchema = new mongoose.Schema({
   }
 });
 
+const AuctionProductSchema = new mongoose.Schema({
+  auctionId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  title: {
+      type: String
+  },
+  price: {
+      type: Number
+  },
+  description: {
+      type: String
+  },
+  quantity: {
+      type: Number
+  },
+  numberOfBids: {
+      type: Number
+  },
+  duration: {
+      type: String
+  },
+  imageUrl: {
+      type: Buffer
+  },
+  startDate: {
+      type: Date
+  },
+  endDate: {
+      type: Date
+  },
+  auctionCreator: {
+      type: mongoose.Schema.Types.ObjectId
+  },
+  winner: {
+      winner: mongoose.Schema.Types.ObjectId,
+      bidAmount: Number
+  }
+});
+
 const ProductSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId
@@ -62,10 +102,91 @@ const ProductSchema = new mongoose.Schema({
   }
 });
 
-const ShoppingOrderSchema = new mongoose.Schema({
-  userId: {
+const AuctionOrderSchema = new mongoose.Schema({
+  orderId: {
+    type: String,
+  },
+  auctionId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+  },
+  product: {
+    type: AuctionProductSchema
+  },
+  deliveryAddress: {
+    type: DeliveryAddressSchema
+  },
+  amount: {
+    type: Number
+  },
+  quantity: {
+    type: Number
+  },
+  orderDate: {
+    type: Number,
+    default: Date.now()
+  },
+  deliveredDate: {
+    type: Date
+  },
+  status: {
+    type: String,
+    default: 'Successfully Placed'
+  },
+  isAppliedForRefund: {
+    type: Boolean,
+    default: false
+  },
+  isAppliedForReplace: {
+    type: Boolean,
+    default: false
+  },
+  isRefunded: {
+    type: Boolean,
+    default: false
+  },
+  isNotRefunded: {
+    type: Boolean,
+    default: false
+  },
+  noOfReplace: {
+    type: Number,
+    default: 0
+  },
+  isNotReplaced: {
+    type: Boolean,
+    default: false
+  },
+  isDelivered: {
+    type: Boolean,
+    default: false
+  },
+  isCancelledBeforeDelivery: {
+    type: Boolean,
+    default: false
+  },
+  deliveredUrl: {
+    type: mongoose.SchemaTypes.Url
+  },
+  pickedUpSuccessfullyReplaceUrl: {
+    type: mongoose.SchemaTypes.Url
+  },
+  pickedUpUnsuccessfullyReplaceUrl: {
+    type: mongoose.SchemaTypes.Url
+  },
+  pickedUpSuccessfullyUrl: {
+    type: mongoose.SchemaTypes.Url
+  },
+  pickedUpUnsuccessfullyUrl: {
+    type: mongoose.SchemaTypes.Url
+  },
+  refundUrl: {
+    type: mongoose.SchemaTypes.Url
+  }
+});
+
+const ShoppingOrderSchema = new mongoose.Schema({
+  orderId: {
+    type: mongoose.Schema.Types.ObjectId,
   },
   product: {
     type: ProductSchema
@@ -87,7 +208,8 @@ const ShoppingOrderSchema = new mongoose.Schema({
     type: Date
   },
   status: {
-    type: String
+    type: String,
+    default: 'Successfully Placed'
   },
   isAppliedForRefund: {
     type: Boolean,
@@ -148,8 +270,8 @@ const BidSchema = new mongoose.Schema({
   bidAmount: {
     type: Number
   },
-  status: {
-    type: String
+  winner: {
+    type: Boolean
   }
 });
 
@@ -208,6 +330,9 @@ var UserSchema = new mongoose.Schema({
   orders: {
     type: [ShoppingOrderSchema]
   },
+  auctionOrders: {
+    type: [AuctionOrderSchema]
+  },
   bids: {
     type: [BidSchema]
   },
@@ -224,8 +349,8 @@ UserSchema.virtual('cartProducts', {
   foreignField: 'userId'
 });
 
-UserSchema.virtual('shopingDiliveryAddress', {
-  ref: 'ShopingDiliveryAddress',
+UserSchema.virtual('shopingDeliveryAddress', {
+  ref: 'ShopingDeliveryAddress',
   localField: '_id',
   foreignField: 'userId'
 });

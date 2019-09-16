@@ -1,11 +1,11 @@
 const ShopingCategory = require('../models/shopingCategory');
-const ShopingDiliveryAddress = require('../models/shopingDiliveryAddress');
+const ShopingDeliveryAddress = require('../models/shopingDeliveryAddress');
 const ShopingOrder = require('../models/shopingOrder');
-const User = require('../models/users');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const shortid = require('shortid');
-
+const ShopVendor = require('../models/ShopVendor');
+const User = require('../models/users');
 
 
 const checkoutShopingCart = async (req, res) => {
@@ -32,22 +32,57 @@ const checkoutShopingCart = async (req, res) => {
     }
 
 
-    const diliveryAddress = await ShopingDiliveryAddress.findOne({userId: req.user._id});
+    const DeliveryAddress = await ShopingDeliveryAddress.findOne({userId: req.user._id});
     
     for(const cartProduct of cartProducts) {
         const shopingCategory = await ShopingCategory.findById(cartProduct.categoryId);
-    
         const product = await shopingCategory.products.id(cartProduct.productId);
+        const orderId = shortid.generate();
 
+        const vendor = await ShopVendor.findById(product.offererId)
+        const user = await User.findById(vendor.walletId);
         const shopingOrder = new ShopingOrder({
+            orderId: orderId,
             userId: req.user._id,
             product: cartProduct,
             quantity: cartProduct.quantity,
-            diliveryAddress: diliveryAddress,
+            deliveryAddress: DeliveryAddress,
             amount: cartProduct.quantity * cartProduct.price
         });
+        user.transactions.push({
+            transactionId: shortid.generate(),
+            amount: +cartProduct.quantity * cartProduct.price,
+            transactionStatus: 'TXN_SUCCESS',
+            name: user.name,
+            contact: user.contact,
+            paymentType: 'ikc',
+            detail: "Products Sold",
+            time: Date.now()
+        })
+        user.amount += cartProduct.quantity * cartProduct.price;
+        req.user.orders.push({
+            orderId: orderId,
+            userId: req.user._id,
+            product: cartProduct,
+            quantity: cartProduct.quantity,
+            deliveryAddress: DeliveryAddress,
+            amount: cartProduct.quantity * cartProduct.price
+        })
+        vendor.orders.push({
+            orderId: orderId,
+            userId: req.user._id,
+            product: cartProduct,
+            quantity: cartProduct.quantity,
+            deliveryAddress: DeliveryAddress,
+            amount: cartProduct.quantity * cartProduct.price
+        })
+        vendor.totalEarnings += cartProduct.quantity * cartProduct.price;
+        await user.save();
+        await vendor.save();
+        await req.user.save();
+        
         await shopingOrder.save().then(async () => {
-            shopingOrder.diliveredUrl = path.join(req.headers.host, "/dilivered/", jwt.sign({orderId: shopingOrder._id}, "This is my secret code for refund process. Its highly complicated"));
+            shopingOrder.deliveredUrl = path.join(req.headers.host, "/delivered/", jwt.sign({orderId: shopingOrder._id}, "This is my secret code for refund process. Its highly complicated"));
             await ShopingOrder.updateOne({ _id: shopingOrder._id }, { $currentDate: {
                     orderDate: true
                 }
