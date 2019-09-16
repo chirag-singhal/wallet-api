@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-require('mongoose-type-url')
+const bcrypt = require('bcrypt');
+const uuidv1 = require('uuid/v1');
 
-const DeliveryAddressSchema = new mongoose.Schema({
+const DiliveryAddressSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true
@@ -60,7 +61,7 @@ const ProductSchema = new mongoose.Schema({
     }
 });
 
-const ShopingOrderSchema = new mongoose.Schema({
+const ShoppingOrderSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -68,8 +69,8 @@ const ShopingOrderSchema = new mongoose.Schema({
     product: {
         type: ProductSchema
     },
-    deliveryAddress: {
-        type: DeliveryAddressSchema
+    diliveryAddress: {
+        type: DiliveryAddressSchema
     },
     amount: {
         type: Number
@@ -81,7 +82,7 @@ const ShopingOrderSchema = new mongoose.Schema({
         type: Number,
         default: Date.now()
     },
-    deliveredDate: {
+    diliveredDate: {
         type: Date
     },
     status: {
@@ -111,15 +112,15 @@ const ShopingOrderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isDelivered: {
+    isDilivered: {
         type: Boolean,
         default: false
     },
-    isCancelledBeforeDelivery: {
+    isCancelledBeforeDilivery: {
         type: Boolean,
         default: false
     },
-    deliveredUrl: {
+    diliveredUrl: {
         type: mongoose.SchemaTypes.Url
     },
     pickedUpSuccessfullyReplaceUrl: {
@@ -139,7 +140,56 @@ const ShopingOrderSchema = new mongoose.Schema({
     }
 });
 
+const DeliverySchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    orders: {
+        type: [ShoppingOrderSchema]
+    },
+    qrCode: {
+        type: String,
+        default: uuidv1()
+    },
+    contact: {
+        type: Number,
+        required: true
+    },
+    tokens: [{
+        token: {
+            type: String
+        }
+    }]
+})
 
-const ShopingOrder = mongoose.model('ShopingOrder', ShopingOrderSchema);
+DeliverySchema.methods.toJSON = function () {
+    const user = this;
+    const userObject = user.toObject();
 
-module.exports = ShopingOrder;
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+}
+
+DeliverySchema.pre('save', function (next) {
+    if(this.isNew){
+      var user = this;
+      bcrypt.hash(user.password, 10, function (err, hash){
+        if (err) {
+          return next(err);
+        }
+        user.password = hash;
+        next();
+      })
+    } 
+    else next();
+  });
+
+var DeliveryPerson = mongoose.model('DeliveryPerson', DeliverySchema);
+module.exports = DeliveryPerson;

@@ -3,17 +3,15 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
-
-const Users = require('../models/eventOwner')
+const Users = require('../models/delivery')
 
 const config = require('../config')
 
-const loginEvent = express.Router();
+const loginDelivery = express.Router();
 
-loginEvent.use(bodyParser.json());
+loginDelivery.use(bodyParser.json());
 
-
-loginEvent.route('/').
+loginDelivery.route('/').
 post((req, res, next) => {
     if(req.body.contact && req.body.password){
         Users.findOne({contact: req.body.contact}).exec()
@@ -70,5 +68,5 @@ post((req, res, next) => {
     }
 });
 
-module.exports = loginEvent;
+module.exports = loginDelivery;
 

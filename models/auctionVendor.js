@@ -1,0 +1,176 @@
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const Users = require('./users');
+const uuidv1 = require('uuid/v1');
+
+const DeliveryAddressSchema = new mongoose.Schema({
+    address: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    pincode: {
+        type: Number,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    phone1: {
+        type: Number,
+        required: true,
+        minlength: 10,
+        maxlength: 10
+    },
+    phone2: {
+        type: Number,
+        minlength: 10,
+        maxlength: 10
+    },
+    addressType: {
+        type: String,
+        required: true
+    }
+});
+const BidSchema = new mongoose.Schema({
+    bidAmount: {
+        type: Number
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId
+    }
+});
+
+const AuctionProductSchema = new mongoose.Schema({
+    auctionId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    orderId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    title: {
+        type: String
+    },
+    price: {
+        type: Number
+    },
+    description: {
+        type: String
+    },
+    quantity: {
+        type: Number
+    },
+    numberOfBids: {
+        type: Number
+    },
+    duration: {
+        type: String
+    },
+    imageUrl: {
+        type: String
+    },
+    startDate: {
+        type: Date
+    },
+    endDate: {
+        type: Date
+    },
+    bid: {
+        type: [BidSchema]
+    },
+    deliveryAddress: {
+        type: DeliveryAddressSchema
+    },
+    winner: {
+        winner: mongoose.Schema.Types.ObjectId,
+        bidAmount: Number
+    }
+});
+
+const AuctionVendorSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    auctions: {
+        type: [AuctionProductSchema]
+    },
+    orders: {
+        type: [AuctionProductSchema]
+    },
+    contact: {
+        type: Number,
+        required: true
+    },
+    walletId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    totalEarnings: {
+        type: Number,
+        default: 0
+    },
+    tokens: [{
+        token: {
+            type: String
+        }
+    }]
+})
+
+AuctionVendorSchema.methods.toJSON = function () {
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+}
+
+AuctionVendorSchema.pre('save', function (next) {
+    if (this.isNew) {
+        var eventOwner = this;
+        bcrypt.hash(eventOwner.password, 10, function (err, hash) {
+            if (err) {
+                return next(err);
+            }
+            Users.findOne({ "contact": eventOwner.contact }).then((eventVendor) => {
+                if (eventVendor == null) {
+                    Users.create({
+                        username: eventOwner.username,
+                        password: hash,
+                        verified: true,
+                        contact: eventOwner.contact
+                    }).then((user) => {
+                        eventOwner.walletId = user._id;
+                        eventOwner.password = hash;
+                        next();
+                    })
+                        .catch((err) => next(err))
+                } else {
+                    eventVendor.username = eventOwner.username;
+                    eventVendor.password = hash;
+                    eventVendor.verified = true;
+                    eventVendor.save().then((eventVendorSaved) => {
+                        console.log(eventVendorSaved)
+                    }).catch((err) => next(err))
+                }
+            })
+        })
+    }
+    else next();
+});
+
+var AuctionVendor = mongoose.model('AuctionVendor', AuctionVendorSchema);
+module.exports = AuctionVendor;

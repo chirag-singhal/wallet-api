@@ -4,6 +4,12 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
+const accountSid = 'ACe92d7e192048506640fc843f6b77e1bf'; // Your Account SID from www.twilio.com/console
+const authToken = '1d68ddf556166ccc1a0e18c3d0482dc0';   // Your Auth Token from www.twilio.com/console
+
+const twilio = require('twilio');
+const client = new twilio(accountSid, authToken);
+
 const sendOtp = require('./sendOtp')
 
 const Users = require('../models/users')
@@ -199,6 +205,13 @@ auth.route('/signup').post(async (req, res, next) => {
                                 const sender = 'ikcdel';
                                 const authkey = '10703APwDdCpscSPz5c43753d';
                                 const body = `Your otp to register in IKC is :  ${otp}`;
+
+                                client.messages.create({
+                                    body: `${body}`,
+                                    to: `+${countrycode}${contact}`,  // Text this number
+                                    from: '+12025176881' // From a valid Twilio number
+                                })
+                                    .then((message) => console.log(message.sid));
                                 const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${req.body.contact},${req.body.countrycode}${req.body.contact}&message=${body}&sender=${sender}&route=4&response=json`;
                                 // https.get(url,{rejectUnauthorized:false}, (resp) => {
                                 //     let data = '';

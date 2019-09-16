@@ -1,11 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const EventTemp = require('../models/eventsTemp')
-const jwt = require('jsonwebtoken');
+const Auction = require('../models/auctionProducts')
 
-const addTempEvent = express.Router();
-addTempEvent.use(bodyParser.json());
+const addAuction = express.Router();
+addAuction.use(bodyParser.json());
 
 const path = require('path');
 
@@ -27,22 +26,21 @@ const upload = multer({
 
 })
 
-addTempEvent.route('/')
+
+addAuction.route('/')
 .post(upload.single('image'), async (req, res, next) => {
-    console.log("add temp event");
-    EventTemp.create(req.body)
-    .then(async (eventTemp) => {
+    Auction.create(req.body)
+    .then(async (auction) => {
+        console.log(auction)
         console.log(req.file)
         const buffer = await sharp(path.join(req.file.destination, req.file.filename)).resize({ width: 250, height:250 }).png().toBuffer()
         console.log(buffer);
-        eventTemp.image = path.join(req.file.destination, req.file.filename);
-        console.log(eventTemp)
-        eventTemp.eventOwner = req.user._id;
-        eventTemp.verify = path.join(req.headers.host, "/addEvent/", jwt.sign({eventId: eventTemp._id}, "This is my secret code for adding event to IKC Deal. Its highly complicated"));
-        eventTemp.save().then((eventTempWithUrl) => {
-            console.log(eventTempWithUrl)
+        auction.imageUrl = path.join(req.file.destination, req.file.filename);
+        auction.auctionCreator = req.user._id;
+        auction.save().then((auctionWithCreator) => {
+            console.log(auctionWithCreator)
             res.statusCode = 200;
-            res.json({"message": "Event Created"})
+            res.json({"message": "Auction Created"})
         }).catch((err) => next(err))
     }).catch((err) => {
         res.statusCode = 403;
@@ -50,4 +48,4 @@ addTempEvent.route('/')
     })
 })
 
-module.exports = addTempEvent
+module.exports = addAuction

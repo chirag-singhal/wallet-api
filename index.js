@@ -65,6 +65,15 @@ const createWallet = require('./api/createWallet');
 const getBalance = require('./api/getBalance');
 const dthRecharge = require('./api/dth');
 const send = require('./api/send');
+const deliveryLogin = require('./api/deliveryLogin');
+const ShopVendorLogin = require('./api/ShopVendorLogin');
+const auctionLogin = require('./api/auctionLogin');
+const addAuction = require('./api/addAuction');
+const jwtAuction = require('./jwtAuction');
+const jwtDelivery = require('./jwtDelivery');
+const jwtShopVendor = require('./jwtShopVendor');
+
+
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -195,6 +204,15 @@ app.patch('/replaceShopingOrder', jwtVerify, (req, res) => {
 });
 
 
+//--------------------------------------Vendor and Delivery--------------------------------------------------------------------------------------
+
+app.use('/deliveryLogin', deliveryLogin);
+
+app.use('/shopVendorLogin', ShopVendorLogin);
+
+app.use('/auctionLogin', auctionLogin);
+
+app.use('/addAuction', jwtAuction, addAuction);
 
 // ------------------------------------------------------Shop and Earn----------------------------------------------------------------------------
 app.get('/shopAndEarnCategory', (req, res) => {

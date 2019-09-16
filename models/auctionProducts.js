@@ -40,6 +40,13 @@ const AuctionProductSchema = new mongoose.Schema({
     },
     bid: {
         type: [BidSchema]
+    },
+    auctionCreator: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+    winner: {
+        winner: mongoose.Schema.Types.ObjectId,
+        bidAmount: Number
     }
 });
 
