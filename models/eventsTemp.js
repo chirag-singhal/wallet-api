@@ -23,7 +23,7 @@ const eventTempSchema = new mongoose.Schema({
         type: Number
     },
     image: {
-        type: String
+        type: Buffer
     },
     contact: {
         type: Number

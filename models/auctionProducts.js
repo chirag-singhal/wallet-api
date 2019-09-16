@@ -30,7 +30,7 @@ const AuctionProductSchema = new mongoose.Schema({
         type: String
     },
     imageUrl: {
-        type: String
+        type: Buffer
     },
     startDate: {
         type: Date

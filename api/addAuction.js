@@ -35,7 +35,7 @@ addAuction.route('/')
         console.log(req.file)
         const buffer = await sharp(path.join(req.file.destination, req.file.filename)).resize({ width: 250, height:250 }).png().toBuffer()
         console.log(buffer);
-        auction.imageUrl = path.join(req.file.destination, req.file.filename);
+        auction.imageUrl = buffer;
         auction.auctionCreator = req.user._id;
         auction.save().then((auctionWithCreator) => {
             console.log(auctionWithCreator)

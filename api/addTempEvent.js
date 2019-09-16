@@ -35,7 +35,7 @@ addTempEvent.route('/')
         console.log(req.file)
         const buffer = await sharp(path.join(req.file.destination, req.file.filename)).resize({ width: 250, height:250 }).png().toBuffer()
         console.log(buffer);
-        eventTemp.image = path.join(req.file.destination, req.file.filename);
+        eventTemp.image = buffer;
         console.log(eventTemp)
         eventTemp.eventOwner = req.user._id;
         eventTemp.verify = path.join(req.headers.host, "/addEvent/", jwt.sign({eventId: eventTemp._id}, "This is my secret code for adding event to IKC Deal. Its highly complicated"));
