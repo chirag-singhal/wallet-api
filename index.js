@@ -235,7 +235,9 @@ app.use('/deliveredOrder', jwtDelivery, delivered);
 
 app.use('/cantDeliver', jwtDelivery, cantDeliver);
 
-app.use('/assign', jwtShopVendor, jwtAuction, assign);
+app.use('/assign', jwtShopVendor, assign);
+
+app.use('/assignAuction', jwtAuction, assign);
 
 app.get('/redirect', (req, res) => {
     res.statusCode = 302;
