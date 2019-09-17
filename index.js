@@ -235,6 +235,14 @@ app.use('/deliveredOrder', jwtDelivery, delivered);
 
 app.use('/cantDeliver', jwtDelivery, cantDeliver);
 
+app.use('/assign', jwtShopVendor, jwtAuction, assign);
+
+app.get('/redirect', (req, res) => {
+    res.statusCode = 302;
+    res.setHeader('Location', 'https://play.google.com/store/apps/details?id=ikcdeal.com')
+    res.end();
+})
+
 // ------------------------------------------------------Shop and Earn----------------------------------------------------------------------------
 app.get('/shopAndEarnCategory', (req, res) => {
     getShopAndEarnCategories(req, res);
