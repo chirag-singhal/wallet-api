@@ -19,13 +19,12 @@ verifyUser.route('/')
             time.setSeconds(time.getSeconds() - 300)
             if(otp.updatedAt > time ){
                 if(otp.otp == req.body.otp){
-                    Users.findOne({"contact": req.body.contact}).exec()
-                    .then((user) => {
+                    Users.findOne({"contact": req.body.contact})
+                    .then(async (user) => {
                         user.verified = true
-                        user.save()
-                        const token = jwt.sign({contact: req.body.contact},
-                            config.secret,
-                        );
+                        await user.save();
+                        const users = await Users.findOne({"conatct": req.body.conatct});
+                        const token = jwt.sign({ email: users.email }, config.secret);
     
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
