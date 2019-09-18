@@ -22,10 +22,9 @@ send.route('/')
             }
         }).catch((err) => next(err))
 
-        User.findOne({ contact: req.body.to }).then((user) => {
-
+        User.findOne({ contact: req.body.contact }).then((user) => {
             if (user) {
-                User.findOneAndUpdate({ contact: req.body.to }, {
+                User.findOneAndUpdate({ contact: req.body.contact }, {
                     $inc: { amount: +req.body.amount }
                 }).then(() => {
                     User.findByIdAndUpdate(req.user._id, {
@@ -37,12 +36,12 @@ send.route('/')
                                 name: user.name,
                                 contact: user.contact,
                                 paymentType: 'ikc',
-                                detail: "Sent to " + req.body.to,
+                                detail: "Sent to " + req.body.contact,
                                 time: Date.now()
                             }
                         }
                     }).then(() => {
-                        User.findOneAndUpdate({ contact: req.body.to }, {
+                        User.findOneAndUpdate({ contact: req.body.contact }, {
                             $push: {
                                 transactions: {
                                     transactionId: shortid.generate(),
