@@ -8,6 +8,8 @@ const checkToken = async (req, res, next) => {
         console.log(token)
         const  decoded = jwt.verify(token, config.secret);
 
+        console.log(decoded)
+
         const user = await User.findOne({ email: decoded.email, 'tokens.token': token });
         console.log(user)
         if(!user) {

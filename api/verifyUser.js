@@ -23,8 +23,8 @@ verifyUser.route('/')
                     .then(async (user) => {
                         user.verified = true
                         await user.save();
-                        const users = await Users.findOne({"conatct": req.body.conatct});
-                        const token = jwt.sign({ email: users.email }, config.secret);
+                        console.log(users)
+                        const token = jwt.sign({ email: user.email }, config.secret);
     
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
