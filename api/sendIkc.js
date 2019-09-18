@@ -14,113 +14,115 @@ sendIkc.route('/')
                 User.findByIdAndUpdate(req.user._id, {
                     $inc: { amount: -req.body.amount }
                 }).then((saved) => {
+                    User.findOne({ qrCode: req.body.qrCode }).then((user) => {
 
+                        if (user) {
+                            User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
+                                $inc: { amount: +req.body.amount }
+                            }).then(() => {
+                                User.findByIdAndUpdate(req.user._id, {
+                                    $push: {
+                                        transactions: {
+                                            transactionId: shortid.generate(),
+                                            amount: -req.body.amount,
+                                            transactionStatus: 'TXN_SUCCESS',
+                                            name: user.username,
+                                            contact: user.contact,
+                                            paymentType: 'ikc',
+                                            detail: "Sent to " + req.body.qrCode,
+                                            time: Date.now()
+                                        }
+                                    }
+                                }).then(() => {
+                                    User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
+                                        $push: {
+                                            transactions: {
+                                                transactionId: shortid.generate(),
+                                                amount: +req.body.amount,
+                                                transactionStatus: 'TXN_SUCCESS',
+                                                name: req.user.username,
+                                                contact: req.user.contact,
+                                                paymentType: 'ikc',
+                                                detail: "Received from " + req.user.contact,
+                                                time: Date.now()
+                                            }
+                                        }
+                                    }).then(() => {
+                                        console.log('saved')
+                                        res.statusCode = 200;
+                                        res.json({ "message": "ikc successfully transferred!" })
+                                    }).catch((err) => next(err))
+                                }).catch((err) => next(err))
+                            }).catch((err) => next(err))
+
+                        }
+                        else {
+                            console.log('vendor')
+                            console.log(req.body.qrCode)
+                            Vendors.findOne({ qrCode: req.body.qrCode }).then((vendor) => {
+                                console.log(vendor)
+                                Vendors.findOneAndUpdate({ qrCode: req.body.qrCode }, {
+                                    $inc: { totalEarnings: req.body.amount }
+                                }).then(() => {
+                                    console.log(vendor.walletId)
+                                    User.findById(vendor.walletId).then((user) => {
+                                        console.log(user)
+                                    })
+                                    User.findByIdAndUpdate(req.user._id, {
+                                        $push: {
+                                            transactions: {
+                                                transactionId: shortid.generate(),
+                                                amount: -req.body.amount,
+                                                transactionStatus: 'TXN_SUCCESS',
+                                                name: user.username,
+                                                contact: user.contact,
+                                                paymentType: 'ikc',
+                                                detail: "Sent to " + req.body.qrCode,
+                                                time: Date.now()
+                                            }
+                                        }
+                                    }).then(() => {
+                                        User.findByIdAndUpdate(vendor.walletId, {
+                                            $push: {
+                                                transactions: {
+                                                    transactionId: shortid.generate(),
+                                                    amount: +req.body.amount,
+                                                    transactionStatus: 'TXN_SUCCESS',
+                                                    name: req.user.username,
+                                                    contact: req.user.contact,
+                                                    paymentType: 'ikc',
+                                                    detail: "Received from " + req.user.contact,
+                                                    time: Date.now()
+                                                }
+                                            }
+                                        }).then(() => {
+                                            User.findByIdAndUpdate(vendor.walletId, {
+                                                $inc: { amount: req.body.amount }
+                                            }).then((user) => {
+                                                console.log(user);
+                                                res.statusCode = 200;
+                                                res.json({ "message": "ikc successfully transferred!" })
+                                            }).catch((err) => next(err))
+                                        }).catch((err) => next(err))
+                                    }).catch((err) => next(err))
+                                }).catch((err) => next(err))
+                            });
+                        }
+                    }).catch((err) => {
+                        res.statusCode = 403;
+                        res.json(err);
+                    })
                 })
                     .catch((err) => next(err))
             }
             else {
-                throw new Error('Insufficient Balance')
+                res.statusCode = 403;
+                res.send({ "message": 'Insufficient Balance' })
+                res.end();
             }
         }).catch((err) => next(err))
 
-        User.findOne({ qrCode: req.body.qrCode }).then((user) => {
 
-            if (user) {
-                User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
-                    $inc: { amount: +req.body.amount }
-                }).then(() => {
-                    User.findByIdAndUpdate(req.user._id, {
-                        $push: {
-                            transactions: {
-                                transactionId: shortid.generate(),
-                                amount: -req.body.amount,
-                                transactionStatus: 'TXN_SUCCESS',
-                                name: user.username,
-                                contact: user.contact,
-                                paymentType: 'ikc',
-                                detail: "Sent to " + req.body.qrCode,
-                                time: Date.now()
-                            }
-                        }
-                    }).then(() => {
-                        User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
-                            $push: {
-                                transactions: {
-                                    transactionId: shortid.generate(),
-                                    amount: +req.body.amount,
-                                    transactionStatus: 'TXN_SUCCESS',
-                                    name: req.user.username,
-                                    contact: req.user.contact,
-                                    paymentType: 'ikc',
-                                    detail: "Received from " + req.user.contact,
-                                    time: Date.now()
-                                }
-                            }
-                        }).then(() => {
-                            console.log('saved')
-                            res.statusCode = 200;
-                            res.json({ "message": "ikc successfully transferred!" })
-                        }).catch((err) => next(err))
-                    }).catch((err) => next(err))
-                }).catch((err) => next(err))
-
-            }
-            else {
-                console.log('vendor')
-                console.log(req.body.qrCode)
-                Vendors.findOne({ qrCode: req.body.qrCode }).then((vendor) => {
-                    console.log(vendor)
-                    Vendors.findOneAndUpdate({ qrCode: req.body.qrCode }, {
-                        $inc: { totalEarnings: req.body.amount }
-                    }).then(() => {
-                        console.log(vendor.walletId)
-                        User.findById(vendor.walletId).then((user) => {
-                            console.log(user)
-                        })
-                        User.findByIdAndUpdate(req.user._id, {
-                            $push: {
-                                transactions: {
-                                    transactionId: shortid.generate(),
-                                    amount: -req.body.amount,
-                                    transactionStatus: 'TXN_SUCCESS',
-                                    name: user.username,
-                                    contact: user.contact,
-                                    paymentType: 'ikc',
-                                    detail: "Sent to " + req.body.qrCode,
-                                    time: Date.now()
-                                }
-                            }
-                        }).then(() => {
-                            User.findByIdAndUpdate(vendor.walletId, {
-                                $push: {
-                                    transactions: {
-                                        transactionId: shortid.generate(),
-                                        amount: +req.body.amount,
-                                        transactionStatus: 'TXN_SUCCESS',
-                                        name: req.user.username,
-                                        contact: req.user.contact,
-                                        paymentType: 'ikc',
-                                        detail: "Received from " + req.user.contact,
-                                        time: Date.now()
-                                    }
-                                }
-                            }).then(() => {
-                                User.findByIdAndUpdate(vendor.walletId, {
-                                    $inc: { amount: req.body.amount }
-                                }).then((user) => {
-                                    console.log(user);
-                                    res.statusCode = 200;
-                                    res.json({ "message": "ikc successfully transferred!" })
-                                }).catch((err) => next(err))
-                            }).catch((err) => next(err))
-                        }).catch((err) => next(err))
-                    }).catch((err) => next(err))
-                });
-            }
-        }).catch((err) => {
-            res.statusCode = 403;
-            res.json(err);
-        })
     })
 
 module.exports = sendIkc
