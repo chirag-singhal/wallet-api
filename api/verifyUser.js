@@ -22,10 +22,10 @@ verifyUser.route('/')
                     Users.findOne({"contact": req.body.contact})
                     .then(async (user) => {
                         user.verified = true
-                        await user.save();
                         console.log(user)
                         const token = jwt.sign({ email: user.email }, config.secret);
-    
+                        user.tokens = user.tokens.concat({ token });
+                        await user.save();
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
     
@@ -66,3 +66,5 @@ verifyUser.route('/')
 })
 
 module.exports = verifyUser
+
+
