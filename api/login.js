@@ -209,7 +209,7 @@ auth.route('/signup').post(async (req, res, next) => {
 
                                 client.messages.create({
                                     body: `${body}`,
-                                    to: `+${countrycode}${contact}`,  // Text this number
+                                    to: `+${req.body.countrycode}${req.body.contact}`,  // Text this number
                                     from: '+12025176881' // From a valid Twilio number
                                 })
                                     .then((message) => console.log(message.sid));
