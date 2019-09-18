@@ -91,6 +91,7 @@ auth.route('/login').post((req, res, next) => {
 });
 
 auth.route('/signup').post(async (req, res, next) => {
+    console.log(req.body)
     if (req.body.email && req.body.username && req.body.password && req.body.countrycode && req.body.contact) {
         const user1 = await Users.findOne({ email: req.body.email });
         const user2 = await Users.findOne({ username: req.body.username });
