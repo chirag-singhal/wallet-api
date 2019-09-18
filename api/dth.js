@@ -31,7 +31,7 @@ dth.route('/')
                     $push: {
                         transactions: {
                             transactionId: data.operator_ref,
-                            amount: req.body.amount,
+                            amount: -req.body.amount,
                             transactionStatus: 'TXN_SUCCESS',
                             name: 'DTH',
                             contact: req.user.contact,
@@ -57,7 +57,7 @@ dth.route('/')
                 $push: {
                     transactions: {
                         transactionId: data.operator_ref,
-                        amount: req.body.amount,
+                        amount: -req.body.amount,
                         transactionStatus: 'TXN_FAILURE',
                         name: 'DTH',
                         contact: req.user.contact,
@@ -87,7 +87,7 @@ dth.route('/')
                     $push: {
                         transactions: {
                             transactionId: data.operator_ref,
-                            amount: req.body.amount,
+                            amount: -req.body.amount,
                             name: 'DTH',
                             contact: req.user.contact,
                             transactionStatus: 'TXN_PENDING',

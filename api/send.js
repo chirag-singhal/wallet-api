@@ -18,7 +18,9 @@ send.route('/')
                     .catch((err) => next(err))
             }
             else {
-                throw new Error('Insufficient Balance')
+                res.statusCode = 403;
+                res.json({"message": 'Insufficient Balance'})
+                res.end();
             }
         }).catch((err) => next(err))
 

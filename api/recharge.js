@@ -31,7 +31,7 @@ recharge.route('/')
                     $push: {
                         transactions: {
                             transactionId: data.operator_ref,
-                            amount: req.body.amount,
+                            amount: -req.body.amount,
                             transactionStatus: 'TXN_SUCCESS',
                             paymentType: 'ikc',
                             name: 'RECHARGE',
@@ -57,7 +57,7 @@ recharge.route('/')
                 $push: {
                     transactions: {
                         transactionId: data.operator_ref,
-                        amount: req.body.amount,
+                        amount: -req.body.amount,
                         name: 'RECHARGE',
                         contact: req.user.contact,
                         transactionStatus: 'TXN_FAILURE',
@@ -87,7 +87,7 @@ recharge.route('/')
                     $push: {
                         transactions: {
                             transactionId: data.operator_ref,
-                            amount: req.body.amount,
+                            amount: -req.body.amount,
                             transactionStatus: 'TXN_PENDING',
                             name: 'RECHARGE',
                             contact: req.user.contact,
