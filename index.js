@@ -80,7 +80,7 @@ const assign = require('./api/assign');
 const outForDelivery = require('./api/outForDelivery');
 const delivered = require('./api/delivered');
 const cantDeliver = require('./api/cantDeliver')
-
+const sendOtp = require('./api/sendOtp');
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -140,6 +140,18 @@ app.use('/recharge', jwtVerify, recharge);
 app.use('/dthRecharge', jwtVerify, dthRecharge);
 
 app.use('/rechargePending', rechargePending);
+
+app.post('/resend', (req, res) => {
+    sendOtp(req.body.contact, req.body.countrycode, function(result) {
+        if(result){
+            res.json({"message": "OTP send"});
+        }
+        else {
+            res.statusCode = 403;
+            res.json({"message": "OTP not send"});
+        }
+    })
+})
 
 // ------------------------------------------------Update Profile----------------------------------------------------------------
 app.use('/updateProfile', jwtVerify, updateProfile);

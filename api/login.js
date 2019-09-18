@@ -93,12 +93,12 @@ auth.route('/login').post((req, res, next) => {
 auth.route('/signup').post(async (req, res, next) => {
     console.log(req.body)
     if (req.body.email && req.body.username && req.body.password && req.body.countrycode && req.body.contact) {
-        const user1 = await Users.findOne({ email: req.body.email });
+        const user3 = await Users.findOne({ email: req.body.email });
         const user2 = await Users.findOne({ username: req.body.username });
-        const user3 = await Users.findOne({ contact: req.body.contact });
-        console.log(user1);
-        console.log(user2);
-        console.log(user3);
+        const user1 = await Users.findOne({ contact: req.body.contact });
+        console.log(user1, "1");
+        console.log(user2, "2");
+        console.log(user3, "3");
         Users.findOne({ email: req.body.email }).then(async () => {
             if (user1 != null && !user1.verified) {
                 console.log(user1, "Not verified")
@@ -110,22 +110,22 @@ auth.route('/signup').post(async (req, res, next) => {
                     .then((hashedPassword) => {
                         console.log(hashedPassword)
                         user1.password = hashedPassword;
-                    })
-                    .catch((err) => next(err))
-                user1.save()
-                    .then(() => {
-                        console.log("saved")
-                        sendOtp(user1.contact, user1.countrycode, (result) => {
-                            if (result) {
-                                res.statusCode = 200;
-                                res.setHeader('Content-Type', 'application/json');
-                                res.json(user1)
-                            } else {
-                                res.statusCode = 403;
-                                res.setHeader('Content-Type', 'application/json');
-                                res.json({ "message": "Something went wrong" });
-                            }
-                        })
+                        user1.save()
+                            .then(() => {
+                                console.log("saved")
+                                sendOtp(user1.contact, user1.countrycode, (result) => {
+                                    if (result) {
+                                        res.statusCode = 200;
+                                        res.setHeader('Content-Type', 'application/json');
+                                        res.json(user1)
+                                    } else {
+                                        res.statusCode = 403;
+                                        res.setHeader('Content-Type', 'application/json');
+                                        res.json({ "message": "Something went wrong" });
+                                    }
+                                })
+                            })
+                            .catch((err) => next(err))
                     })
                     .catch((err) => next(err))
             }
@@ -144,23 +144,24 @@ auth.route('/signup').post(async (req, res, next) => {
                         bcrypt.hash(req.body.password, 10)
                             .then((hashedPassword) => {
                                 user2.password = hashedPassword;
+                                user2.save()
+                                    .then(() => {
+                                        sendOtp(user2.contact, user2.countrycode, (result) => {
+                                            if (result) {
+                                                res.statusCode = 200;
+                                                res.setHeader('Content-Type', 'application/json');
+                                                res.json(user2)
+                                            } else {
+                                                res.statusCode = 403;
+                                                res.setHeader('Content-Type', 'application/json');
+                                                res.json({ "message": "Something went wrong" });
+                                            }
+                                        })
+                                    })
+                                    .catch((err) => next(err))
                             })
                             .catch((err) => next(err))
-                        user2.save()
-                            .then(() => {
-                                sendOtp(user2.contact, user2.countrycode, (result) => {
-                                    if (result) {
-                                        res.statusCode = 200;
-                                        res.setHeader('Content-Type', 'application/json');
-                                        res.json(user2)
-                                    } else {
-                                        res.statusCode = 403;
-                                        res.setHeader('Content-Type', 'application/json');
-                                        res.json({ "message": "Something went wrong" });
-                                    }
-                                })
-                            })
-                            .catch((err) => next(err))
+
                     }
                     else if (user2 != null) {
                         res.statusCode = 403;
@@ -178,23 +179,24 @@ auth.route('/signup').post(async (req, res, next) => {
                                 bcrypt.hash(req.body.password, 10)
                                     .then((hashedPassword) => {
                                         user3.password = hashedPassword;
+                                        user3.save()
+                                            .then(() => {
+                                                sendOtp(user3.contact, user3.countrycode, (result) => {
+                                                    if (result) {
+                                                        res.statusCode = 200;
+                                                        res.setHeader('Content-Type', 'application/json');
+                                                        res.json(user3)
+                                                    } else {
+                                                        res.statusCode = 403;
+                                                        res.setHeader('Content-Type', 'application/json');
+                                                        res.json({ "message": "Something went wrong" });
+                                                    }
+                                                })
+                                            })
+                                            .catch((err) => next(err))
                                     })
                                     .catch((err) => next(err))
-                                user3.save()
-                                    .then(() => {
-                                        sendOtp(user3.contact, user3.countrycode, (result) => {
-                                            if (result) {
-                                                res.statusCode = 200;
-                                                res.setHeader('Content-Type', 'application/json');
-                                                res.json(user3)
-                                            } else {
-                                                res.statusCode = 403;
-                                                res.setHeader('Content-Type', 'application/json');
-                                                res.json({ "message": "Something went wrong" });
-                                            }
-                                        })
-                                    })
-                                    .catch((err) => next(err))
+
                             }
                             else if (user3 != null) {
                                 console.log(user);
