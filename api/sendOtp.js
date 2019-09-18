@@ -15,12 +15,6 @@ const sendOTP = (contact, countrycode, callback) => {
     const body = `Your otp to register in IKC is :  ${otp}`
     const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${contact},${countrycode}${contact}&message=${body}&sender=${sender}&route=4&response=json`
 
-    client.messages.create({
-        body: `${body}`,
-        to: `+${countrycode}${contact}`,  // Text this number
-        from: '+12025176881' // From a valid Twilio number
-    })
-    .then((message) => console.log(message.sid));
     console.log(contact)
     Otp.findOne({ "contact": contact })
         .then((OTP) => {
@@ -30,6 +24,12 @@ const sendOTP = (contact, countrycode, callback) => {
                 OTP.otp = otp
                 OTP.save()
                     .then(() => {
+                        client.messages.create({
+                            body: `${body}`,
+                            to: `+${countrycode}${contact}`,  // Text this number
+                            from: '+12025176881' // From a valid Twilio number
+                        })
+                        .then((message) => console.log(message.sid));
                         console.log("OTP SEND")
                         callback(true)
                     })
