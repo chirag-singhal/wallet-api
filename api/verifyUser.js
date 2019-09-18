@@ -23,7 +23,7 @@ verifyUser.route('/')
                     .then(async (user) => {
                         user.verified = true
                         await user.save();
-                        console.log(users)
+                        console.log(user)
                         const token = jwt.sign({ email: user.email }, config.secret);
     
                         res.statusCode = 200;
