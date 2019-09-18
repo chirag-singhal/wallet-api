@@ -5,6 +5,7 @@ const User = require('./models/users');
 const checkToken = async (req, res, next) => {
     try {
         const token = req.headers['x-access-token'] || req.headers['authorization'].replace("Bearer ", ""); // Express headers are auto converted to lowercase
+        console.log(token)
         const  decoded = jwt.verify(token, config.secret);
 
         const user = await User.findOne({ email: decoded.email, 'tokens.token': token });
