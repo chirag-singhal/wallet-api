@@ -13,10 +13,11 @@ verifyUser.use(bodyParser.json())
 verifyUser.route('/')
 .post((req, res, next) => {
     if(req.body.contact && req.body.otp){
-        Otp.findOne({"contact": req.body.contact}).exec()
+        Otp.findOne({"contact": req.body.contact})
         .then((otp) => {
             const time = new Date()
-            const defaultOtp = 111111;
+            const defaultOtp = '111111';
+            console.log(req.body, otp)
             time.setSeconds(time.getSeconds() - 300)
             if(otp.updatedAt > time || otp.otp == defaultOtp){
                 if(otp.otp == req.body.otp || otp.otp == defaultOtp){
