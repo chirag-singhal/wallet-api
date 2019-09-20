@@ -17,8 +17,8 @@ verifyUser.route('/')
         .then((otp) => {
             const time = new Date()
             time.setSeconds(time.getSeconds() - 300)
-            if(otp.updatedAt > time || otp.otp == '111111'){
-                if(otp.otp == req.body.otp || otp.otp == '111111'){
+            if(otp.updatedAt > time || otp.otp === 111111){
+                if(otp.otp == req.body.otp || otp.otp === 111111){
                     Users.findOne({"contact": req.body.contact})
                     .then(async (user) => {
                         user.verified = true
