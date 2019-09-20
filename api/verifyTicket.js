@@ -40,6 +40,7 @@ verifyTicket.route('/')
                         console.log("Find event")
                         if(eventOwner.events[i]._id == req.body.eventId){
                             eventOwner.events[i].checkedIn++;
+                            eventOwner.events[i].checkedInContacts.push(userSaved.contact)
                             eventOwner.save().then(() => {
                                 res.statusCode = 200;
                                 res.json({"message": "Successfull Check In"});

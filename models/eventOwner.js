@@ -39,6 +39,9 @@ const eventSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    checkedInContacts: {
+        type: [Number],
+    },
     checkedIn: {
         type: Number,
         default: 0

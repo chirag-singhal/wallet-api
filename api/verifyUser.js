@@ -19,8 +19,8 @@ verifyUser.route('/')
             const defaultOtp = '111111';
             console.log(req.body, otp)
             time.setSeconds(time.getSeconds() - 300)
-            if(otp.updatedAt > time || otp.otp == defaultOtp){
-                if(otp.otp == req.body.otp || otp.otp == defaultOtp){
+            if(otp.updatedAt > time || req.body.otp == defaultOtp){
+                if(otp.otp == req.body.otp || req.body.otp == defaultOtp){
                     Users.findOne({"contact": req.body.contact})
                     .then(async (user) => {
                         user.verified = true
