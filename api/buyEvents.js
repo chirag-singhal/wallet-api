@@ -13,9 +13,9 @@ buyEvent.route('/')
 .post((req, res, next) => {
     Events.findById(req.body.eventId).then((event) => {
         Users.findById(req.user._id).then((user) => {
-            console.log(user, "Found")
+            // console.log(user, "Found")
             EventOwner.findById(event.eventOwner).then(async (eventOwner) => {
-                console.log(eventOwner.walletId)
+                // console.log(eventOwner.walletId)
                 Users.findById(eventOwner.walletId).then(async (eventOwnerWallet) => {
                     const price = parseInt(req.body.quantity) * parseInt(event.cost);
                     if(price > user.amount) {
@@ -38,7 +38,7 @@ buyEvent.route('/')
                         })
                         await user.save();
                         console.log(user.amount)
-                        console.log(eventOwnerWallet)
+                        // console.log(eventOwnerWallet)
                         eventOwnerWallet.amount += price;
                         eventOwnerWallet.transactions.push({
                             transactionId: shortid.generate(),
@@ -52,18 +52,18 @@ buyEvent.route('/')
                         })
                         let found = false;
                         for(let i = 0; i < user.tickets.length; i++){
-                            console.log(user.tickets[i].eventId)
+                            // console.log(user.tickets[i].eventId)
                             if(user.tickets[i].eventId == req.body.eventId){
-                                console.log("found")
+                                // console.log("found")
                                 found = true;
-                                console.log(user.tickets[i].numberOfTickets)
+                                // console.log(user.tickets[i].numberOfTickets)
                                 user.tickets[i].numberOfTickets += parseInt(req.body.quantity);
-                                console.log("found")
+                                // console.log("found")
                                 break;
                             }
                         }
                         if(!found){
-                            console.log("Not found")
+                            // console.log("Not found")
                             user.tickets.push({
                                 eventId: event._id,
                                 name: event.name,
@@ -79,11 +79,11 @@ buyEvent.route('/')
                             }
                         }
                         user.save().then((userSaved) => {
-                            console.log(userSaved);
+                            console.log(userSaved.amount);
                             eventOwner.save().then((eventOwnerSaved) => {
-                                console.log(eventOwnerSaved);
+                                // console.log(eventOwnerSaved);
                                 eventOwnerWallet.save().then((walletSaved) => {
-                                    console.log(walletSaved);
+                                    console.log(walletSaved.amount);
                                     res.statusCode = 200;
                                     res.json({"message": "Tickets bought"});
                                 }).catch((err) => next(err))
