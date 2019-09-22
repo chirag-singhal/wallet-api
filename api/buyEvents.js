@@ -24,7 +24,7 @@ buyEvent.route('/')
                     }
                     else {
                         console.log(user.amount)
-                        await User.findByIdAndUpdate(req.user._id, {
+                        await Users.findByIdAndUpdate(req.user._id, {
                             $inc: {
                                 amount: -price
                             }
