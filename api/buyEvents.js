@@ -14,7 +14,7 @@ buyEvent.route('/')
     Events.findById(req.body.eventId).then((event) => {
         Users.findById(req.user._id).then((user) => {
             console.log(user, "Found")
-            EventOwner.findById(event.eventOwner).then((eventOwner) => {
+            EventOwner.findById(event.eventOwner).then(async (eventOwner) => {
                 console.log(eventOwner.walletId)
                 Users.findById(eventOwner.walletId).then((eventOwnerWallet) => {
                     const price = req.body.quantity * event.cost;
@@ -35,6 +35,7 @@ buyEvent.route('/')
                             detail: "Bought Event Ticket" + event.name + ' quantity ' + req.body.quantity,
                             time: Date.now()
                         })
+                        await user.save();
                         console.log(eventOwnerWallet)
                         eventOwnerWallet.amount += price;
                         eventOwnerWallet.transactions.push({
