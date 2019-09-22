@@ -14,7 +14,7 @@ buyEvent.route('/')
     Events.findById(req.body.eventId).then((event) => {
         Users.findById(req.user._id).then((user) => {
             // console.log(user, "Found")
-            EventOwner.findById(event.eventOwner).then(async (eventOwner) => {
+            EventOwner.findById(event.eventOwner).then((eventOwner) => {
                 // console.log(eventOwner.walletId)
                 Users.findById(eventOwner.walletId).then(async (eventOwnerWallet) => {
                     const price = parseInt(req.body.quantity) * parseInt(event.cost);
@@ -24,7 +24,11 @@ buyEvent.route('/')
                     }
                     else {
                         console.log(user.amount)
-                        user.amount = user.amount - price;
+                        await User.findByIdAndUpdate(req.user._id, {
+                            $inc: {
+                                amount: -price
+                            }
+                        });
                         console.log(user.amount)
                         user.transactions.push({
                             transactionId: shortid.generate(),
@@ -39,7 +43,11 @@ buyEvent.route('/')
                         await user.save();
                         console.log(user.amount)
                         // console.log(eventOwnerWallet)
-                        eventOwnerWallet.amount += price;
+                        await User.findByIdAndUpdate(eventOwner.walletId, {
+                            $inc: {
+                                amount: price
+                            }
+                        });
                         eventOwnerWallet.transactions.push({
                             transactionId: shortid.generate(),
                             amount: price,
