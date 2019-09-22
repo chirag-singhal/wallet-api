@@ -17,14 +17,15 @@ buyEvent.route('/')
             EventOwner.findById(event.eventOwner).then(async (eventOwner) => {
                 console.log(eventOwner.walletId)
                 Users.findById(eventOwner.walletId).then(async (eventOwnerWallet) => {
-                    const price = parseInt(req.body.quantity) * event.cost;
+                    const price = parseInt(req.body.quantity) * parseInt(event.cost);
                     if(price > user.amount) {
                         res.statusCode = 403;
                         res.json({"message": "Not enough IKC Balance"});
                     }
                     else {
                         console.log(user.amount)
-                        user.amount -= price;
+                        user.amount = user.amount - price;
+                        console.log(user.amount)
                         user.transactions.push({
                             transactionId: shortid.generate(),
                             amount: -price,
@@ -36,6 +37,7 @@ buyEvent.route('/')
                             time: Date.now()
                         })
                         await user.save();
+                        console.log(user.amount)
                         console.log(eventOwnerWallet)
                         eventOwnerWallet.amount += price;
                         eventOwnerWallet.transactions.push({
