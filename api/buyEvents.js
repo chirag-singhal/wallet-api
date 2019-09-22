@@ -27,7 +27,7 @@ buyEvent.route('/')
                         user.amount -= price;
                         user.transactions.push({
                             transactionId: shortid.generate(),
-                            amount: price,
+                            amount: -price,
                             name: 'EVENTS',
                             contact: user.contact,
                             transactionStatus: 'TXN_SUCCESS',
