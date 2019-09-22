@@ -16,7 +16,7 @@ buyEvent.route('/')
             console.log(user, "Found")
             EventOwner.findById(event.eventOwner).then(async (eventOwner) => {
                 console.log(eventOwner.walletId)
-                Users.findById(eventOwner.walletId).then((eventOwnerWallet) => {
+                Users.findById(eventOwner.walletId).then(async (eventOwnerWallet) => {
                     const price = req.body.quantity * event.cost;
                     if(price > user.amount) {
                         res.statusCode = 403;
