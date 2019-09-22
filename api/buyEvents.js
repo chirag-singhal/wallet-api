@@ -24,7 +24,11 @@ buyEvent.route('/')
                     }
                     else {
                         console.log(user.amount)
-                        user.amount -= price;
+                        await User.findByIdAndUpdate(req.user._id, {
+                            $inc: {
+                                amount: -price
+                            }
+                        });
                         user.transactions.push({
                             transactionId: shortid.generate(),
                             amount: -price,
@@ -35,7 +39,6 @@ buyEvent.route('/')
                             detail: "Bought Event Ticket" + event.name + ' quantity ' + req.body.quantity,
                             time: Date.now()
                         })
-                        await user.save();
                         console.log(eventOwnerWallet)
                         eventOwnerWallet.amount += price;
                         eventOwnerWallet.transactions.push({
