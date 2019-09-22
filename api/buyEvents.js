@@ -24,7 +24,7 @@ buyEvent.route('/')
                     }
                     else {
                         console.log(user.amount)
-                        await User.findByIdAndUpdate(req.user._id, {
+                        await Users.findByIdAndUpdate(req.user._id, {
                             $inc: {
                                 amount: -price
                             }
@@ -43,7 +43,7 @@ buyEvent.route('/')
                         await user.save();
                         console.log(user.amount)
                         // console.log(eventOwnerWallet)
-                        await User.findByIdAndUpdate(eventOwner.walletId, {
+                        await Users.findByIdAndUpdate(eventOwner.walletId, {
                             $inc: {
                                 amount: price
                             }
