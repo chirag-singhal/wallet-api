@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 
 const User = require('../models/users')
 
+const admin = require('firebase-admin');
 
 const rechargePending = express.Router();
 const db = require('../firestore')
@@ -35,7 +36,7 @@ rechargePending.route('/')
                             detail: "Recharged ",
                             time: Date.now()
                         }),
-                        amount: user.amount - amount
+                        amount: user.amount
                     })
                     User.findByIdAndUpdate(userId, {
                         $push: {
@@ -63,8 +64,18 @@ rechargePending.route('/')
                             amount: +amount
                         }
                     })
-                        .then(() => {
+                        .then(async() => {
                             await db.collection('users').doc(''+user.contact).set({
+                                transactions: admin.firestore.FieldValue.arrayUnion({
+                                    transactionId: refCode,
+                                    amount: amount,
+                                    name: 'REFUND',
+                                    contact: user.contact,
+                                    transactionStatus: 'TXN_SUCCESS',
+                                    paymentType: 'ikc',
+                                    detail: "Refund for Recharge ",
+                                    time: Date.now()
+                                }),
                                 amount: user.amount + amount
                             })
                             User.findByIdAndUpdate(userId, {

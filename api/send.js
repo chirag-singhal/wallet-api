@@ -2,6 +2,7 @@ const User = require('../models/users');
 const shortid = require('shortid');
 const express = require('express')
 const bodyParser = require('body-parser')
+const admin = require('firebase-admin');
 const send = express.Router();
 send.use(bodyParser.json())
 send.route('/')
@@ -18,7 +19,20 @@ send.route('/')
                         if (user) {
                             User.findOneAndUpdate({ contact: req.body.contact }, {
                                 $inc: { amount: +req.body.amount }
-                            }).then(() => {
+                            }).then(async () => {
+                                await db.collection('users').doc(''+req.user.contact).set({
+                                    transactions: admin.firestore.FieldValue.arrayUnion({
+                                        transactionId: shortid.generate(),
+                                        amount: -req.body.amount,
+                                        transactionStatus: 'TXN_SUCCESS',
+                                        name: user.username,
+                                        contact: user.contact,
+                                        paymentType: 'ikc',
+                                        detail: "Sent to " + req.body.contact,
+                                        time: Date.now()
+                                    }),
+                                    amount: req.user.amount - req.body.amount
+                                })
                                 User.findByIdAndUpdate(req.user._id, {
                                     $push: {
                                         transactions: {
@@ -32,7 +46,20 @@ send.route('/')
                                             time: Date.now()
                                         }
                                     }
-                                }).then(() => {
+                                }).then(async () => {
+                                    await db.collection('users').doc(''+req.body.contact).set({
+                                        transactions: admin.firestore.FieldValue.arrayUnion({
+                                            transactionId: shortid.generate(),
+                                            amount: +req.body.amount,
+                                            transactionStatus: 'TXN_SUCCESS',
+                                            name: req.user.username,
+                                            contact: req.user.contact,
+                                            paymentType: 'ikc',
+                                            detail: "Received from " + req.user.contact,
+                                            time: Date.now()
+                                        }),
+                                        amount: user.amount + req.body.amount
+                                    })
                                     User.findOneAndUpdate({ contact: req.body.contact }, {
                                         $push: {
                                             transactions: {
