@@ -82,6 +82,9 @@ const delivered = require('./api/delivered');
 const cantDeliver = require('./api/cantDeliver')
 const sendOtp = require('./api/sendOtp');
 const check = require('./api/check');
+const getBids = require('./api/getBids');
+const redeem = require('./api/redeemAuction');
+const result = require('./api/calculateAuctionResults');
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -204,13 +207,13 @@ app.post('/shoppingOrder', jwtVerify, (req, res) => {
     checkoutShopingCart(req, res);
 });
 
-app.get('/shopipngOrder', jwtVerify, (req, res) => {
+app.get('/shoppipngOrder', jwtVerify, (req, res) => {
     getShopingOrder(req, res);
 });
 
 
 
-// --------------------------------------common shoping and shop & earn requests-----------------------------
+// --------------------------------------common shoping and shop & earn requests-------------------------------------------------------
 app.patch('/cancelBeforeDelivery', jwtVerify, (req, res) => {
     cancelBeforeDelivery(req, res);
 });
@@ -251,6 +254,12 @@ app.use('/cantDeliver', jwtDelivery, cantDeliver);
 app.use('/assign', jwtShopVendor, assign);
 
 app.use('/assignAuction', jwtAuction, assign);
+
+app.use('/getBids', jwtVerify, getBids);
+
+app.use('/auctionResults', jwtAuction, result);
+
+app.use('/redeem', jwtVerify, redeem);
 
 app.get('/redirect', (req, res) => {
     res.statusCode = 302;

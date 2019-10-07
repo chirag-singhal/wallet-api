@@ -27,3 +27,5 @@ calculateResults.route('/')
         res.end();
     })
 })
+
+module.exports = calculateResults

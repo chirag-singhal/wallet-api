@@ -11,7 +11,7 @@ const redeem = express.Router();
 redeem.use(bodyParser.json())
 
 redeem.route('/')
-    .post((req, res, next) => {
+    .post(async (req, res, next) => {
         let bidAmount;
         const deliveryAddress = await ShoppingDeliveryAddress.findOne({ userId: req.user._id });
         for (bid of req.user.bids)
@@ -80,3 +80,5 @@ redeem.route('/')
             await req.user.save();
         }
     })
+
+    module.exports = redeem;
