@@ -81,6 +81,7 @@ const outForDelivery = require('./api/outForDelivery');
 const delivered = require('./api/delivered');
 const cantDeliver = require('./api/cantDeliver')
 const sendOtp = require('./api/sendOtp');
+const check = require('./api/check');
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -165,7 +166,7 @@ app.get('/categories', (req, res) => {
     getCategories(req, res);
 });
 
-
+app.use('/check', jwtVerify, check);
 
 // ----------------------------------------------------Cart Request---------------------------------------------------------------------------
 app.post('/cart', jwtVerify, (req, res) => {
