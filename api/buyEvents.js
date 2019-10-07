@@ -4,20 +4,11 @@ const Users = require('../models/users');
 const shortid = require('shortid');
 const express = require('express');
 const bodyParser = require('body-parser')
+const db = require('../firestore')
 
 const buyEvent = express.Router();
 
 buyEvent.use(bodyParser.json());
-
-const admin = require('firebase-admin');
-
-const serviceAccount = require('.././ikc-deal-64088-8d60df02a979.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-let db = admin.firestore();
 
 buyEvent.route('/')
 .post((req, res, next) => {
@@ -41,7 +32,7 @@ buyEvent.route('/')
                         });
                         console.log(user.amount)
                         // Add a new document in collection "cities" with ID 'LA'
-                        await db.collection('users').doc(''+req.user._id).set({
+                        await db.collection('users').doc(''+req.user.contact).set({
                             transactions: admin.firestore.FieldValue.arrayUnion({
                                 transactionId: shortid.generate(),
                                 amount: -price,
@@ -73,7 +64,7 @@ buyEvent.route('/')
                             }
                         });
 
-                        await db.collection('users').doc(''+eventOwner.walletId).set({
+                        await db.collection('users').doc(''+eventOwnerWallet.contact).set({
                             transactions: admin.firestore.FieldValue.arrayUnion({
                                 transactionId: shortid.generate(),
                                 amount: price,

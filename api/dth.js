@@ -10,6 +10,8 @@ const api_token = 'y8mRIylfHInNtopxM0ZHuKbCWGlWryTKtPFCvcOe5LVXMJYunXp74eoflPdN'
 const dth = express.Router();
 
 dth.use(bodyParser.json());
+const db = require('../firestore')
+
 
 dth.route('/')
 .post((req, res, next) => {
@@ -26,7 +28,20 @@ dth.route('/')
                     amount: -req.body.amount
                 }
             })
-            .then(() => {
+            .then(async () => {
+                await db.collection('users').doc(''+req.user.contact).set({
+                    transactions: admin.firestore.FieldValue.arrayUnion({
+                        transactionId: data.operator_ref,
+                        amount: -req.body.amount,
+                        transactionStatus: 'TXN_SUCCESS',
+                        name: 'DTH',
+                        contact: req.user.contact,
+                        paymentType: 'ikc',
+                        detail: "Recharge " + req.body.amount +' ' + req.body.number,
+                        time: Date.now()
+                    }),
+                    amount: req.user.amount - req.body.amount
+                })
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {
@@ -36,7 +51,7 @@ dth.route('/')
                             name: 'DTH',
                             contact: req.user.contact,
                             paymentType: 'ikc',
-                            detail: "Refund for Recharge " + req.body.amount +' ' + req.body.number,
+                            detail: "Recharge " + req.body.amount +' ' + req.body.number,
                             time: Date.now()
                         }
                     }
@@ -78,11 +93,11 @@ dth.route('/')
             
         } else if(data.status == "pending") {
             User.findByIdAndUpdate(req.user._id, {
-                $inc: {
-                    amount: -req.body.amount
-                }
+                // $inc: {
+                //     amount: -req.body.amount
+                // }
             })
-            .then(() => {
+            .then(async () => {
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {

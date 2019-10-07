@@ -8,6 +8,7 @@ const User = require('../models/users')
 const api_token = 'y8mRIylfHInNtopxM0ZHuKbCWGlWryTKtPFCvcOe5LVXMJYunXp74eoflPdN'
 
 const recharge = express.Router();
+const db = require('../firestore')
 
 recharge.use(bodyParser.json());
 
@@ -26,7 +27,20 @@ recharge.route('/')
                     amount: -req.body.amount
                 }
             })
-            .then(() => {
+            .then(async () => {
+                await db.collection('users').doc(''+req.user.contact).set({
+                    transactions: admin.firestore.FieldValue.arrayUnion({
+                        transactionId: data.operator_ref,
+                        amount: -req.body.amount,
+                        transactionStatus: 'TXN_SUCCESS',
+                        name: 'DTH',
+                        contact: req.user.contact,
+                        paymentType: 'ikc',
+                        detail: "Recharge " + req.body.amount +' ' + req.body.number,
+                        time: Date.now()
+                    }),
+                    amount: req.user.amount - req.body.amount
+                })
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {

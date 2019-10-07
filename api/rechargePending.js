@@ -7,22 +7,36 @@ const User = require('../models/users')
 
 
 const rechargePending = express.Router();
+const db = require('../firestore')
 
 rechargePending.use(bodyParser.json());
 
 rechargePending.route('/')
-    .get((req, res, next) => {
+    .get(async (req, res, next) => {
         let amount;
         const userId = req.query.client_id
         const refCode = req.query.operator_id
         const status = req.query.status
-        User.findById(userId).then((user) => {
+        User.findById(userId).then(async (user) => {
             if (user != null) {
                 for (transaction of user.transactions)
                     if (transaction.transactionId == refCode)
                         amount = transaction.amount;
 
                 if (status === 'success') {
+                    await db.collection('users').doc(''+req.user.contact).set({
+                        transactions: admin.firestore.FieldValue.arrayUnion({
+                            transactionId: data.operator_ref,
+                            amount: -req.body.amount,
+                            transactionStatus: 'TXN_SUCCESS',
+                            name: 'DTH',
+                            contact: req.user.contact,
+                            paymentType: 'ikc',
+                            detail: "Recharge " + req.body.amount +' ' + req.body.number,
+                            time: Date.now()
+                        }),
+                        amount: user.amount - amount
+                    })
                     User.findByIdAndUpdate(userId, {
                         $push: {
                             transactions: {

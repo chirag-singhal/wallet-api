@@ -9,6 +9,7 @@ const ShopingOrder = require('../models/shopingOrder');
 const ShoppingDeliveryAddress = require('../models/shopingDeliveryAddress')
 const redeem = express.Router();
 redeem.use(bodyParser.json())
+const db = require('../firestore')
 
 redeem.route('/')
     .post(async (req, res, next) => {
@@ -24,6 +25,19 @@ redeem.route('/')
         else {
             const orderId = shortid.generate();
             req.user.amount -= bidAmount;
+            await db.collection('users').doc(''+req.user.contact).set({
+                transactions: admin.firestore.FieldValue.arrayUnion({
+                    transactionId: shortid.generate(),
+                    amount: -bidAmount,
+                    transactionStatus: 'TXN_SUCCESS',
+                    name: "Auction",
+                    contact: req.user.contact,
+                    paymentType: 'ikc',
+                    detail: "Auction Won",
+                    time: Date.now()
+                }),
+                amount: user.amount - bidAmount
+            })
             req.user.transactions.push({
                 transactionId: shortid.generate(),
                 amount: -bidAmount,
@@ -56,9 +70,22 @@ redeem.route('/')
                 deliveryAddress: deliveryAddress,
                 amount: bidAmount
             });
+            await db.collection('users').doc(''+user.contact).set({
+                transactions: admin.firestore.FieldValue.arrayUnion({
+                    transactionId: shortid.generate(),
+                    amount: +bidAmount,
+                    transactionStatus: 'TXN_SUCCESS',
+                    name: "Auction",
+                    contact: user.contact,
+                    paymentType: 'ikc',
+                    detail: "Auction Sold",
+                    time: Date.now()
+                }),
+                amount: user.amount + bidAmount
+            })
             user.transactions.push({
                 transactionId: shortid.generate(),
-                amount: +orderId,
+                amount: +bidAmount,
                 transactionStatus: 'TXN_SUCCESS',
                 name: "Auction",
                 contact: user.contact,

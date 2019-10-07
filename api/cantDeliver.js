@@ -15,7 +15,7 @@ cantDeliver.route('/')
             const delivery = await Delivery.findOne({ 'orders.orderId': req.body.orderId })
             for (let i = 0; i < delivery.orders.length; i++) {
                 if (delivery.orders[i].orderId == req.body.orderId) {
-                    delivery.orders[i].status = 'Out for Delivery';
+                    delivery.orders[i].status = 'Unable to Deliver';
                     break;
                 }
             }
@@ -68,7 +68,7 @@ cantDeliver.route('/')
             const delivery = await Delivery.findOne({ 'auctionOrders.orderId': req.body.orderId })
             for (let i = 0; i < delivery.orders.length; i++) {
                 if (delivery.auctionOrders[i].orderId == req.body.orderId) {
-                    delivery.auctionOrders[i].status = 'Out for Delivery';
+                    delivery.auctionOrders[i].status = 'Unable to Deliver';
                     break;
                 }
             }
