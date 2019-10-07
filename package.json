@@ -28,6 +28,7 @@
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
+    "firebase-admin": "^8.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.14",
     "mongoose-type-url": "^1.0.6",
