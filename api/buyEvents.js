@@ -41,7 +41,7 @@ buyEvent.route('/')
                         });
                         console.log(user.amount)
                         // Add a new document in collection "cities" with ID 'LA'
-                        let setDoc = db.collection('users').doc(req.user._id).set({
+                        await db.collection('users').doc(req.user._id).set({
                             transactions: admin.firestore.FieldValue.arrayUnion({
                                 transactionId: shortid.generate(),
                                 amount: -price,
@@ -53,7 +53,7 @@ buyEvent.route('/')
                                 time: Date.now()
                             }),
                             amount: user.amount - price
-                        });
+                        })
                         user.transactions.push({
                             transactionId: shortid.generate(),
                             amount: -price,
@@ -73,7 +73,7 @@ buyEvent.route('/')
                             }
                         });
 
-                        let setDoc2 = db.collection('users').doc(eventOwner.walletId).set({
+                        await db.collection('users').doc(eventOwner.walletId).set({
                             transactions: admin.firestore.FieldValue.arrayUnion({
                                 transactionId: shortid.generate(),
                                 amount: price,
@@ -85,7 +85,7 @@ buyEvent.route('/')
                                 time: Date.now()
                             }),
                             amount: eventOwnerWallet.amount + price
-                        });
+                        })
                         eventOwnerWallet.transactions.push({
                             transactionId: shortid.generate(),
                             amount: price,
