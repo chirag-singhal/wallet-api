@@ -11,7 +11,7 @@ buyEvent.use(bodyParser.json());
 
 const admin = require('firebase-admin');
 
-let serviceAccount = require('.././ikc-deal-64088-8d60df02a979');
+const serviceAccount = require('.././ikc-deal-64088-8d60df02a979.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
