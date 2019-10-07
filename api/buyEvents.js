@@ -11,7 +11,7 @@ buyEvent.use(bodyParser.json());
 
 const admin = require('firebase-admin');
 
-let serviceAccount = require('.././ikc-deal-64088-8d60df02a979.json');
+let serviceAccount = require('.././ikc-deal-64088-8d60df02a979');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -40,10 +40,9 @@ buyEvent.route('/')
                             }
                         });
                         console.log(user.amount)
-                        var transactions = user.transactions; 
                         // Add a new document in collection "cities" with ID 'LA'
-                        var setDoc = db.collection('users').doc(req.user._id).set({
-                            transactions: transactions.push({
+                        let setDoc = db.collection('users').doc(req.user._id).set({
+                            transactions: admin.firestore.FieldValue.arrayUnion({
                                 transactionId: shortid.generate(),
                                 amount: -price,
                                 name: 'EVENTS',
@@ -73,10 +72,9 @@ buyEvent.route('/')
                                 amount: price
                             }
                         });
-                        var transactions = eventOwnerWallet.transactions
 
-                        var setDoc = db.collection('users').doc(eventOwner.walletId).set({
-                            transactions: transactions.push({
+                        let setDoc2 = db.collection('users').doc(eventOwner.walletId).set({
+                            transactions: admin.firestore.FieldValue.arrayUnion({
                                 transactionId: shortid.generate(),
                                 amount: price,
                                 name: 'EVENTS',
