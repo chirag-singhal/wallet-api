@@ -36,7 +36,7 @@ redeem.route('/')
                     detail: "Auction Won",
                     time: Date.now()
                 }),
-                amount: user.amount - bidAmount
+                amount: req.user.amount - bidAmount
             })
             req.user.transactions.push({
                 transactionId: shortid.generate(),

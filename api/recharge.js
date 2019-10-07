@@ -96,7 +96,10 @@ recharge.route('/')
                     amount: -req.body.amount
                 }
             })
-            .then(() => {
+            .then(async () => {
+                await db.collection('users').doc(''+req.user.contact).set({
+                    amount: req.user.amount - req.body.amount
+                })
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {

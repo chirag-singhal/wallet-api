@@ -32,7 +32,7 @@ buyEvent.route('/')
                         });
                         console.log(user.amount)
                         // Add a new document in collection "cities" with ID 'LA'
-                        await db.collection('users').doc(''+req.user.contact).set({
+                        await db.collection('users').doc(''+user.contact).set({
                             transactions: admin.firestore.FieldValue.arrayUnion({
                                 transactionId: shortid.generate(),
                                 amount: -price,

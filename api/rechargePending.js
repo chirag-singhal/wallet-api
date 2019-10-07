@@ -26,13 +26,13 @@ rechargePending.route('/')
                 if (status === 'success') {
                     await db.collection('users').doc(''+req.user.contact).set({
                         transactions: admin.firestore.FieldValue.arrayUnion({
-                            transactionId: data.operator_ref,
-                            amount: -req.body.amount,
+                            transactionId: refCode,
+                            amount: -amount,
                             transactionStatus: 'TXN_SUCCESS',
-                            name: 'DTH',
-                            contact: req.user.contact,
+                            name: 'RECHARGE',
+                            contact: user.contact,
                             paymentType: 'ikc',
-                            detail: "Recharge " + req.body.amount +' ' + req.body.number,
+                            detail: "Recharged ",
                             time: Date.now()
                         }),
                         amount: user.amount - amount
@@ -41,7 +41,7 @@ rechargePending.route('/')
                         $push: {
                             transactions: {
                                 transactionId: refCode,
-                                amount: amount,
+                                amount: -amount,
                                 transactionStatus: 'TXN_SUCCESS',
                                 name: 'RECHARGE',
                                 contact: user.contact,
@@ -64,6 +64,9 @@ rechargePending.route('/')
                         }
                     })
                         .then(() => {
+                            await db.collection('users').doc(''+user.contact).set({
+                                amount: user.amount + amount
+                            })
                             User.findByIdAndUpdate(userId, {
                                 $push: {
                                     transactions: {
@@ -71,7 +74,7 @@ rechargePending.route('/')
                                         amount: amount,
                                         name: 'REFUND',
                                         contact: user.contact,
-                                        transactionStatus: 'TXN_FAILURE',
+                                        transactionStatus: 'TXN_SUCCESS',
                                         paymentType: 'ikc',
                                         detail: "Refund for Recharge ",
                                         time: Date.now()

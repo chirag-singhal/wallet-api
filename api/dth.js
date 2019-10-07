@@ -93,11 +93,14 @@ dth.route('/')
             
         } else if(data.status == "pending") {
             User.findByIdAndUpdate(req.user._id, {
-                // $inc: {
-                //     amount: -req.body.amount
-                // }
+                $inc: {
+                    amount: -req.body.amount
+                }
             })
             .then(async () => {
+                await db.collection('users').doc(''+req.user.contact).set({
+                    amount: req.user.amount - req.body.amount
+                })
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {
