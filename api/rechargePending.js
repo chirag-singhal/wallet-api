@@ -5,10 +5,10 @@ const bodyParser = require('body-parser')
 
 const User = require('../models/users')
 
-const admin = require('firebase-admin');
+const admin = require('../firestore');
+const db = admin.firestore();
 
 const rechargePending = express.Router();
-const db = require('../firestore')
 
 rechargePending.use(bodyParser.json());
 

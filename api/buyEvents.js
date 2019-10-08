@@ -4,13 +4,8 @@ const Users = require('../models/users');
 const shortid = require('shortid');
 const express = require('express');
 const bodyParser = require('body-parser')
-const db = require('../firestore')
-const admin = require('firebase-admin');
-const serviceAccount = require('.././ikc-deal-255305-e8200193b893.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+const admin = require('../firestore');
+const db = admin.firestore();
 const buyEvent = express.Router();
 
 buyEvent.use(bodyParser.json());
