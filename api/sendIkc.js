@@ -4,6 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const Vendors = require('../models/eventOwner');
 const sendIkc = express.Router();
+const admin = require('firebase-admin');
+const db = require('../firestore')
 sendIkc.use(bodyParser.json())
 sendIkc.route('/')
     .post((req, res, next) => {

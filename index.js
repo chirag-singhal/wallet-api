@@ -99,16 +99,6 @@ const port = 3000
 app.use(express.json());
 app.use(morgan('dev'))
 
-const admins = require('firebase-admin');
-
-const serviceAccount = require('./ikc-deal-255305-e8200193b893.json');
-
-admins.initializeApp({
-  credential: admins.credential.cert(serviceAccount)
-});
-
-const db = admins.firestore();
-
 
 //---------------------------------------------------I Kick--------------------------------------------------------------------
 

@@ -4,6 +4,9 @@ const Users = require('../models/users');
 const shortid = require('shortid');
 const express = require('express');
 const bodyParser = require('body-parser')
+const db = require('../firestore')
+const admin = require('firebase-admin');
+
 const buyEvent = express.Router();
 
 buyEvent.use(bodyParser.json());

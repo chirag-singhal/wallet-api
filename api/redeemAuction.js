@@ -9,6 +9,8 @@ const ShopingOrder = require('../models/shopingOrder');
 const ShoppingDeliveryAddress = require('../models/shopingDeliveryAddress')
 const redeem = express.Router();
 redeem.use(bodyParser.json())
+const db = require('../firestore')
+const admin = require('firebase-admin');
 
 redeem.route('/')
     .post(async (req, res, next) => {
