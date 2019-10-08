@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ikc-deal-255305",
+  "private_key_id": "76807df6f2cb44aa5f6aa6dc70d1fdac6032b8f0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCzINj+S3g6V+fd\nz/E7SWOadEi1vC3jR1HhpRHmmv+BmhfSdAg4U8gB8IL5CaLxW3qbEOTDbnJcd3uv\nJYUzpwyiLQcTUDVA+c5xhMoSdvFDhBJyp4jppECyF1+ruXzaV9a2+Zp3YqY9iTzj\nzOEzWLTc6OW2gp4nUCk6ZVxCDKih3nO14NUVSP4G+TgCyBR5BSsnWyL1w43q3ys0\nMAA3AdwToIG30PIfK2tBXAJmAkN98Tri9RikZ876HsvUaeELmiVJtwN4K94qdEBL\nYZ8+vNeL0OzUXwLPsjLPXFjTU3hAfI5ZGx6Z7dLcoyv91lp/5y2/ZlFd5jgD+DxD\nqfTlu0pTAgMBAAECggEAMXrWVdAVAtC7bKr+8KiCCe0rFIBJkKlntdO6ESApiew9\nvlVs29pQujBsjUwbJV5mjKTq/AzrLB2ZHbVYiP8Q309ez/fs7ejTHMpYYydV15eI\n3QDoMdm8QTVxqObQ1SNEXUCvaWDnmMHq/uXeIyfStd7jbTnBZAyhhs7u4BPNFQD+\nWGDFzM7pAUKr270KWiE9T5cTrlZ76izAOfJYH5iQPvGBkDf2bYLcrbQFlHS9XOX8\nTvKoecupaG7JUWkLzDC6WGj/Sf3x9xZ45pdrVHvwj0XKM6sWH+z1HiJAt4CgRxr6\nfAln0XUYWKTAeM7uBXkC62PyA3PAHEoiY/Vl6ZvaaQKBgQDX6LgG4jqx16NfFdKC\ndL8WLwq1SVr/I3B5zA5jrCeFBxgZIhV6SiHI6tkwCRcWnBjTuFYtSOKsh7ucM+YT\nwRSf5Sf4Nk5OysXcGJ5GseF/jLRvpQ4UmKS/2E8twWI/S7YzhM97d69iMa6x3+jr\nVOhCQW6fDJkb4OLRtsLyG1pBhQKBgQDUY7+bFaViy2ADZnoWVZ7MV7hVufQWHboz\nrkObL4hkt2fcuzak0rbgZWfzAitdgU/WZyViDZ0Z53XmBMzBA1rn3vJnr1u3GKEO\nao9kUTDbBt6y7e/TO7fPCauYagJr4f3WQR1FHDTwnzr/gP7qUaEddjS152LdjA0T\nzmwKOpC39wKBgEOBvQBR/b4bSTZysUYe0JxUCwoRrIT3hLRgS+N4MUcTp8I7+PEq\nepPCcjPls7VbCxwvl6pDDrSZH9zAEWD9zsALu0qNWECkf+bIP7yk43eo+8WomtVv\nwJtHO8J3o4tc1dQX43OcQVb3Z8Kv2rix7IjCwp6yJrEjyGd/uEZQrRCtAoGBAIqW\nfBSqTzzkEEanu8qPHAuiwbnOmSNFSpcmgx7kKU/vDWrPDp0GkiZihS3goINnOb1h\nmNceowCgNCJfx2u60Lq0k+BsYKBdBdruVZrUD9kb5n1DHVbshMgoOzw9EE9tK8F+\nw6aw/Sp1/H10ouIrWcJru4Fm9vAxzua5r24NQRmJAoGBAIuL/s8u/zmYotUbnKhe\n1kaXe1H/3BgS+X/TVacn3ulkPv2cnCnTA+isKK3nF7MvGJJrLKsK4vME9tdXfpZ0\ndgvm7moQxLOQoYHTgDHMZ0O16wa3nWsgBPZ7fQCsz332A3RhyQ8GIujEIyPg+Sij\nAXStxMZYFRFn54WWePG++JAl\n-----END PRIVATE KEY-----\n",
+  "client_email": "ikcdeal@ikc-deal-255305.iam.gserviceaccount.com",
+  "client_id": "111800163463083933367",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ikcdeal%40ikc-deal-255305.iam.gserviceaccount.com"
+}
