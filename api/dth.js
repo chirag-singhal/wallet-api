@@ -9,8 +9,6 @@ const api_token = 'y8mRIylfHInNtopxM0ZHuKbCWGlWryTKtPFCvcOe5LVXMJYunXp74eoflPdN'
 const dth = express.Router();
 
 dth.use(bodyParser.json());
-const admin = require('../firestore');
-const db = admin.firestore();
 
 
 dth.route('/')

@@ -2,8 +2,6 @@ const User = require('../models/users');
 const shortid = require('shortid');
 const express = require('express')
 const bodyParser = require('body-parser')
-const admin = require('../firestore');
-const db = admin.firestore();
 const send = express.Router();
 send.use(bodyParser.json())
 send.route('/')

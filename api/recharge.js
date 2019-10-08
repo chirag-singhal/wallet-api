@@ -6,8 +6,6 @@ const bodyParser = require('body-parser')
 const User = require('../models/users')
 
 const api_token = 'y8mRIylfHInNtopxM0ZHuKbCWGlWryTKtPFCvcOe5LVXMJYunXp74eoflPdN'
-const admin = require('../firestore');
-const db = admin.firestore();
 
 const recharge = express.Router();
 

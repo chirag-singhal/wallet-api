@@ -6,8 +6,6 @@ const jwt = require('jsonwebtoken');
 const shortid = require('shortid');
 const ShopVendor = require('../models/ShopVendor');
 const User = require('../models/users');
-const admin = require('../firestore');
-const db = admin.firestore();
 
 
 const checkoutShopingCart = async (req, res) => {
