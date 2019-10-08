@@ -6,4 +6,15 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-module.exports = admin.firestore();
+const db = admin.firestore();
+
+const firestore = async (contact, transaction, amount) => {
+  await db.collection('users').doc(''+contact).set({
+    transactions: admin.firestore.FieldValue.arrayUnion({
+       transaction
+    }),
+    amount: amount
+})
+}
+
+module.exports = firestore

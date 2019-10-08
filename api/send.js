@@ -21,8 +21,7 @@ send.route('/')
                             User.findOneAndUpdate({ contact: req.body.contact }, {
                                 $inc: { amount: +req.body.amount }
                             }).then(async () => {
-                                await db.collection('users').doc(''+req.user.contact).set({
-                                    transactions: admin.firestore.FieldValue.arrayUnion({
+                                await db(req.user.contact, {
                                         transactionId: shortid.generate(),
                                         amount: -req.body.amount,
                                         transactionStatus: 'TXN_SUCCESS',
@@ -31,9 +30,9 @@ send.route('/')
                                         paymentType: 'ikc',
                                         detail: "Sent to " + req.body.contact,
                                         time: Date.now()
-                                    }),
-                                    amount: req.user.amount - req.body.amount
-                                })
+                                    },
+                                    req.user.amount - req.body.amount
+                                )
                                 User.findByIdAndUpdate(req.user._id, {
                                     $push: {
                                         transactions: {
@@ -48,8 +47,7 @@ send.route('/')
                                         }
                                     }
                                 }).then(async () => {
-                                    await db.collection('users').doc(''+req.body.contact).set({
-                                        transactions: admin.firestore.FieldValue.arrayUnion({
+                                    await db(req.body.contact, {
                                             transactionId: shortid.generate(),
                                             amount: +req.body.amount,
                                             transactionStatus: 'TXN_SUCCESS',
@@ -58,9 +56,9 @@ send.route('/')
                                             paymentType: 'ikc',
                                             detail: "Received from " + req.user.contact,
                                             time: Date.now()
-                                        }),
-                                        amount: user.amount + req.body.amount
-                                    })
+                                        },
+                                        user.amount + req.body.amount
+                                    )
                                     User.findOneAndUpdate({ contact: req.body.contact }, {
                                         $push: {
                                             transactions: {

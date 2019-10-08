@@ -22,8 +22,7 @@ sendIkc.route('/')
                             User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
                                 $inc: { amount: +req.body.amount }
                             }).then(async() => {
-                                await db.collection('users').doc(''+req.user.contact).set({
-                                    transactions: admin.firestore.FieldValue.arrayUnion({
+                                await db(req.user.contact, {
                                         transactionId: shortid.generate(),
                                         amount: -req.body.amount,
                                         transactionStatus: 'TXN_SUCCESS',
@@ -32,9 +31,9 @@ sendIkc.route('/')
                                         paymentType: 'ikc',
                                         detail: "Sent to " + req.body.qrCode,
                                         time: Date.now()
-                                    }),
-                                    amount: req.user.amount - req.body.amount
-                                })
+                                    },
+                                    req.user.amount - req.body.amount
+                                )
                                 User.findByIdAndUpdate(req.user._id, {
                                     $push: {
                                         transactions: {
@@ -49,8 +48,7 @@ sendIkc.route('/')
                                         }
                                     }
                                 }).then(async() => {
-                                    await db.collection('users').doc(''+user.contact).set({
-                                        transactions: admin.firestore.FieldValue.arrayUnion({
+                                    await db(user.contact, {
                                             transactionId: shortid.generate(),
                                             amount: +req.body.amount,
                                             transactionStatus: 'TXN_SUCCESS',
@@ -59,9 +57,9 @@ sendIkc.route('/')
                                             paymentType: 'ikc',
                                             detail: "Received from " + req.user.contact,
                                             time: Date.now()
-                                        }),
-                                        amount: user.amount + req.body.amount
-                                    })
+                                        },
+                                        user.amount + req.body.amount
+                                    )
                                     User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
                                         $push: {
                                             transactions: {
@@ -96,8 +94,7 @@ sendIkc.route('/')
                                     User.findById(vendor.walletId).then((user) => {
                                         console.log(user)
                                     })
-                                    await db.collection('users').doc(''+req.user.contact).set({
-                                        transactions: admin.firestore.FieldValue.arrayUnion({
+                                    await db(req.user.contact, {
                                             transactionId: shortid.generate(),
                                             amount: -req.body.amount,
                                             transactionStatus: 'TXN_SUCCESS',
@@ -106,9 +103,9 @@ sendIkc.route('/')
                                             paymentType: 'ikc',
                                             detail: "Sent to " + req.body.qrCode,
                                             time: Date.now()
-                                        }),
-                                        amount: req.user.amount - req.body.amount
-                                    })
+                                        },
+                                        req.user.amount - req.body.amount
+                                    )
                                     User.findByIdAndUpdate(req.user._id, {
                                         $push: {
                                             transactions: {
@@ -123,8 +120,7 @@ sendIkc.route('/')
                                             }
                                         }
                                     }).then(async () => {
-                                        await db.collection('users').doc(''+user.contact).set({
-                                            transactions: admin.firestore.FieldValue.arrayUnion({
+                                        await db(user.contact, {
                                                 transactionId: shortid.generate(),
                                                 amount: +req.body.amount,
                                                 transactionStatus: 'TXN_SUCCESS',
@@ -133,9 +129,9 @@ sendIkc.route('/')
                                                 paymentType: 'ikc',
                                                 detail: "Received from " + req.user.contact,
                                                 time: Date.now()
-                                            }),
-                                            amount: user.amount + req.body.amount
-                                        })
+                                            },
+                                            user.amount + req.body.amount
+                                        )
                                         User.findByIdAndUpdate(vendor.walletId, {
                                             $push: {
                                                 transactions: {

@@ -51,8 +51,8 @@ const checkoutShopingCart = async (req, res) => {
             deliveryAddress: DeliveryAddress,
             amount: cartProduct.quantity * cartProduct.price
         });
-        await db.collection('users').doc(''+user.contact).set({
-            transactions: admin.firestore.FieldValue.arrayUnion({
+        await db(user.contact, 
+            {
                 transactionId: shortid.generate(),
                 amount: +cartProduct.quantity * cartProduct.price,
                 transactionStatus: 'TXN_SUCCESS',
@@ -61,9 +61,9 @@ const checkoutShopingCart = async (req, res) => {
                 paymentType: 'ikc',
                 detail: "Products Sold",
                 time: Date.now()
-            }),
-            amount: user.amount + (cartProduct.quantity * cartProduct.price)
-        })
+            },
+            user.amount + (cartProduct.quantity * cartProduct.price)
+        )
         user.transactions.push({
             transactionId: shortid.generate(),
             amount: +cartProduct.quantity * cartProduct.price,
@@ -117,8 +117,8 @@ const checkoutShopingCart = async (req, res) => {
 
 
     }
-    await db.collection('users').doc(''+req.user.contact).set({
-        transactions: admin.firestore.FieldValue.arrayUnion({
+    await db(req.user.contact,
+        {
             transactionId: shortid.generate(),
             amount: amount,
             name: user.name,
@@ -127,9 +127,9 @@ const checkoutShopingCart = async (req, res) => {
             paymentType: 'ikc',
             detail: "Paid for Order " + amount,
             time: Date.now()
-        }),
-        amount: user.amount - (cartProduct.quantity * cartProduct.price)
-    })
+        },
+        user.amount - (cartProduct.quantity * cartProduct.price)
+    )
     await User.findByIdAndUpdate(req.user._id, {
         $push: {
             transactions: {

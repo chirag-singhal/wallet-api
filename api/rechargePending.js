@@ -25,8 +25,7 @@ rechargePending.route('/')
                         amount = transaction.amount;
 
                 if (status === 'success') {
-                    await db.collection('users').doc(''+req.user.contact).set({
-                        transactions: admin.firestore.FieldValue.arrayUnion({
+                    await db(req.user.contact, {
                             transactionId: refCode,
                             amount: -amount,
                             transactionStatus: 'TXN_SUCCESS',
@@ -35,9 +34,9 @@ rechargePending.route('/')
                             paymentType: 'ikc',
                             detail: "Recharged ",
                             time: Date.now()
-                        }),
-                        amount: user.amount
-                    })
+                        },
+                        user.amount
+                    )
                     User.findByIdAndUpdate(userId, {
                         $push: {
                             transactions: {
@@ -65,8 +64,7 @@ rechargePending.route('/')
                         }
                     })
                         .then(async() => {
-                            await db.collection('users').doc(''+user.contact).set({
-                                transactions: admin.firestore.FieldValue.arrayUnion({
+                            await db(user.contact, {
                                     transactionId: refCode,
                                     amount: amount,
                                     name: 'REFUND',
@@ -75,9 +73,9 @@ rechargePending.route('/')
                                     paymentType: 'ikc',
                                     detail: "Refund for Recharge ",
                                     time: Date.now()
-                                }),
-                                amount: user.amount + amount
-                            })
+                                },
+                                user.amount + amount
+                            )
                             User.findByIdAndUpdate(userId, {
                                 $push: {
                                     transactions: {

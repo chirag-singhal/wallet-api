@@ -5,7 +5,6 @@ const shortid = require('shortid');
 const express = require('express');
 const bodyParser = require('body-parser')
 const db = require('../firestore')
-const admin = require('firebase-admin');
 
 const buyEvent = express.Router();
 
@@ -33,8 +32,7 @@ buyEvent.route('/')
                         });
                         console.log(user.amount)
                         // Add a new document in collection "cities" with ID 'LA'
-                        await db.collection('users').doc(''+user.contact).set({
-                            transactions: admin.firestore.FieldValue.arrayUnion({
+                        await db(user.contact, {
                                 transactionId: shortid.generate(),
                                 amount: -price,
                                 name: 'EVENTS',
@@ -43,9 +41,9 @@ buyEvent.route('/')
                                 paymentType: 'ikc',
                                 detail: "Bought Event Ticket" + event.name + ' quantity ' + req.body.quantity,
                                 time: Date.now()
-                            }),
-                            amount: user.amount - price
-                        })
+                            },
+                            user.amount - price
+                        )
                         user.transactions.push({
                             transactionId: shortid.generate(),
                             amount: -price,
@@ -65,8 +63,8 @@ buyEvent.route('/')
                             }
                         });
 
-                        await db.collection('users').doc(''+eventOwnerWallet.contact).set({
-                            transactions: admin.firestore.FieldValue.arrayUnion({
+                        await db(eventOwnerWallet.contact,
+                                {
                                 transactionId: shortid.generate(),
                                 amount: price,
                                 name: 'EVENTS',
@@ -75,9 +73,9 @@ buyEvent.route('/')
                                 paymentType: 'ikc',
                                 detail: "Sold Event Ticket" + event.name + ' quantity ' + req.body.quantity,
                                 time: Date.now()
-                            }),
-                            amount: eventOwnerWallet.amount + price
-                        })
+                            },
+                            eventOwnerWallet.amount + price
+                        )
                         eventOwnerWallet.transactions.push({
                             transactionId: shortid.generate(),
                             amount: price,

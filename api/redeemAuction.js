@@ -26,8 +26,7 @@ redeem.route('/')
         else {
             const orderId = shortid.generate();
             req.user.amount -= bidAmount;
-            await db.collection('users').doc(''+req.user.contact).set({
-                transactions: admin.firestore.FieldValue.arrayUnion({
+            await db(req.user.contact, {
                     transactionId: shortid.generate(),
                     amount: -bidAmount,
                     transactionStatus: 'TXN_SUCCESS',
@@ -36,9 +35,9 @@ redeem.route('/')
                     paymentType: 'ikc',
                     detail: "Auction Won",
                     time: Date.now()
-                }),
-                amount: req.user.amount - bidAmount
-            })
+                },
+                req.user.amount - bidAmount
+            )
             req.user.transactions.push({
                 transactionId: shortid.generate(),
                 amount: -bidAmount,
@@ -71,8 +70,7 @@ redeem.route('/')
                 deliveryAddress: deliveryAddress,
                 amount: bidAmount
             });
-            await db.collection('users').doc(''+user.contact).set({
-                transactions: admin.firestore.FieldValue.arrayUnion({
+            await db(user.contact, {
                     transactionId: shortid.generate(),
                     amount: +bidAmount,
                     transactionStatus: 'TXN_SUCCESS',
@@ -81,9 +79,9 @@ redeem.route('/')
                     paymentType: 'ikc',
                     detail: "Auction Sold",
                     time: Date.now()
-                }),
-                amount: user.amount + bidAmount
-            })
+                },
+                user.amount + bidAmount
+            )
             user.transactions.push({
                 transactionId: shortid.generate(),
                 amount: +bidAmount,

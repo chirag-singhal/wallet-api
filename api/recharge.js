@@ -29,8 +29,7 @@ recharge.route('/')
                 }
             })
             .then(async () => {
-                await db.collection('users').doc(''+req.user.contact).set({
-                    transactions: admin.firestore.FieldValue.arrayUnion({
+                await db(req.user.contact, {
                         transactionId: data.operator_ref,
                         amount: -req.body.amount,
                         transactionStatus: 'TXN_SUCCESS',
@@ -39,9 +38,9 @@ recharge.route('/')
                         paymentType: 'ikc',
                         detail: "Recharge " + req.body.amount +' ' + req.body.number,
                         time: Date.now()
-                    }),
-                    amount: req.user.amount - req.body.amount
-                })
+                    },
+                    req.user.amount - req.body.amount
+                )
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {
@@ -98,9 +97,9 @@ recharge.route('/')
                 }
             })
             .then(async () => {
-                await db.collection('users').doc(''+req.user.contact).set({
-                    amount: req.user.amount - req.body.amount
-                })
+                await db(req.user.contact, {},
+                    req.user.amount - req.body.amount
+                )
                 User.findByIdAndUpdate(req.user._id, {
                     $push: {
                         transactions: {
