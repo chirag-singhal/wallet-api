@@ -62,7 +62,7 @@ buyEvent.route('/')
                                 amount: price
                             }
                         });
-
+                        const eventOwnerWallet = await Users.findById(eventOwner.walletId)
                         await db(eventOwnerWallet.contact,
                                 {
                                 transactionId: shortid.generate(),
