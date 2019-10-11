@@ -31,7 +31,7 @@ buyEvent.route('/')
                             }
                         });
                         console.log(user.amount)
-                        // Add a new document in collection "cities" with ID 'LA'
+                        // Add a new document
                         await db(user.contact, {
                                 transactionId: shortid.generate(),
                                 amount: -price,
