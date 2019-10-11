@@ -4,7 +4,7 @@ const WalletAdd = require('../../../models/walletAdd');
 const User = require('../../../models/users');
 const https = require('https');
 const mongodb = require('mongodb');
-
+const db = require('../../../firestore')
 
 const initAdd = function (req) {
   return new Promise(async (resolve, reject) => {
