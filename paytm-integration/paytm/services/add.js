@@ -5,6 +5,8 @@ const User = require('../../../models/users');
 const https = require('https');
 const mongodb = require('mongodb');
 const db = require('../../../firestore')
+const shortid = require('shortid');
+
 
 const initAdd = function (req) {
   return new Promise(async (resolve, reject) => {
@@ -90,7 +92,7 @@ const responseAdd = function (req) {
             });
             await walletAdd.save();
             await db(req.user.contact, {
-                transactionId: new mongodb.ObjectId(response.ORDERID),
+                transactionId: shortid.generate(),
                 transactionStatus: response.STATUS,
                 amount: response.TXNAMOUNT,
                 paymentType: 'inr',
