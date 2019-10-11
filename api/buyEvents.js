@@ -63,6 +63,7 @@ buyEvent.route('/')
                             }
                         });
                         const eventOwnerWallet = await Users.findById(eventOwner.walletId)
+                        console.log(eventOwnerWallet.amount,"AMOUNT");
                         await db(eventOwnerWallet.contact,
                                 {
                                 transactionId: shortid.generate(),
