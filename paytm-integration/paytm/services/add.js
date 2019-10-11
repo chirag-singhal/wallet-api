@@ -101,7 +101,7 @@ const responseAdd = function (req) {
                 detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
                 time: Date.now()
               },
-              req.user.amount + response.TXNAMOUNT
+              parseInt(req.user.amount) + parseInt(response.TXNAMOUNT)
             )
             await User.findByIdAndUpdate(req.user._id, {
               $push: {
