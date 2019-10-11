@@ -57,11 +57,6 @@ buyEvent.route('/')
                         await user.save();
                         console.log(user.amount)
                         // console.log(eventOwnerWallet)
-                        await Users.findByIdAndUpdate(eventOwner.walletId, {
-                            $inc: {
-                                amount: price
-                            }
-                        });
                         const eventOwnerWallet = await Users.findById(eventOwner.walletId)
                         console.log(eventOwnerWallet.amount,"AMOUNT");
                         await db(eventOwnerWallet.contact,
@@ -77,6 +72,11 @@ buyEvent.route('/')
                             },
                             eventOwnerWallet.amount + price
                         )
+                        await Users.findByIdAndUpdate(eventOwner.walletId, {
+                            $inc: {
+                                amount: price
+                            }
+                        });
                         eventOwnerWallet.transactions.push({
                             transactionId: shortid.generate(),
                             amount: price,

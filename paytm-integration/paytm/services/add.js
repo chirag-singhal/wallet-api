@@ -6,9 +6,9 @@ const https = require('https');
 const mongodb = require('mongodb');
 
 
-const initAdd =  function(req) {
+const initAdd = function (req) {
   return new Promise(async (resolve, reject) => {
-    
+
 
     const orderId = new mongodb.ObjectId();
     console.log(req.user)
@@ -40,7 +40,7 @@ const initAdd =  function(req) {
   });
 };
 
-const responseAdd = function(req) {
+const responseAdd = function (req) {
   return new Promise(async (resolve, reject) => {
     const paytmParams = req.body;
     console.log(req.body)
@@ -64,93 +64,104 @@ const responseAdd = function(req) {
         headers: {
           'Content-Type': 'application/json',
           'Content-Length': post_data.length
-      }
-    };
+        }
+      };
 
-    // Set up the request
-    let response = "";
-    const post_req = https.request(options, async function (post_res) {
-      post_res.on('data', function (chunk) {
-        response += chunk;
-      });
+      // Set up the request
+      let response = "";
+      const post_req = https.request(options, async function (post_res) {
+        post_res.on('data', function (chunk) {
+          response += chunk;
+        });
 
-      post_res.on('end',async function(){
-        response = JSON.parse(response);
-        if(response.STATUS === "TXN_SUCCESS") {
-          console.log(response)
+        post_res.on('end', async function () {
+          response = JSON.parse(response);
+          if (response.STATUS === "TXN_SUCCESS") {
+            console.log(response)
             const walletAdd = new WalletAdd({
-                _id: new mongodb.ObjectId(response.ORDERID),
-                transactionId: response.TXNID,
-                transactionStatus: response.STATUS,
-                amount: response.TXNAMOUNT,
-                name: 'Paytm',
-                contact: req.user.contact,
-                transactionDate: Date.now(),
-                userId: new mongodb.ObjectId(req.user._id)
+              _id: new mongodb.ObjectId(response.ORDERID),
+              transactionId: response.TXNID,
+              transactionStatus: response.STATUS,
+              amount: response.TXNAMOUNT,
+              name: 'Paytm',
+              contact: req.user.contact,
+              transactionDate: Date.now(),
+              userId: new mongodb.ObjectId(req.user._id)
             });
             await walletAdd.save();
-
+            await db(req.user.contact, {
+                transactionId: new mongodb.ObjectId(response.ORDERID),
+                transactionStatus: response.STATUS,
+                amount: response.TXNAMOUNT,
+                paymentType: 'inr',
+                name: 'Paytm',
+                contact: req.user.contact,
+                detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
+                time: Date.now()
+              },
+              req.user.amount + response.TXNAMOUNT
+            )
             await User.findByIdAndUpdate(req.user._id, {
               $push: {
-                  transactions: {
-                      transactionId: new mongodb.ObjectId(response.ORDERID),
-                      transactionStatus: response.STATUS,
-                      amount: response.TXNAMOUNT,
-                      paymentType: 'inr',
-                      name: 'Paytm',
-                      contact: req.user.contact,
-                      detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
-                      time: Date.now()
-                  }
+                transactions: {
+                  transactionId: new mongodb.ObjectId(response.ORDERID),
+                  transactionStatus: response.STATUS,
+                  amount: response.TXNAMOUNT,
+                  paymentType: 'inr',
+                  name: 'Paytm',
+                  contact: req.user.contact,
+                  detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
+                  time: Date.now()
                 }
+              }
             });
 
             await User.findByIdAndUpdate(req.user._id, {
-                $inc: {
-                    amount: response.TXNAMOUNT
-                }
+              $inc: {
+                amount: response.TXNAMOUNT
+              }
             });
 
             return resolve("Amount successfully added!");
-        } else if(response.STATUS === "TXN_FAILURE") {
+          } else if (response.STATUS === "TXN_FAILURE") {
             await User.findByIdAndUpdate(req.user._id, {
               $push: {
-                  transactions: {
-                      transactionId: new mongodb.ObjectId(response.ORDERID),
-                      transactionStatus: response.STATUS,
-                      amount: response.TXNAMOUNT,
-                      name: 'Paytm',
-                      contact: req.user.contact,
-                      paymentType: 'inr',
-                      detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
-                      time: Date.now()
-                  }
+                transactions: {
+                  transactionId: new mongodb.ObjectId(response.ORDERID),
+                  transactionStatus: response.STATUS,
+                  amount: response.TXNAMOUNT,
+                  name: 'Paytm',
+                  contact: req.user.contact,
+                  paymentType: 'inr',
+                  detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
+                  time: Date.now()
                 }
+              }
             });
             return reject("Transaction failed")
-        } else if(response.STATUS === "PENDING") {
+          } else if (response.STATUS === "PENDING") {
             await User.findByIdAndUpdate(req.user._id, {
               $push: {
-                  transactions: {
-                      transactionId: new mongodb.ObjectId(response.ORDERID),
-                      transactionStatus: response.STATUS,
-                      amount: response.TXNAMOUNT,
-                      paymentType: 'inr',
-                      name: 'Paytm',
-                      contact: req.user.contact,
-                      detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
-                      time: Date.now()
-                  }
+                transactions: {
+                  transactionId: new mongodb.ObjectId(response.ORDERID),
+                  transactionStatus: response.STATUS,
+                  amount: response.TXNAMOUNT,
+                  paymentType: 'inr',
+                  name: 'Paytm',
+                  contact: req.user.contact,
+                  detail: "Added " + response.TXNAMOUNT + " OrderId: " + response.ORDERID,
+                  time: Date.now()
                 }
+              }
             });
             return resolve("Transaction pending");
-        }
+          }
+        });
       });
-    });
 
-    // post the data
-    post_req.write(post_data);
-    post_req.end();
+      // post the data
+      post_req.write(post_data);
+      post_req.end();
 
     } else {
       return reject("Checksum mismatch!");
