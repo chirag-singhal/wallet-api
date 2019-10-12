@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-
+const User = require('./models/users');
 const serviceAccount = require('./ikc-deal-e803e-6ffce9b07334.json');
 
 admin.initializeApp({
@@ -9,13 +9,20 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const firestore = async (contact, transaction, amount) => {
-
-  await db.collection('users').doc(''+contact).update({
-    transactions: admin.firestore.FieldValue.arrayUnion({
-       transaction
-    }),
-    amount: amount
-  })
+  const user = await User.findOne({'contact': contact});
+  if(user){
+    await db.collection('users').doc(''+contact).update({
+      transactions: admin.firestore.FieldValue.arrayUnion(
+         transaction
+      ),
+      amount: amount
+    })
+  }
+  else {
+    await db.collection('users').doc(''+contact).set({
+      amount: amount
+    })
+  }
 }
 
 module.exports = firestore

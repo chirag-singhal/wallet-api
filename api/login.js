@@ -16,7 +16,7 @@ const Users = require('../models/users')
 const Otp = require('../models/otp')
 
 const config = require('../config')
-
+const db = require('../firestore')
 const auth = express.Router();
 
 auth.use(bodyParser.json());
@@ -204,6 +204,7 @@ auth.route('/signup').post(async (req, res, next) => {
                                 res.setHeader('Content-Type', 'application/json');
                                 res.json({ "message": "User already exits" });
                             } else {
+                                await db(req.body.contact, {}, 0);
                                 const otp = Math.floor(100000 + Math.random() * 900000)
                                 const sender = 'ikcdel';
                                 const authkey = '10703APwDdCpscSPz5c43753d';
