@@ -169,7 +169,7 @@ auth.route('/signup').post(async (req, res, next) => {
                         res.json({ "message": "User already exits" });
                     } else {
                         console.log(user1)
-                        Users.findOne({ contact: req.body.contact }).then(() => {
+                        Users.findOne({ contact: req.body.contact }).then(async() => {
                             if (user3 != null && !user3.verified) {
                                 console.log("same contact")
                                 user3.username = req.body.username
