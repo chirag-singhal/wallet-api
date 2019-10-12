@@ -8,7 +8,7 @@ const firestore = async (contact, transaction, amount) => {
 //   credential: admin.credential.cert(serviceAccount)
 // });
 
-const db = admin.firestore();
+// const db = admin.firestore();
   // await db.collection('users').doc(''+contact).update({
   //   transactions: admin.firestore.FieldValue.arrayUnion({
   //      transaction
