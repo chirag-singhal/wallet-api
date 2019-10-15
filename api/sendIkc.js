@@ -11,8 +11,8 @@ sendIkc.route('/')
     .post((req, res, next) => {
 
         User.findById(req.user._id).then((user) => {
-            if (user != null && user.amount > req.body.amount) {
-                console.log(user.amount)
+            if (user != null && user.amount >= req.body.amount) {
+                console.log(user.amount, req.body.amount, "TRUE")
                 User.findByIdAndUpdate(req.user._id, {
                     $inc: { amount: -req.body.amount }
                 }).then((saved) => {
