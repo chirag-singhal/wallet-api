@@ -27,6 +27,7 @@ addEvent.route('/:eventToken')
             cost: eventTemp.cost,
             image: eventTemp.image,
             contact: eventTemp.contact,
+            otherInfo: eventTemp.otherInfo,
             eventOwner: eventTemp.eventOwner
         }).then((event) => {
             EventOwner.findById(event.eventOwner).then((eventOwner) => {
@@ -38,6 +39,7 @@ addEvent.route('/:eventToken')
                     startDate: eventTemp.startDate,
                     endDate: eventTemp.endDate,
                     cost: eventTemp.cost,
+                    otherInfo: eventTemp.otherInfo,
                     image: eventTemp.image,
                 })
                 eventOwner.save().then(() => {

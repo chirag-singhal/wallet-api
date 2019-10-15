@@ -28,6 +28,9 @@ const eventSchema = new mongoose.Schema({
     contact: {
         type: Number
     },
+    otherInfo: {
+        type: String
+    },
     eventOwner: {
         type: mongoose.Schema.Types.ObjectId
     }

@@ -31,6 +31,9 @@ const eventTempSchema = new mongoose.Schema({
     verify: {
         type: String
     },
+    otherInfo: {
+        type: String
+    },
     eventOwner: {
         type: mongoose.Schema.Types.ObjectId
     }
