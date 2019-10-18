@@ -11,6 +11,7 @@ check.route('/')
 .post((req, res, next) => {
     Users.findOne({"conatct": req.body.conatct}).then((user) => {
         console.log(user)
+        console.log(req.body)
         if(user) {
             res.json({
                 "username": user.username,
