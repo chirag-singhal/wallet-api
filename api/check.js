@@ -10,6 +10,7 @@ check.use(bodyParser.json());
 check.route('/')
 .post((req, res, next) => {
     Users.findOne({"conatct": req.body.conatct}).then((user) => {
+        console.log(user)
         if(user) {
             res.json({
                 "username": user.username,
