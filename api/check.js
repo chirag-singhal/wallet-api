@@ -8,8 +8,8 @@ const check = express.Router();
 check.use(bodyParser.json());
 
 check.route('/')
-.post((req, res, next) => {
-    Users.findOne({"conatct": req.body.contact}).then((user) => {
+.post(async (req, res, next) => {
+        const user = await User.findOne({ 'contact': req.body.contact })
         console.log(user)
         console.log(req.body)
         if(user) {
@@ -23,7 +23,6 @@ check.route('/')
                 "found": false
             })
         }
-    })
 })
 
 module.exports = check
