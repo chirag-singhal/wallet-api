@@ -9,7 +9,7 @@ check.use(bodyParser.json());
 
 check.route('/')
 .post(async (req, res, next) => {
-        const user = await User.findOne({ 'contact': req.body.contact })
+        const user = await Users.findOne({ 'contact': req.body.contact })
         console.log(user)
         console.log(req.body)
         if(user) {
