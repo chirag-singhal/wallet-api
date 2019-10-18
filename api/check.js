@@ -8,7 +8,7 @@ const check = express.Router();
 check.use(bodyParser.json());
 
 check.route('/')
-.get((req, res, next) => {
+.post((req, res, next) => {
     Users.findOne({"conatct": req.body.conatct}).then((user) => {
         if(user) {
             res.json({
