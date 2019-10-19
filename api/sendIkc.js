@@ -76,7 +76,7 @@ sendIkc.route('/')
                                     }).then(() => {
                                         console.log('saved')
                                         res.statusCode = 200;
-                                        res.json({ "message": "ikc successfully transferred!" })
+                                        res.json({ "message": "ikc successfully transferred!", "receiver": user.username })
                                     }).catch((err) => next(err))
                                 }).catch((err) => next(err))
                             }).catch((err) => next(err))
@@ -151,7 +151,7 @@ sendIkc.route('/')
                                             }).then((user) => {
                                                 console.log(user);
                                                 res.statusCode = 200;
-                                                res.json({ "message": "ikc successfully transferred!" })
+                                                res.json({ "message": "ikc successfully transferred!", "receiver": user.username })
                                             }).catch((err) => next(err))
                                         }).catch((err) => next(err))
                                     }).catch((err) => next(err))
