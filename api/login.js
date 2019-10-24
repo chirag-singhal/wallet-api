@@ -13,7 +13,11 @@ const client = new twilio(accountSid, authToken);
 const sendOtp = require('./sendOtp')
 
 const Users = require('../models/users')
-const Otp = require('../models/otp')
+const Otp = require('../models/otp');
+
+
+const validOptions = { apikey: 'CkeFliyN/I-rrs1uRIH6XBJUxEYiSSiu14KuTHcns' };
+const tl = require('TextLocal')(validOptions);
 
 const config = require('../config')
 const db = require('../firestore')
@@ -210,12 +214,19 @@ auth.route('/signup').post(async (req, res, next) => {
                                 const authkey = '10703APwDdCpscSPz5c43753d';
                                 const body = `Your otp to register in IKC is :  ${otp}`;
 
-                                client.messages.create({
-                                    body: `${body}`,
-                                    to: `+${req.body.countrycode}${req.body.contact}`,  // Text this number
-                                    from: '+12025176881' // From a valid Twilio number
-                                })
-                                    .then((message) => console.log(message.sid));
+                                tl.sendSMS(req.body.contact, body, 'IKC-DEAL', function (err, data) {
+                                    console.log(data)
+                                    if(err) {
+                                        next(err);
+                                    }
+                                });
+
+                                // client.messages.create({
+                                //     body: `${body}`,
+                                //     to: `+${req.body.countrycode}${req.body.contact}`,  // Text this number
+                                //     from: '+12025176881' // From a valid Twilio number
+                                // })
+                                //     .then((message) => console.log(message.sid));
                                 const url = `https://sms.spada.in/api/sendhttp.php?authkey=${authkey}&mobiles=${req.body.contact},${req.body.countrycode}${req.body.contact}&message=${body}&sender=${sender}&route=4&response=json`;
                                 // https.get(url,{rejectUnauthorized:false}, (resp) => {
                                 //     let data = '';
