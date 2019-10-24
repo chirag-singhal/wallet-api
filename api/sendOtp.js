@@ -13,7 +13,7 @@ const sender = 'ikcdel'
 const authkey = '10703APwDdCpscSPz5c43753d'
 
 const validOptions = { apikey: 'CkeFliyN/I-rrs1uRIH6XBJUxEYiSSiu14KuTHcns' };
-const tl = require('TextLocal')(validOptions);
+const tl = require('textlocal')(validOptions);
 
 const sendOTP = (contact, countrycode, callback) => {
     const otp = Math.floor(100000 + Math.random() * 900000)

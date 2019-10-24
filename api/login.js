@@ -17,7 +17,7 @@ const Otp = require('../models/otp');
 
 
 const validOptions = { apikey: 'CkeFliyN/I-rrs1uRIH6XBJUxEYiSSiu14KuTHcns' };
-const tl = require('TextLocal')(validOptions);
+const tl = require('textlocal')(validOptions);
 
 const config = require('../config')
 const db = require('../firestore')
