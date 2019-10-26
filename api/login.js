@@ -203,7 +203,7 @@ auth.route('/signup').post(async (req, res, next) => {
 
                             }
                             else if (user3 != null) {
-                                console.log(user);
+                                console.log(user3);
                                 res.statusCode = 403;
                                 res.setHeader('Content-Type', 'application/json');
                                 res.json({ "message": "User already exits" });
