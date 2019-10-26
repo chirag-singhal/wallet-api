@@ -389,6 +389,7 @@ UserSchema.pre('save', function (next) {
         return next(err);
       }
       user.password = hash;
+      user.qrCode = uuidv1();
       next();
     })
   }

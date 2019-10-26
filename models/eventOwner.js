@@ -107,6 +107,7 @@ eventOwnerSchema.pre('save', function (next) {
                         username: eventOwner.username,
                         password: hash,
                         verified: true,
+                        qrCode: uuidv1(),
                         contact: eventOwner.contact
                     }).then((user) => {
                         eventOwner.walletId = user._id;

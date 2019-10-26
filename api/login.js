@@ -241,7 +241,6 @@ auth.route('/signup').post(async (req, res, next) => {
                                     const token = jwt.sign({ email: req.body.email }, config.secret);
                                     Users.create({
                                         ...req.body,
-                                        qrCode: shortid.generate(),
                                         tokens: [
                                             { token }
                                         ]
