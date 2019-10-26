@@ -14,7 +14,7 @@ auctionVendor.use(bodyParser.json());
 auctionVendor.route('/').
 post((req, res, next) => {
     if(req.body.contact && req.body.password){
-        Users.findOne({contact: req.body.contact}).exec()
+        Users.findOne({contact: req.body.contact})
         .then((user) => {
             if(user == null) {
                 res.statusCode = 404;
