@@ -55,7 +55,7 @@ const sendOTP = (contact, countrycode, callback) => {
                                 console.log(JSON.parse(data), "DATA");
                                 data = JSON.parse(data)
                                 if(data.status == 'failure')
-                                    callback(false)
+                                    callback(true)
                             });
                         }).on("error", (err) => {
                             console.log("Error: " + err.message);
