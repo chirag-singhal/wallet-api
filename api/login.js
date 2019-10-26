@@ -3,6 +3,7 @@ const https = require('https')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
+const shortid = require('shortid');
 
 const accountSid = 'ACe92d7e192048506640fc843f6b77e1bf'; // Your Account SID from www.twilio.com/console
 const authToken = '1d68ddf556166ccc1a0e18c3d0482dc0';   // Your Auth Token from www.twilio.com/console
@@ -240,6 +241,7 @@ auth.route('/signup').post(async (req, res, next) => {
                                     const token = jwt.sign({ email: req.body.email }, config.secret);
                                     Users.create({
                                         ...req.body,
+                                        qrCode: shortid.generate(),
                                         tokens: [
                                             { token }
                                         ]
