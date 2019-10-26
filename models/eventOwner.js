@@ -62,7 +62,8 @@ const eventOwnerSchema = new mongoose.Schema({
     },
     qrCode: {
         type: String,
-        default: uuidv1()
+        default: shortid.generate(),
+        unique: true
     },
     contact: {
         type: Number,

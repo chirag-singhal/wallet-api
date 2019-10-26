@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const uuidv1 = require('uuid/v1');
 require('mongoose-type-url')
+const shortid = require('shortid');
 
 const DeliveryAddressSchema = new mongoose.Schema({
   address: {
@@ -303,7 +304,7 @@ var UserSchema = new mongoose.Schema({
   },
   qrCode: {
     type: String,
-    default: uuidv1(),
+    default: shortid.generate(),
     unique: true
   },
   address: {
@@ -383,7 +384,6 @@ UserSchema.methods.toJSON = function () {
 UserSchema.pre('save', function (next) {
   if (this.isNew) {
     var user = this;
-    user.qrCode = uuidv1();
     bcrypt.hash(user.password, 10, function (err, hash) {
       if (err) {
         return next(err);
