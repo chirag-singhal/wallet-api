@@ -17,19 +17,19 @@ const Product = new mongoose.Schema({
             type: String
         },
         imageUrl: {
-            type: String
+            type: Buffer
         },
         stock: {
             type: Number
         },
-        offererId: {
+        shopVendorId: {
             type: mongoose.Schema.Types.ObjectId
         },
         offererName: {
             type: String
         },
         offererImage: {
-            type: String
+            type: Buffer
         },
         isReplaceable: {
             type: Boolean

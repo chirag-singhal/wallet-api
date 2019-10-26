@@ -85,6 +85,8 @@ const check = require('./api/check');
 const getBids = require('./api/getBids');
 const redeem = require('./api/redeemAuction');
 const result = require('./api/calculateAuctionResults');
+const addProducts = require('./api/addProduct');
+const shopVendorFirstLogin = require('./api/shopVendorFirstLoginn');
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -261,6 +263,10 @@ app.use('/getBids', jwtVerify, getBids);
 app.use('/auctionResults', jwtAuction, result);
 
 app.use('/redeem', jwtVerify, redeem);
+
+app.use('/addProduct', jwtShopVendor, addProducts);
+
+app.use('/shopVendorFirstLogin', shopVendorFirstLogin);
 
 app.get('/redirect', (req, res) => {
     res.statusCode = 302;
