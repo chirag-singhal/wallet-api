@@ -16,8 +16,9 @@ sendIkc.route('/')
                 User.findByIdAndUpdate(req.user._id, {
                     $inc: { amount: -req.body.amount }
                 }).then((saved) => {
+                    console.log(req.body)
                     User.findOne({ qrCode: req.body.qrCode }).then((user) => {
-
+                        console.log(user);
                         if (user) {
                             User.findOneAndUpdate({ qrCode: req.body.qrCode }, {
                                 $inc: { amount: +req.body.amount }

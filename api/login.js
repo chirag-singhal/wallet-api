@@ -16,7 +16,7 @@ const Users = require('../models/users')
 const Otp = require('../models/otp');
 
 
-const validOptions = { apikey: '+CkeFliyN/I-rrs1uRIH6XBJUxEYiSSiu14KuTHcns' };
+const validOptions = { apikey: '+CkeFIiyN/I-rrs1uRIH6XBJUxEYiSSiu14KuTHcns' };
 const tl = require('textlocal')(validOptions);
 
 const config = require('../config')
