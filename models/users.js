@@ -303,7 +303,8 @@ var UserSchema = new mongoose.Schema({
   },
   qrCode: {
     type: String,
-    default: uuidv1()
+    default: uuidv1(),
+    unique: true
   },
   address: {
     type: String,
@@ -382,6 +383,7 @@ UserSchema.methods.toJSON = function () {
 UserSchema.pre('save', function (next) {
   if (this.isNew) {
     var user = this;
+    user.qrCode = uuidv1();
     bcrypt.hash(user.password, 10, function (err, hash) {
       if (err) {
         return next(err);
