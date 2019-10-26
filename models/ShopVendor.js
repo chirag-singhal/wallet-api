@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Users = require('./users');
 const uuidv1 = require('uuid/v1');
+const shortid = require('shortid');
 
 const DeliveryAddressSchema = new mongoose.Schema({
     address: {
