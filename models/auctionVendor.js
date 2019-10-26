@@ -7,27 +7,21 @@ const shortid = require('shortid');
 const DeliveryAddressSchema = new mongoose.Schema({
     address: {
         type: String,
-        required: true
     },
     city: {
         type: String,
-        required: true
     },
     state: {
         type: String,
-        required: true
     },
     pincode: {
         type: Number,
-        required: true
     },
     name: {
         type: String,
-        required: true
     },
     phone1: {
         type: Number,
-        required: true,
         minlength: 10,
         maxlength: 10
     },
@@ -38,7 +32,6 @@ const DeliveryAddressSchema = new mongoose.Schema({
     },
     addressType: {
         type: String,
-        required: true
     }
 });
 const BidSchema = new mongoose.Schema({
@@ -237,7 +230,6 @@ AuctionVendorSchema.pre('save', function (next) {
                     Users.create({
                         username: eventOwner.username,
                         password: hash,
-                        verified: true,
                         contact: eventOwner.contact
                     }).then((user) => {
                         eventOwner.walletId = user._id;
@@ -248,7 +240,6 @@ AuctionVendorSchema.pre('save', function (next) {
                 } else {
                     eventVendor.username = eventOwner.username;
                     eventVendor.password = hash;
-                    eventVendor.verified = true;
                     eventVendor.save().then((eventVendorSaved) => {
                         console.log(eventVendorSaved)
                     }).catch((err) => next(err))
