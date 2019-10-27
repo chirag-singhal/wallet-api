@@ -90,6 +90,7 @@ const placeBid = (req, res) => {
                 $push: {
                     "bids": {
                         "auctionId": productId,
+                        
                         bidAmount,
                         "winner": false
                     }

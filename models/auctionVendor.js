@@ -47,6 +47,9 @@ const AuctionProductSchema = new mongoose.Schema({
     orderId: {
         type: mongoose.Schema.Types.ObjectId
     },
+    auctionId: {
+        type: mongoose.Schema.Types.ObjectId,
+    },
     title: {
         type: String
     },

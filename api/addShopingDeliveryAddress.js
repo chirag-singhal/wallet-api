@@ -19,12 +19,11 @@ const addShopingDeliveryAddress = (req, res) => {
             })
         }
         else{
-            const DeliveryAddress = new DeliveryAddress({
+            DeliveryAddress.create({
                 ...req.body,
                 phone1: req.user.contact,
                 userId: req.user._id
-            });
-            DeliveryAddress.save().then(() => {
+            }).then(() => {
                 res.json({"message": "Address successfully added!"});
             }).catch((e) => {
                 console.log(e);

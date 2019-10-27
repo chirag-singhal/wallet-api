@@ -11,6 +11,8 @@ const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 
+const AuctionVendor = require('../models/auctionVendor')
+
 const upload = multer({ 
     dest: __dirname + '/uploads/images',                 // No dest parameter provided because we
     limits: {                                            // do not want to save the image in the 
@@ -37,7 +39,12 @@ addAuction.route('/')
         console.log(buffer);
         auction.imageUrl = buffer;
         auction.auctionCreator = req.user._id;
-        auction.save().then((auctionWithCreator) => {
+        auction.save().then(async (auctionWithCreator) => {
+            const auctionVendor = await AuctionVendor.findById(req.user._id);
+            auctionVendor.auctions.push({
+                ...req.body,
+                auctionId: auctionWithCreator._id
+            })
             console.log(auctionWithCreator)
             res.statusCode = 200;
             res.json({"message": "Auction Created"})
