@@ -14,7 +14,7 @@ auctionVendor.use(bodyParser.json());
 auctionVendor.route('/').
 post(async (req, res, next) => {
     if(req.body.contact && req.body.password){
-        const user = await Users.findOne({contact: req.body.contact});
+        const user = await Users.findOne({"contact": req.body.contact});
         Users.findOne({contact: req.body.contact}).then((user2) => {
             console.log(user2, user, req.body)
             if(user == null) {
