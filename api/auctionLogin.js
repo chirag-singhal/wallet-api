@@ -16,6 +16,7 @@ post((req, res, next) => {
     if(req.body.contact && req.body.password){
         Users.findOne({contact: req.body.contact})
         .then((user) => {
+            console.log(user, req.body)
             if(user == null) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');

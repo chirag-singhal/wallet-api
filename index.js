@@ -87,6 +87,7 @@ const redeem = require('./api/redeemAuction');
 const result = require('./api/calculateAuctionResults');
 const addProducts = require('./api/addProduct');
 const shopVendorFirstLogin = require('./api/shopVendorFirstLoginn');
+const bcrypt = require('bcrypt');
 
 const app = express()
 const url = 'mongodb://localhost:27017/ikc';
@@ -106,6 +107,11 @@ app.use(morgan('dev'))
 
 app.use('/getBalance', getBalance)
 app.use('/createWallet', createWallet)
+
+
+bcrypt.hash("a", 10, function (err, hash) {
+    console.log(hash)
+})
 
 // ------------------------------------------------Login & Sign Up----------------------------------------------------------------
 app.use('/auth', auth);
