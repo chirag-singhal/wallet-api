@@ -268,7 +268,7 @@ const BidSchema = new mongoose.Schema({
   auctionId: {
     type: mongoose.Schema.Types.ObjectId
   },
-  title: {
+  name: {
     type: String
   },
   bidAmount: {

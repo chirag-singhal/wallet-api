@@ -52,6 +52,7 @@ addAuction.route('/')
             res.json({"message": "Auction Created"})
         }).catch((err) => next(err))
     }).catch((err) => {
+        console.log(err)
         res.statusCode = 403;
         res.json(err);
     })
