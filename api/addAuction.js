@@ -41,6 +41,7 @@ addAuction.route('/')
         auction.auctionCreator = req.user._id;
         auction.save().then(async (auctionWithCreator) => {
             const auctionVendor = await AuctionVendor.findById(req.user._id);
+            console.log(auctionVendor, "auction")
             auctionVendor.auctions.push({
                 ...req.body,
                 auctionId: auction._id
