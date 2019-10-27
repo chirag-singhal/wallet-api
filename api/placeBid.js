@@ -91,7 +91,6 @@ const placeBid = (req, res) => {
                     "bids": {
                         productId,
                         bidAmount,
-                        status
                     }
                 }
             }).then(() => {
