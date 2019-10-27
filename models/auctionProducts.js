@@ -24,7 +24,8 @@ const AuctionProductSchema = new mongoose.Schema({
         type: Number
     },
     numberOfBids: {
-        type: Number
+        type: Number,
+        default: 0
     },
     duration: {
         type: String
