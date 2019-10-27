@@ -12,11 +12,11 @@ const auctionVendor = express.Router();
 auctionVendor.use(bodyParser.json());
 
 auctionVendor.route('/').
-post((req, res, next) => {
+post(async (req, res, next) => {
     if(req.body.contact && req.body.password){
-        Users.findOne({contact: req.body.contact})
-        .then((user) => {
-            console.log(user, req.body)
+        const user = await Users.findOne({contact: req.body.contact});
+        Users.findOne({contact: req.body.contact}).then((user2) => {
+            console.log(user2, user, req.body)
             if(user == null) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
