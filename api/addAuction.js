@@ -45,6 +45,7 @@ addAuction.route('/')
                 ...req.body,
                 auctionId: auctionWithCreator._id
             })
+            await auctionVendor.save();
             console.log(auctionWithCreator)
             res.statusCode = 200;
             res.json({"message": "Auction Created"})
