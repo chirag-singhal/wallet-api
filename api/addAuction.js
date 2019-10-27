@@ -43,10 +43,10 @@ addAuction.route('/')
             const auctionVendor = await AuctionVendor.findById(req.user._id);
             auctionVendor.auctions.push({
                 ...req.body,
-                auctionId: auctionWithCreator._id
+                auctionId: auction._id
             })
             await auctionVendor.save();
-            console.log(auctionWithCreator)
+            console.log(auction)
             res.statusCode = 200;
             res.json({"message": "Auction Created"})
         }).catch((err) => next(err))
