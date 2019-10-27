@@ -53,7 +53,7 @@ const placeBid = (req, res) => {
                     $set: {
                         "winner": {
                             bidAmount,
-                            userId
+                            "winner": userId
                         }
                     }
                 }).then(() => {
@@ -89,8 +89,9 @@ const placeBid = (req, res) => {
             User.findByIdAndUpdate(userId, {
                 $push: {
                     "bids": {
-                        productId,
+                        "auctionId": productId,
                         bidAmount,
+                        "winner": false
                     }
                 }
             }).then(() => {

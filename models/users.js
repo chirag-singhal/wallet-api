@@ -272,7 +272,8 @@ const BidSchema = new mongoose.Schema({
     type: Number
   },
   winner: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 });
 
