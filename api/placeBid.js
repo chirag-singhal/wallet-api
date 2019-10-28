@@ -92,7 +92,7 @@ const placeBid = (req, res) => {
                         "auctionId": productId,
                         "name": product.title,
                         bidAmount,
-                        "winner": false
+                        "winner": "On Going"
                     }
                 }
             }).then(() => {
