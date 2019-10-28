@@ -13,9 +13,10 @@ loginShopVendor.use(bodyParser.json());
 
 loginShopVendor.route('/').
 post((req, res, next) => {
-    if(req.body.contact && req.body.password){
-        Users.findOne({"contact": req.body.contact}).then((user) => {
-            console.log(user, "NOT FOUND OR FOUND")
+    if(req.body.contact && req.body.password) {
+        const user = await Users.findOne({"contact": req.body.contact});
+        Users.findOne({"contact": req.body.contact}).then((user2) => {
+            console.log(user, user2, "NOT FOUND OR FOUND")
             if(user == null) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
