@@ -114,24 +114,8 @@ const checkoutShopingCart = async (req, res) => {
         product.noOfStockSold += cartProduct.quantity;
         await shopingCategory.save();
 
-
-    }
-    await db(req.user.contact,
-        {
-            transactionId: shortid.generate(),
-            amount: amount,
-            name: user.username,
-            contact: user.contact,
-            transactionStatus: 'TXN_SUCCESS',
-            paymentType: 'ikc',
-            detail: "Paid for Order " + amount,
-            time: Date.now()
-        },
-        user.amount - (cartProduct.quantity * cartProduct.price)
-    )
-    await User.findByIdAndUpdate(req.user._id, {
-        $push: {
-            transactions: {
+        await db(req.user.contact,
+            {
                 transactionId: shortid.generate(),
                 amount: amount,
                 name: user.username,
@@ -140,9 +124,26 @@ const checkoutShopingCart = async (req, res) => {
                 paymentType: 'ikc',
                 detail: "Paid for Order " + amount,
                 time: Date.now()
+            },
+            user.amount - (cartProduct.quantity * cartProduct.price)
+        )
+        await User.findByIdAndUpdate(req.user._id, {
+            $push: {
+                transactions: {
+                    transactionId: shortid.generate(),
+                    amount: amount,
+                    name: user.username,
+                    contact: user.contact,
+                    transactionStatus: 'TXN_SUCCESS',
+                    paymentType: 'ikc',
+                    detail: "Paid for Order " + amount,
+                    time: Date.now()
+                }
             }
-        }
-    });
+        });
+
+    }
+
 
     res.status(200).json({"message": "Order successfully placed!"});
 }
