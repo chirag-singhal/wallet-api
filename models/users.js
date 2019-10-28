@@ -187,7 +187,7 @@ const AuctionOrderSchema = new mongoose.Schema({
 
 const ShoppingOrderSchema = new mongoose.Schema({
   orderId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
   },
   product: {
     type: ProductSchema
