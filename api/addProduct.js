@@ -30,7 +30,7 @@ const upload = multer({
 
 addProduct.route('/')
 .post(upload.single('image'), async (req, res, next) => {
-    const categories = Categories.find({"title": "E-talent"})
+    const categories = await Categories.findOne({"title": "E-talent"})
     const buffer = await sharp(path.join(req.file.destination, req.file.filename)).resize({ width: 250, height:250 }).png().toBuffer()
 
     const image = await Image.findOne({"shopVendorId": req.user._id})
