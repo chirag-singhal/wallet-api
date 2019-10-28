@@ -12,7 +12,7 @@ const loginShopVendor = express.Router();
 loginShopVendor.use(bodyParser.json());
 
 loginShopVendor.route('/').
-post((req, res, next) => {
+post(async (req, res, next) => {
     if(req.body.contact && req.body.password) {
         const user = await Users.findOne({"contact": req.body.contact});
         Users.findOne({"contact": req.body.contact}).then((user2) => {
