@@ -41,7 +41,7 @@ const checkoutShopingCart = async (req, res) => {
         const product = await shopingCategory.products.id(cartProduct.productId);
         const orderId = shortid.generate();
 
-        const vendor = await ShopVendor.findById(product.ShopVendorId)
+        const vendor = await ShopVendor.findById(product.shopVendorId)
         const user = await User.findById(vendor.walletId);
         const shopingOrder = new ShopingOrder({
             orderId: orderId,
