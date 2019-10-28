@@ -44,6 +44,7 @@ addProduct.route('/')
             offererImage: image.image
         })
         await categories.save();
+        res.json({"message": "OFFER ADDED"});
     }
     else {
         await Categories.create({
@@ -56,6 +57,7 @@ addProduct.route('/')
                 offererImage: image.image
             }]
         })
+        res.json({"message": "OFFER ADDED"});
     }
 })
 
