@@ -12,10 +12,21 @@ calculateResults.route('/')
         for(let j = 0; j < auctionVendor.auctions.length; j++) {
             if(auctionVendor.auctions[j].auctionId == req.body.auctionId) {
                 auctionVendor.auctions[j].results = true;
-                User.findById(auction.winner).then(async (user) => {
+                for(let i = 0; i < auctionVendor.auctions[j].bid.length; i++) {
+                    User.findById(auctionVendor.auctions[j].bid[i].userId).then(async (user) => {
+                        for(let i = 0; i < user.bids.length; i++) {
+                            if(user.bids[i].auctionId == req.body.auctionId){
+                                user.bids[i].winner = "lost";
+                                break;
+                            }
+                        }
+                        await user.save();
+                    })
+                }
+                User.findById(auctionVendor.auctions[j].winner).then(async (user) => {
                     for(let i = 0; i < user.bids.length; i++) {
                         if(user.bids[i].auctionId == req.body.auctionId){
-                            user.bids[i].winner = true;
+                            user.bids[i].winner = "won";
                             break;
                         }
                     }
