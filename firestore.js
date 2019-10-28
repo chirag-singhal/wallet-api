@@ -10,6 +10,7 @@ const db = admin.firestore();
 
 const firestore = async (contact, transaction, amount) => {
   const user = await User.findOne({'contact': contact});
+  console.log(contact, transaction, amount)
   if(user){
     db.collection('users').doc(''+contact).update({
       transactions: admin.firestore.FieldValue.arrayUnion(
