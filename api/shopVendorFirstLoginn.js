@@ -55,7 +55,7 @@ post(upload.single('image'), async (req, res, next) => {
                             }
                         }).then(async (user) => {
                             console.log(user);
-                            const image = await Image.findOne({"shopVendorId": req.user._id})
+                            const image = await Image.findOne({"shopVendorId": user._id})
                             const buffer = await sharp(path.join(req.file.destination, req.file.filename)).resize({ width: 250, height:250 }).png().toBuffer()
                             if(image) {
                                 image.image = buffer;
@@ -63,7 +63,7 @@ post(upload.single('image'), async (req, res, next) => {
                             }
                             else {
                                 await Image.create({
-                                    "shopVendorId": req.user._id,
+                                    "shopVendorId": user._id,
                                     "image": buffer
                                 })
                             }
