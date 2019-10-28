@@ -31,11 +31,10 @@ const upload = multer({
     }
 })
 
-firstloginShopVendor.route('/').
-post(upload.single('image'), async (req, res, next) => {
+firstloginShopVendor.route('/')
+.post(upload.single('image'), async (req, res, next) => {
     if(req.body.contact && req.body.password){
-        Users.findOne({contact: req.body.contact})
-        .then((user) => {
+        Users.findOne({"contact": req.body.contact}).then((user) => {
             if(user == null) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
