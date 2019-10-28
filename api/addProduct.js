@@ -32,14 +32,16 @@ addProduct.route('/')
 .post(upload.single('image'), async (req, res, next) => {
     const categories = await Categories.findOne({"title": "E-talent"})
     const buffer = await sharp(path.join(req.file.destination, req.file.filename)).resize({ width: 250, height:250 }).png().toBuffer()
-    
+
+    const image = await Image.findOne({"shopVendorId": req.user._id})
+
     if(categories) {
         categories.products.push({
             ...req.body,
             imageUrl: buffer,
             shopVendorId: req.user._id,
             offererName: req.user.username,
-            offererImage: req.user.image
+            offererImage: image.image
         })
         await categories.save();
     }
