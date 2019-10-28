@@ -16,8 +16,7 @@ loginEvent.use(bodyParser.json());
 loginEvent.route('/').
 post((req, res, next) => {
     if(req.body.contact && req.body.password){
-        Users.findOne({contact: req.body.contact}).exec()
-        .then((user) => {
+        Users.findOne({contact: req.body.contact}).then((user) => {
             if(user == null) {
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
