@@ -15,7 +15,6 @@ send.route('/')
                 User.findByIdAndUpdate(req.user._id, {
                     $inc: { amount: -req.body.amount }
                 }).then((saved) => {
-
                     User.findOne({ contact: req.body.contact }).then((user) => {
                         if (user) {
                             User.findOneAndUpdate({ contact: req.body.contact }, {
@@ -57,7 +56,7 @@ send.route('/')
                                             detail: "Received from " + req.user.contact,
                                             time: Date.now()
                                         },
-                                        user.amount + req.body.amount
+                                        parseInt(user.amount) + parseInt(req.body.amount)
                                     )
                                     User.findOneAndUpdate({ contact: req.body.contact }, {
                                         $push: {
