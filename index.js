@@ -80,6 +80,7 @@ const assign = require('./api/assign');
 const outForDelivery = require('./api/outForDelivery');
 const delivered = require('./api/delivered');
 const cantDeliver = require('./api/cantDeliver')
+const addEventOwner = require('./api/addEventVendor');
 const sendOtp = require('./api/sendOtp');
 const check = require('./api/check');
 const getBids = require('./api/getBids');
@@ -143,6 +144,7 @@ app.use('/addTempEvent', jwtEventVerify, addEventTemp);
 app.use('/addEvent', addEvent);
 app.use('/eventLogin', eventLogin);
 app.use('/verifyTicket', jwtEventVerify, verifyTicket)
+app.use('/addEventVendor', addEventOwner);
 
 // ------------------------------------------------Update Password----------------------------------------------------------------
 app.use('/updatePassword', jwtVerify, updatePassword);

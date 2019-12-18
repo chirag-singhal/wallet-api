@@ -245,6 +245,7 @@ AuctionVendorSchema.pre('save', function (next) {
                     eventVendor.password = hash;
                     eventVendor.save().then((eventVendorSaved) => {
                         console.log(eventVendorSaved)
+                        next();
                     }).catch((err) => next(err))
                 }
             })

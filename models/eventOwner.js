@@ -121,6 +121,7 @@ eventOwnerSchema.pre('save', function (next) {
                     eventVendor.verified = true;
                     eventVendor.save().then((eventVendorSaved) => {
                         console.log(eventVendorSaved)
+                        next();
                     }).catch((err) => next(err))
                 }
             })
