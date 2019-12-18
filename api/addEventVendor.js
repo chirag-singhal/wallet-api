@@ -10,7 +10,7 @@ addEventVendor.route('/')
 .post((req, res, next) => {
     EventOwner.create(req.body)
     .then((eventOwner) => {
-            console.log(eventOwner)
+            console.log(eventOwner, "EVENT VENDOR")
             res.statusCode = 200;
             res.json({"message": "Event Vendor Created"})
         }).catch((err) => {

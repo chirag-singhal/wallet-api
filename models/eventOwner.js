@@ -63,7 +63,6 @@ const eventOwnerSchema = new mongoose.Schema({
     },
     qrCode: {
         type: String,
-        default: shortid.generate(),
         unique: true
     },
     contact: {
@@ -97,10 +96,12 @@ eventOwnerSchema.methods.toJSON = function () {
 eventOwnerSchema.pre('save', function (next) {
     if (this.isNew) {
         var eventOwner = this;
+        eventOwner.qrCode = uuidv1();
         bcrypt.hash(eventOwner.password, 10, function (err, hash) {
             if (err) {
                 return next(err);
             }
+            console.log(hash)
             Users.findOne({ "contact": eventOwner.contact }).then((eventVendor) => {
                 if (eventVendor == null) {
                     Users.create({
@@ -121,6 +122,8 @@ eventOwnerSchema.pre('save', function (next) {
                     eventVendor.verified = true;
                     eventVendor.save().then((eventVendorSaved) => {
                         console.log(eventVendorSaved)
+                        eventOwner.walletId = eventVendor._id;
+                        eventOwner.password = hash;
                         next();
                     }).catch((err) => next(err))
                 }

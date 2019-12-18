@@ -24,6 +24,7 @@ post((req, res, next) => {
             } else {
                 bcrypt.compare(req.body.password, user.password)
                 .then(async (result) => {
+                    console.log(req.body.password, user, result)
                     if(result == true){
                         const token = jwt.sign({contact: user.contact}, config.secret);
 
