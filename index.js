@@ -88,6 +88,7 @@ const redeem = require('./api/redeemAuction');
 const result = require('./api/calculateAuctionResults');
 const addProducts = require('./api/addProduct');
 const shopVendorFirstLogin = require('./api/shopVendorFirstLoginn');
+const addAuctionVendor = require('./api/addAuctionVendor');
 const bcrypt = require('bcrypt');
 
 const app = express()
@@ -372,6 +373,8 @@ app.get('/auction', (req, res) => {
 app.post('/auction', jwtVerify, (req, res) => {
     placeBid(req, res);
 });
+
+app.use('/addAuctionVendor', addAuctionVendor);
 
 
 
