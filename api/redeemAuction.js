@@ -62,7 +62,7 @@ redeem.route('/')
             })
             const user = await User.findById(auctionVendor.walletId)
             user.amount += bidAmount;
-            req.user.auctionOrder.push({
+            req.user.auctionOrders.push({
                 orderId: orderId,
                 auctionId: req.body.auctionId,
                 product: product,
