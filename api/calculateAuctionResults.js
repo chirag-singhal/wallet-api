@@ -43,7 +43,6 @@ calculateResults.route('/')
                     }
                 }
             }
-            await AuctionProduct.deleteOne({'_id': req.body.auctionId});
             await auctionVendor.save();
             res.end();
         })

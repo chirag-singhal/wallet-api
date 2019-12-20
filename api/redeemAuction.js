@@ -17,7 +17,7 @@ redeem.route('/')
         let bidAmount;
         const deliveryAddress = await ShoppingDeliveryAddress.findOne({ userId: req.user._id });
         for (bid of req.user.bids)
-            if (req.body.auctionId == bid.auctionId && bid.winner)
+            if (req.body.auctionId == bid.auctionId && bid.winner == 'won')
                 bidAmount = bid.bidAmount;
         if (req.user.amount > bidAmount) {
             res.statusCode = 403
