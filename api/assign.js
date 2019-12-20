@@ -11,6 +11,7 @@ assign.route('/')
 .post(async (req, res, next) => {
     const user = await User.findOne({'orders.orderId': req.body.orderId});
     const delivery = await Delivery.findOne({'qrCode': req.body.qrCode});
+    console.log(user, delivery)
     if(user != null){
         let offererId;
         
@@ -43,6 +44,7 @@ assign.route('/')
     else {
         const user = await User.findOne({'auctionOrders.orderId': req.body.orderId});
         const auctionVendor = await AuctionVendor.findOne({'orders.orderId': req.body.orderId})
+        console.log(user, auctionVendor)
         for(let i = 0; i < user.auctionOrders.length; i++){
             if(user.auctionOrders[i].orderId == req.body.orderId){
                 user.auctionOrders[i].status = "Shipped";
