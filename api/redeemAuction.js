@@ -92,15 +92,6 @@ redeem.route('/')
                 detail: "Auction Sold",
                 time: Date.now()
             })
-            await shopingOrder.save().then(async () => {
-                shopingOrder.deliveredUrl = path.join(req.headers.host, "/delivered/", jwt.sign({ orderId: shopingOrder._id }, "This is my secret code for refund process. Its highly complicated"));
-                await ShopingOrder.updateOne({ _id: shopingOrder._id }, {
-                    $currentDate: {
-                        orderDate: true
-                    }
-                });
-                await shopingOrder.save();
-            });
             await user.save();
             await auctionVendor.save();
             await req.user.save();
