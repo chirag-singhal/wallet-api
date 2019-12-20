@@ -95,6 +95,7 @@ redeem.route('/')
             await user.save();
             await auctionVendor.save();
             await req.user.save();
+            res.end();
         }
     })
 
