@@ -211,6 +211,9 @@ ShopVendorSchema.pre('save', function (next) {
                     eventVendor.password = hash;
                     eventVendor.verified = true;
                     eventVendor.save().then((eventVendorSaved) => {
+                        eventOwner.password = hash;
+                        eventOwner.walletId = eventVendor._id;
+                        next();
                         console.log(eventVendorSaved)
                     }).catch((err) => next(err))
                 }
