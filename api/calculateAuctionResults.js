@@ -23,7 +23,7 @@ calculateResults.route('/')
                         await user.save();
                     })
                 }
-                User.findById(auctionVendor.auctions[j].winner).then(async (user) => {
+                User.findById(auctionVendor.auctions[j].winner.winner).then(async (user) => {
                     for(let i = 0; i < user.bids.length; i++) {
                         if(user.bids[i].auctionId == req.body.auctionId){
                             user.bids[i].winner = "won";
