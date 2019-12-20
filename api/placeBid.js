@@ -12,7 +12,8 @@ const placeBid = (req, res) => {
     const winner = false;
     AuctionProduct.findById(productId).then((product) => {
         if (!product) {
-            return res.status(500).json({
+            placed = true;
+            res.status(403).json({
                 "message": "Invalid Product Id!"
             });
         }
@@ -20,16 +21,19 @@ const placeBid = (req, res) => {
         return AuctionProduct.findById(req.body.productId)
 
     }).then((product) => {
-        for (bid of product.bid) {
-            if (bid.userId == req.user._id) {
-                console.log(user)
-                placed = true;
-                res.json({
-                    "message": "Bid already placed!"
-                });
-                res.end();
+        if(product) {
+            for (bid of product.bid) {
+                if (bid.userId == req.user._id) {
+                    console.log(user)
+                    placed = true;
+                    res.json({
+                        "message": "Bid already placed!"
+                    });
+                    res.end();
+                }
             }
         }
+        
         if (!placed) {
             AuctionVendor.findById(product.auctionCreator).then((auctionVendor) => {
                 if (product.bid.length == 0) {
