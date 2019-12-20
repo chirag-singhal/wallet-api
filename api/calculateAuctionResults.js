@@ -43,7 +43,7 @@ calculateResults.route('/')
                     }
                 }
             }
-            await AuctionProduct.deleteById(req.body.auctionId);
+            await AuctionProduct.deleteOne({'_id': req.body.auctionId});
             await auctionVendor.save();
             res.end();
         })
