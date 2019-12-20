@@ -15,11 +15,18 @@ const admin = require('firebase-admin');
 redeem.route('/')
     .post(async (req, res, next) => {
         let bidAmount;
+        let found = false;
         const deliveryAddress = await ShoppingDeliveryAddress.findOne({ userId: req.user._id });
         for (bid of req.user.bids)
-            if (req.body.auctionId == bid.auctionId && bid.winner == 'won')
+            if (req.body.auctionId == bid.auctionId && bid.winner == 'won'){
+                found = true;
                 bidAmount = bid.bidAmount;
-        if (req.user.amount > bidAmount) {
+            }
+        if(!found) {
+            res.statusCode = 403
+            res.json({ "message": "Auction not won" })
+        }
+        else if (req.user.amount > bidAmount) {
             res.statusCode = 403
             res.json({ "message": "Insufficient Balance" })
         }
