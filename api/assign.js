@@ -9,9 +9,9 @@ const Delivery = require('../models/delivery')
 
 assign.route('/')
 .post(async (req, res, next) => {
-    const user = await User.findOne({'orders.orderId': req.body.orderId}).exec();
+    const user = await User.findOne({'orders.orderId': req.body.orderId});
     const delivery = await Delivery.findOne({'qrCode': req.body.qrCode});
-    console.log(user)
+    console.log(user, "USER HAI YE")
     if(user != null){
         let offererId;
         
@@ -23,7 +23,7 @@ assign.route('/')
                 break;
             }
         }
-        const shopVendor = await ShopVendor.findById(offererId)
+        const shopVendor = req.user;
         for(let i = 0; i < shopVendor.orders.length; i++){
             if(shopVendor.orders[i].orderId == req.body.orderId){
                 shopVendor.orders[i].status = "Shipped";
