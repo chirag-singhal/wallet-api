@@ -9,21 +9,31 @@ const Delivery = require('../models/delivery')
 
 assign.route('/')
 .post(async (req, res, next) => {
-    const user = await User.findOne({'orders.orderId': req.body.orderId});
+    const user = await User.findOne({'auctionOrders.orderId': req.body.orderId});
     const delivery = await Delivery.findOne({'qrCode': req.body.qrCode});
     console.log(user, "USER HAI YE")
-    if(user != null){
+    if(user == null){
         let offererId;
         
-        for(let i = 0; i < user.orders.length; i++){
-            if(user.orders[i].orderId == req.body.orderId){
-                user.orders[i].status = "Shipped";
-                offererId = user.orders[i].product.offererId;
+        for(let i = 0; i < req.user.orders.length; i++){
+            if(req.user.orders[i].orderId == req.body.orderId){
+                req.user.orders[i].status = "Shipped";
+                offererId = user.orders[i].userId;
                 console.log(offererId)
                 break;
             }
         }
         const shopVendor = req.user;
+        const user = await User.findById(offererId);
+        console.log(user, "USER HAI YE")
+        for(let i = 0; i < user.orders.length; i++){
+            if(user.orders[i].orderId == req.body.orderId){
+                user.orders[i].status = "Shipped";
+                offererId = user.orders[i].userId;
+                console.log(offererId)
+                break;
+            }
+        }
         for(let i = 0; i < shopVendor.orders.length; i++){
             if(shopVendor.orders[i].orderId == req.body.orderId){
                 shopVendor.orders[i].status = "Shipped";
@@ -39,6 +49,7 @@ assign.route('/')
                 break;
             }
         }
+        await req.user.save();
         await user.save();
         await shopVendor.save();
     }
