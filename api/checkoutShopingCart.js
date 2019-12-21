@@ -44,7 +44,7 @@ const checkoutShopingCart = async (req, res) => {
         const vendor = await ShopVendor.findById(product.shopVendorId)
         const user = await User.findById(vendor.walletId);
         const shopingOrder = new ShopingOrder({
-            "orderId": orderId,
+            orderId: orderId,
             userId: req.user._id,
             product: cartProduct,
             quantity: cartProduct.quantity,
@@ -76,14 +76,14 @@ const checkoutShopingCart = async (req, res) => {
         })
         user.amount += cartProduct.quantity * cartProduct.price;
         req.user.orders.push({
-            "orderId": orderId,
+            orderId: orderId,
             product: cartProduct,
             quantity: cartProduct.quantity,
             deliveryAddress: DeliveryAddress,
             amount: cartProduct.quantity * cartProduct.price
         })
         vendor.orders.push({
-            "orderId": orderId,
+            orderId: orderId,
             userId: req.user._id,
             product: cartProduct,
             quantity: cartProduct.quantity,

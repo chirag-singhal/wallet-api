@@ -55,7 +55,7 @@ assign.route('/')
         for(let i = 0; i < auctionVendor.orders.length; i++){
             if(auctionVendor.orders[i].orderId == req.body.orderId){
                 auctionVendor.orders[i].status = "Shipped"
-                delivery.orders.push({
+                delivery.auctionOrders.push({
                     orderId: auctionVendor.orders[i].orderId,
                     userId: auctionVendor.orders[i].userId,
                     product: auctionVendor.orders[i].product,
