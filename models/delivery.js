@@ -201,7 +201,7 @@ const ShoppingOrderSchema = new mongoose.Schema({
     product: {
         type: ProductSchema
     },
-    DeliveryAddress: {
+    deliveryAddress: {
         type: DeliveryAddressSchema
     },
     amount: {
