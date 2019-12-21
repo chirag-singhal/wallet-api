@@ -18,7 +18,7 @@ assign.route('/')
         for(let i = 0; i < req.user.orders.length; i++){
             if(req.user.orders[i].orderId == req.body.orderId){
                 req.user.orders[i].status = "Shipped";
-                offererId = user.orders[i].userId;
+                offererId = req.user.orders[i].userId;
                 console.log(offererId)
                 break;
             }
