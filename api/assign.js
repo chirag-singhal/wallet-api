@@ -37,6 +37,7 @@ assign.route('/')
         for(let i = 0; i < shopVendor.orders.length; i++){
             if(shopVendor.orders[i].orderId == req.body.orderId){
                 shopVendor.orders[i].status = "Shipped";
+                console.log(shopVendor.orders[i])
                 delivery.orders.push({
                     orderId: shopVendor.orders[i].orderId,
                     userId: shopVendor.orders[i].userId,
@@ -66,6 +67,7 @@ assign.route('/')
         for(let i = 0; i < auctionVendor.orders.length; i++){
             if(auctionVendor.orders[i].orderId == req.body.orderId){
                 auctionVendor.orders[i].status = "Shipped"
+                console.log(auctionVendor.orders[i])
                 delivery.auctionOrders.push({
                     orderId: auctionVendor.orders[i].orderId,
                     userId: auctionVendor.orders[i].userId,
