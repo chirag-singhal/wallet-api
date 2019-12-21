@@ -52,6 +52,7 @@ assign.route('/')
         }
         await req.user.save();
         await user.save();
+        await delivery.save();
         await shopVendor.save();
     }
     else {
