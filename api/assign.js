@@ -9,7 +9,7 @@ const Delivery = require('../models/delivery')
 
 assign.route('/')
 .post(async (req, res, next) => {
-    const user = await User.findOne({'orders.orderId': req.body.orderId});
+    const user = await User.findOne({'orders.orderId': req.body.orderId}).exec();
     const delivery = await Delivery.findOne({'qrCode': req.body.qrCode});
     console.log(user)
     if(user != null){
