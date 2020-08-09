@@ -1,5 +1,5 @@
-# ikc-deal
-Backend for the ikc-deal app
+# Wallet REST API
+Backend for the wallet e-commmerce app
 
 To run the Project
 
